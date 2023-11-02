@@ -1,6 +1,6 @@
 # Cloud native
 
-Date: Oct 2023
+Date: Oct 2023 
 
 I've been working in the **Azure cloud** for a few years now. The term `cloud-native` gets used a lot. In an effort to bridge the gap between Azure cloud and cloud-native, I'm investing some time in learning cloud-native approaches to building apps. 
 
