@@ -2,14 +2,14 @@
 
 Date: Oct 2023
 
-I've been working in the **Azure cloud** for a few years now. The term `cloud-native` gets used a lot. In an effort to bridge the gap between Azure cloud and cloud-native, I've investing some time in learning cloud-native approaches to building architectures and apps. 
+I've been working in the **Azure cloud** for a few years now. The term `cloud-native` gets used a lot. In an effort to bridge the gap between Azure cloud and cloud-native, I'm investing some time in learning cloud-native approaches to building apps. 
 
 Along the way, I'll use and _experiment_ with practices and tools to expedite the end result. Join me along the way, and let me know how you would have proceeded. 
 
 To start with, my tool set includes:
 
 * [Visual Studio Code](https://code.visualstudio.com/).
-* [GitHub](https://github.com/) & [GitHub Copilot](https://github.com/features/copilot) (AI [pair programming]() and rubber duck). Copilot provides context-aware answers within Visual Studio code. 
+* [GitHub](https://github.com/) & [GitHub Copilot](https://github.com/features/copilot) (AI pair programming and rubber duck). Copilot provides context-aware answers within Visual Studio code. 
 
 ![Visual Studio Code with GitHub Copilot](./media/visual-studio-code-with-copilot.png)
 
@@ -197,3 +197,7 @@ By following these suggestions, you can learn the principles and practices of cl
 * [What is Cloud Native, the LinuxFoundation and the CNCF](https://www.youtube.com/watch?v=z2q0gKL9nQg) by [Dive Into with James Spurin](https://www.youtube.com/@DiveInto)
 * [The Linux Foundation](https://www.linuxfoundation.org/)
 * [Cloud Native Computing Foundation](https://www.cncf.io/)
+
+## Follow up
+
+Conversations and learnings after the blog was posted are captured in [follow up](followup.md)
