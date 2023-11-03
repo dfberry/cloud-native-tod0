@@ -2,6 +2,8 @@
 
 Date: Nov 2023
 
+How do you ensure a consistent developer setup on your team? [Survey](https://bit.ly/3FL6FZ6)
+
 Dev containers are the first thing I usually set up in my developer environment. Its also new enough I'm not sure if Copilot will have accurate information. Let's see...
 
 ## Prompt: What do you suggest I do to setup up my local developer environment for my cloud native repository?  
