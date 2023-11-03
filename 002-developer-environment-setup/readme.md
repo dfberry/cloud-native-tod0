@@ -2,6 +2,7 @@
 
 Date: Nov 2023
 
+[YouTube video](https://youtu.be/oL-K-x0mp3Y)
 How do you ensure a consistent developer setup on your team? [Survey](https://bit.ly/3FL6FZ6)
 
 Dev containers are the first thing I usually set up in my developer environment. Its also new enough I'm not sure if Copilot will have accurate information. Let's see...
