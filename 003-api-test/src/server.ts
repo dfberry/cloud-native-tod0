@@ -1,66 +1,50 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import path from 'path';
+import { StatusCodes } from 'http-status-codes';
+import todoRouter from './routes/todo';
 
-const swaggerDocument = YAML.load(path.resolve(__dirname, './openapi.yaml'));
-
-interface Todo {
-  id: number;
-  title: string;
+interface HttpError extends Error {
+  status?: number;
 }
 
-const todos: Todo[] = [
-  { id: 1, title: 'First Todo' },
-  { id: 2, title: 'Second Todo' },
-  { id: 3, title: 'Third Todo' },
-];
+const swaggerDocument = YAML.load(path.resolve(__dirname, './openapi.yaml'));
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+// add preroute handler
+app.use((req: Request, res: Response, next: NextFunction) => {
+  next();
+});
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get('/todos', (req: Request, res: Response) => {
-  res.send(todos);
+// import and use todo route
+app.use('/todo', todoRouter);
+app.use('/', (req: Request, res: Response) => {
+  return res.status(StatusCodes.ACCEPTED).send('Hello World!');
 });
 
-app.post('/todos', (req: Request, res: Response) => {
-  const todo: Todo = {
-    id: new Date().valueOf(),
-    title: req.body.title,
-  };
-
-  todos.push(todo);
-  res.status(201).send(todo);
+// Catch 404 and forward to error handler
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const err: HttpError = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
-app.put('/todos/:id', (req: Request, res: Response) => {
-  const id: number = parseInt(req.params.id, 10);
-  const index: number = todos.findIndex((todo) => todo.id === id);
+// Error handler
+app.use((err: HttpError, req: Request, res: Response) => {
+  // Set locals, only providing error in development
+  console.error(`error ${JSON.stringify(err)}`);
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  if (index > -1) {
-    todos[index] = { id, title: req.body.title };
-    res.send(todos[index]);
-  } else {
-    res.status(404).send({ message: 'Todo not found' });
-  }
+  // Render the error page
+  res.status(err.status || 500).json({ error: err.message });
 });
-
-app.delete('/todos/:id', (req: Request, res: Response) => {
-  const id: number = parseInt(req.params.id, 10);
-  const index: number = todos.findIndex((todo) => todo.id === id);
-
-  if (index > -1) {
-    const todo = todos.splice(index, 1);
-    res.send(todo);
-  } else {
-    res.status(404).send({ message: 'Todo not found' });
-  }
-});
-// ... rest of your routes ...
-
 export default app;

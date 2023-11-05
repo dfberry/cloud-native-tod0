@@ -690,3 +690,214 @@ npm install --save-dev ncp
 The `prebuild` script will run before `build` due to the `pre` prefix. It uses `ncp` to copy `openapi.yaml` into the `dist` directory.
 
 Now, when you run `npm run build`, `openapi.yaml` will be copied into the `dist` directory before TypeScript compilation occurs.
+
+## Prompt: Create a github action yaml to lint, build, and test this project
+
+GitHub Copilot: Sure, you can create a GitHub Actions workflow to lint, build, and test your project. Here's an example of a workflow file:
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run lint
+    - run: npm run build
+    - run: npm run test
+```
+
+This workflow will run whenever there's a push or a pull request to the `main` branch. It sets up a job that runs on an Ubuntu runner with Node.js version 14.x. The job checks out your code, installs the dependencies with `npm ci`, lints the code, builds the project, and runs the tests.
+
+You should save this file in your repository under `.github/workflows`, with a `.yml` or `.yaml` extension, for example `.github/workflows/ci.yml`.
+
+**My perspective** Matrix should have 16,18,20 or LTS - I should have an action that tells me when the LTS changes. 
+
+## Prompt: What is this api missing in order to be considered a microservice?
+
+GitHub Copilot: The API described in the excerpt is a basic one and lacks several features that are typically found in a microservice architecture. Here are some key elements that could be added to make it more aligned with a microservice:
+
+1. **Database Integration**: Microservices typically have their own dedicated databases. This API currently uses an in-memory array to store todos, which is not persistent. Integrating a database would allow data to be stored persistently and retrieved even after the service restarts.
+
+2. **Error Handling**: The API should have proper error handling to ensure that it can gracefully handle and recover from errors. This includes handling potential errors from database operations, invalid request data, and more.
+
+3. **Logging and Monitoring**: Microservices should have robust logging and monitoring to track the health of the service, detect issues, and aid in debugging. This could include logging requests and responses, tracking error rates, and monitoring performance metrics.
+
+4. **Authentication and Authorization**: If the API is meant to be used by multiple users, it should have some form of authentication to identify users, and possibly authorization to control what each user can do.
+
+5. **API Documentation**: Good documentation is crucial for any API, and even more so for a microservice which may be used by many different clients. This could be done using tools like Swagger.
+
+6. **Testing**: The API should have a suite of tests to ensure that it works as expected. This could include unit tests, integration tests, and end-to-end tests.
+
+7. **Containerization**: Microservices are often run in containers, which provide isolation, consistency across environments, and are easy to deploy. This could be done using a tool like Docker.
+
+8. **CI/CD Integration**: Continuous Integration/Continuous Deployment is a common practice in microservices. This ensures that the code is always in a deployable state and can be released to production at any time.
+
+9. **Service Discovery and Configuration Management**: In a microservices architecture, services need to discover and communicate with each other. Tools like Kubernetes, Consul, or Eureka can help with this.
+
+10. **Rate Limiting and Backpressure**: To protect the service from being overwhelmed by too many requests, it's important to implement rate limiting and backpressure mechanisms.
+
+Remember, the term "microservice" refers to an architectural style, and different applications may require different features. The above points are general guidelines and not all may apply to every situation.
+
+*My perspective* - I'm going to pick and choose what to fix right now. 
+
+## Prompt: Add error handling to the start.ts that is necessary for any express.js app
+
+GitHub Copilot: In an Express.js application, error handling is typically done using middleware. Here's how you can add basic error handling to your `start.ts` file:
+
+```typescript
+import express from 'express';
+
+const app = express();
+
+// Your routes go here
+
+// Catch 404 and forward to error handler
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// Error handler
+app.use((err, req, res, next) => {
+  // Set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // Render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+app.listen(3000, () => {
+  console.log('Server is listening on port 3000');
+});
+```
+
+This code adds two middleware functions at the end of your middleware stack. The first one catches 404 errors (i.e., when no route matched the request), creates an error with a status of 404, and passes it on to the next middleware function. The second middleware function is an error handler that gets called whenever an error is passed to `next()`. It sets some local variables and sends a response to the client with the error message and status.
+
+Please note that this is a basic example and real-world applications might require more sophisticated error handling. For example, you might want to log errors, send error reports, or customize the error response based on the type of error.
+
+**My perspective - this isn't all the error handling needed. 
+
+## Prompt: This is missing a top level set of errors if the app crashes. Add that code as well.
+
+GitHub Copilot: To handle uncaught exceptions and unhandled promise rejections at the top level, you can add the following code to your `start.ts` file:
+
+```typescript
+import express from 'express';
+
+const app = express();
+
+// Your routes go here
+
+// Catch 404 and forward to error handler
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// Error handler
+app.use((err, req, res, next) => {
+  // Set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // Render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+  console.error('There was an uncaught error', err);
+  process.exit(1); //mandatory (as per the Node.js docs)
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+
+app.listen(3000, () => {
+  console.log('Server is listening on port 3000');
+});
+```
+
+The `process.on('uncaughtException')` event is emitted when an uncaught JavaScript exception bubbles all the way back to the event loop. By listening for this event, you can log the error and exit gracefully.
+
+The `process.on('unhandledRejection')` event is emitted whenever a Promise is rejected and no error handler is attached to the promise within a turn of the event loop. By listening for this event, you can log the Promise and reason to console and exit gracefully.
+
+Please note that in a real-world application, you might want to do more than just log the error and exit. For example, you might want to send an error report, or attempt to recover from the error if possible.
+
+**My perspective - this looks better.
+
+## Prompt: Add type safety to start.ts
+
+GitHub Copilot: To add type safety to your `start.ts` file, you can use TypeScript's static typing. Here's how you can modify your code:
+
+```typescript
+import express, { Request, Response, NextFunction } from 'express';
+import app from './server';
+
+const port: number = 3000;
+
+// Catch 404 and forward to error handler
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const err: any = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// Error handler
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  // Set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // Render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (err: Error) => {
+  console.error('There was an uncaught error', err);
+  process.exit(1); //mandatory (as per the Node.js docs)
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason: {} | null | undefined, promise: Promise<any>) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+```
+
+In this code, I've added types to the `req`, `res`, and `next` parameters of your middleware functions, as well as to the `err` parameter of your `uncaughtException` event handler and the `reason` and `promise` parameters of your `unhandledRejection` event handler. I've also added a type to your `port` variable.
+
+Please note that this is a basic example and real-world applications might require more sophisticated type definitions. For example, you might want to define a custom type for your error objects, or use more specific types for your promises and reasons.
