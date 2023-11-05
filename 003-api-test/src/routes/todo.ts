@@ -8,13 +8,14 @@ import {
   deleteTodo,
   validateTodo,
 } from '../data/todo';
+import { logger, logRequest, logResponse } from '../logger';
 
 // Create Todo router with all routes then export it
 const todoRouter = express.Router();
 
 // Error handling middleware
 function handleError(err, _, res) {
-  console.error(err);
+  logger.error(err);
   res.status(500).send('Something broke!');
 }
 // Validation middleware
@@ -74,6 +75,7 @@ todoRouter.post('/', validateRequestBody, addTodoHandler);
 todoRouter.put('/:id', validateRequestBody, updateTodoHandler);
 todoRouter.delete('/:id', deleteTodoHandler);
 todoRouter.use(handleError);
+todoRouter.use(logRequest, logResponse);
 
 // Export the router
 export default todoRouter;

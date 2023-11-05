@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "pretest": "jest --clearCache",
-    "test": "npm run lint:fix && npm run build && npm run postbuild && jest --runInBand --no-cache --detectOpenHandles --forceExit --coverage",
+    "test": "npm run lint:fix && npm run build && npm run postbuild && NODE_ENV=test jest --runInBand --no-cache --detectOpenHandles --forceExit --coverage",
     "dev": "ts-node src/start.ts",
     "start": "node dist/start.js",
     "postbuild": "ncp ./src/openapi.yaml ./dist/openapi.yaml",
@@ -24,6 +24,7 @@
     "joi": "^17.11.0",
     "swagger-ui-express": "^5.0.0",
     "ts-jest": "^29.1.1",
+    "winston": "^3.11.0",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {

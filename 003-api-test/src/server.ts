@@ -6,6 +6,7 @@ import YAML from 'yamljs';
 import path from 'path';
 import { StatusCodes } from 'http-status-codes';
 import todoRouter from './routes/todo';
+import { logger } from './logger';
 
 interface HttpError extends Error {
   status?: number;
@@ -19,6 +20,7 @@ app.use(cors());
 
 // add preroute handler
 app.use((req: Request, res: Response, next: NextFunction) => {
+  //logger.info(`${req.method} ${req.path}`);
   next();
 });
 
@@ -40,7 +42,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // Error handler
 app.use((err: HttpError, req: Request, res: Response) => {
   // Set locals, only providing error in development
-  console.error(`error ${JSON.stringify(err)}`);
+  logger.error(`${req.method} ${req.path} error ${JSON.stringify(err)}`);
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
