@@ -1,0 +1,36 @@
+az# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: cloud-native-todo
+metadata:
+    template: azd-init@1.5.0
+hooks: 
+    # Run with:
+    # azd hooks run preprovision --debug
+    preprovision: 
+        shell: sh
+        run: |
+            pwd
+            echo "***** Root preprovision"
+            ./scripts/preprovision.sh "./api-todo/Dockerfile"  
+            printenv | sort
+    postdeploy: 
+        shell: sh
+        run: |
+            pwd
+            echo "***** Root postdeploy"
+            ./scripts/postdeploy.sh "./api-todo-test"  
+services:
+    api-todo:
+        project: ./api-todo
+        host: containerapp
+        language: ts
+        docker:
+            path: ./Dockerfile
+        env_file: ../.env
+        hooks:
+            preprovision: 
+                shell: sh
+                run: |
+                    echo "***** Service preprovision" 
+                    pwd
+                    printenv | sort
