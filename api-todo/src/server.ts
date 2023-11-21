@@ -7,6 +7,8 @@ import path from 'path';
 import { StatusCodes } from 'http-status-codes';
 import todoRouter from './routes/todo';
 import { logger } from './logger';
+import { setVersionHeader } from './middleware/version';
+import { version } from '../package.json';
 
 interface HttpError extends Error {
   status?: number;
@@ -24,12 +26,13 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+app.use(setVersionHeader);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // import and use todo route
 app.use('/todo', todoRouter);
 app.use('/', (req: Request, res: Response) => {
-  return res.status(StatusCodes.ACCEPTED).send('Hello World!');
+  return res.status(StatusCodes.ACCEPTED).send(`Hello World! ${version} `);
 });
 
 // Catch 404 and forward to error handler

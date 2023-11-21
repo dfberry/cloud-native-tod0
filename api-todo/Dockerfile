@@ -24,4 +24,4 @@ COPY . .
 EXPOSE 3000
 
 # Define the command to run the application using PM2
-CMD [ "pm2-runtime", "start", "server.js" ]
+CMD [ "pm2-runtime", "start", "dist/start.js" ]
