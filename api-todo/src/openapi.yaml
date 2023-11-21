@@ -3,7 +3,7 @@ info:
   title: Todo API
   version: 1.0.0
 paths:
-  /todos:
+  /todo:
     get:
       summary: Get all todos
       responses:
@@ -30,7 +30,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Todo'
-  /todos/{id}:
+  /todo/{id}:
     parameters:
       - in: path
         name: id
