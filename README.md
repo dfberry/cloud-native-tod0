@@ -2,6 +2,8 @@
 
 This repo documents my journey to solidify my cloud native understand. I'll use ChatGPT conversations to learn. This includes building a roadmap, and accomplishing each goal on the roadmap.
 
+[YouTube video](https://bit.ly/46t2SKQ)
+
 Steps (in their own branches): 
 
 * [001 Cloud native](https://github.com/dfberry/cloud-native-todo/blob/001-cloud-native/001-cloud-native/readme.md): Use Copilot to learn about cloud native 
