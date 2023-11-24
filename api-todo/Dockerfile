@@ -9,16 +9,17 @@ COPY package*.json ./
 
 # Install the application dependencies
 RUN npm install
-RUN npm build
+
+# Bundle the application source inside the Docker image
+COPY . .
+
+RUN npm run build
 
 # If you are building your code for production
 # RUN npm ci --only=production
 
 # Install PM2 globally
 RUN npm install pm2 -g
-
-# Bundle the application source inside the Docker image
-COPY . .
 
 # Expose the application on port 3000
 EXPOSE 3000

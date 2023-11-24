@@ -121,7 +121,6 @@ resource app 'Microsoft.App/containerApps@2023-04-01-preview' = {
   }
 }
 
-output fetchLatestImage string = fetchLatestImage.outputs.?containers[?0].?image ?? 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 output defaultDomain string = containerAppsEnvironment.properties.defaultDomain
 output name string = app.name
 output uri string = 'https://${app.properties.configuration.ingress.fqdn}'
