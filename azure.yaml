@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: cloud-native-todo
+metadata:
+    template: azd-init@1.5.0
+hooks:
+    postdeploy: 
+        shell: sh
+        run: |
+            pwd
+            echo "***** Root postdeploy"
+            ./scripts/postdeploy.sh "./api-todo-test"  
+services:
+    api-todo:
+        project: api-todo
+        host: containerapp
+        language: js
+        docker:
+            path: Dockerfile
+        hooks:
+            postdeploy: 
+                shell: sh
+                run: |
+                    echo "***** api-todo postdeploy"
+

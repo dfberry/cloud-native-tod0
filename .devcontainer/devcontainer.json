@@ -3,23 +3,26 @@
 {
 	"name": "Node.js & TypeScript",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-18-bullseye",
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
-	"features": {		
+	"features": {
+		"ghcr.io/azure/azure-dev/azd:0": {},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "node -v && npm -v && git -v",
+	"postCreateCommand": "bash .devcontainer/post-create-command.sh",
     
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"GitHub.copilot-chat"
+				"GitHub.copilot-chat",
+				"ms-playwright.playwright"
 			]
 		}
 	},
