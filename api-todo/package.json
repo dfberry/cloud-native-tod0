@@ -1,6 +1,6 @@
 {
   "name": "003-api-test",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Copilot: GitHub Copilot: Here's a step-by-step guide to building a simple Todo microservice using Node.js and TypeScript:",
   "main": "index.js",
   "scripts": {
