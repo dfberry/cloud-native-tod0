@@ -22,7 +22,7 @@ app.use(cors());
 
 // add preroute handler
 app.use((req: Request, res: Response, next: NextFunction) => {
-  //logger.info(`${req.method} ${req.path}`);
+  logger.info(`${req.method} ${req.path}`);
   next();
 });
 

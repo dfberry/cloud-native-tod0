@@ -22,6 +22,7 @@ function handleError(err, _, res) {
 function validateRequestBody(req, res, next) {
   const { valid, error, todo } = validateTodo(req.body, true);
   if (!valid) {
+    logger.error(`Invalid todo:${error}`);
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ error: 'Invalid todo', details: error });

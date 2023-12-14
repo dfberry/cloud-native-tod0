@@ -13,6 +13,7 @@
   "license": "ISC",
   "workspaces": [
     "api-todo",
-    "api-todo-test"
+    "api-todo-test",
+    "client-todo"
   ]
 }
