@@ -1,0 +1,46 @@
+name: Client Build/Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - '*'
+  pull_request:
+    branches: 
+      - 'main'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules-${{ matrix.os }}-${{ matrix.node-version }}
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+
+
+      - run: |
+          npm ci --workspace=client-todo
+          npm run lint --workspace=client-todo
+          npm run build --workspace=client-todo
+          npm run test --workspace=client-todo

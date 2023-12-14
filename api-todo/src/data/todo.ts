@@ -1,4 +1,5 @@
 import Joi, { ValidationErrorItem } from 'joi';
+import { logger } from '../logger';
 
 export interface Todo {
   id: number;
@@ -30,6 +31,7 @@ export const validateTodo = (
   todo: PartialTodo,
   isNewTodo: boolean = false
 ): TodoValidation => {
+  logger.info(`Validating todo:${JSON.stringify(todo)}`);
   const schema = isNewTodo ? todoPartialSchema : todoSchema;
   const { error } = schema.validate(todo);
   if (error) {
