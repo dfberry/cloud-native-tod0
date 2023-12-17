@@ -5,9 +5,9 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Start via NPM",
+      "name": "API run",
       "request": "launch",
-      "cwd": "${workspaceFolder}/003-api-test",
+      "cwd": "${workspaceFolder}/api-todo",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "start"
@@ -19,7 +19,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "JS file",
       "skipFiles": [
         "<node_internals>/**"
       ],
@@ -35,18 +35,16 @@
       "port": 9229
     },
     {
-      "name": "Debug Jest Tests",
-      "type": "node",
+      "name": "API test",
       "request": "launch",
+      "cwd": "${workspaceFolder}/api-todo",
+      "runtimeExecutable": "npm",
       "runtimeArgs": [
-        "--inspect-brk",
-        "./003-api-test/node_modules/.bin/jest",
-        "--runInBand",
-        "-c",
-        "./003-api-test/jest.config.js",
+        "test"
       ],
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      "internalConsoleOptions": "neverOpen",
+      "type": "node"
     }
   ]
 }

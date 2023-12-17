@@ -1,6 +1,6 @@
 {
-  "name": "003-api-test",
-  "version": "1.0.2",
+  "name": "api-todo",
+  "version": "1.0.3",
   "description": "Copilot: GitHub Copilot: Here's a step-by-step guide to building a simple Todo microservice using Node.js and TypeScript:",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,6 @@
     "http-status-codes": "^2.3.0",
     "joi": "^17.11.0",
     "swagger-ui-express": "^5.0.0",
-    "ts-jest": "^29.1.1",
     "winston": "^3.11.0",
     "yamljs": "^0.3.0"
   },
@@ -45,6 +44,7 @@
     "prettier": "^3.0.3",
     "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
+    "ts-jest": "^29.1.1",
     "typescript": "^5.2.2"
   }
 }
