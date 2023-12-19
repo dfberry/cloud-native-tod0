@@ -125,4 +125,46 @@ azd pipeline config
 Output looks like:
 
 ```
+root ➜ /workspaces/cloud-native-todo (dfberry/docs-update) $ azd pipeline config
+
+Configure your GitHub pipeline
+
+? This command requires you to be logged into GitHub. Log in using the GitHub CLI? Yes
+? What is your preferred protocol for Git operations? HTTPS
+? Authenticate Git with your GitHub credentials? Yes
+? How would you like to authenticate GitHub CLI? Login with a web browser
+
+! First copy your one-time code: 1234-1234
+Press Enter to open github.com in your browser... 
+✓ Authentication complete.
+- gh config set -h github.com git_protocol https
+✓ Configured git protocol
+✓ Logged in as dfberry
+
+  (✓) Done: Checking current directory for Git repository
+  (✓) Done: Creating service principal az-dev-12-19-2023-02-51-11 (48dcb0f9-0714-4ae8-9bb2-eb5854f219fb)
+  (✓) Done: Federated identity credential for GitHub: subject repo:dfberry/cloud-native-todo:pull_request
+  (✓) Done: Federated identity credential for GitHub: subject repo:dfberry/cloud-native-todo:ref:refs/heads/dfberry/docs-update
+  (✓) Done: Federated identity credential for GitHub: subject repo:dfberry/cloud-native-todo:ref:refs/heads/main
+  (✓) Done: Setting AZURE_SUBSCRIPTION_ID repo variable
+  (✓) Done: Setting AZURE_TENANT_ID repo variable
+  (✓) Done: Setting AZURE_CLIENT_ID repo variable
+  (✓) Done: Setting AZURE_ENV_NAME repo variable
+  (✓) Done: Setting AZURE_LOCATION repo variable
+
+  GitHub Action secrets are now configured. You can view GitHub action secrets that were created at this link:
+  https://github.com/dfberry/cloud-native-todo/settings/secrets/actions
+
+? Would you like to commit and push your local changes to start the configured CI pipeline? Yes
+remote: 
+remote: Create a pull request for 'dfberry/docs-update' on GitHub by visiting:
+remote:      https://github.com/dfberry/cloud-native-todo/pull/new/dfberry/docs-update
+remote: 
+
+  (✓) Done: Pushing changes
+  (✓) Done: Queuing pipeline
+
+SUCCESS: Your GitHub pipeline has been configured!
+Link to view your new repo: https://github.com/dfberry/cloud-native-todo
+Link to view your pipeline status: https://github.com/dfberry/cloud-native-todo/actions
 ```
