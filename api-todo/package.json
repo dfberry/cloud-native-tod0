@@ -1,17 +1,20 @@
 {
   "name": "api-todo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Copilot: GitHub Copilot: Here's a step-by-step guide to building a simple Todo microservice using Node.js and TypeScript:",
   "main": "index.js",
   "scripts": {
     "pretest": "jest --clearCache npm run lint:fix && npm run build && npm run postbuild",
     "test": "cross-env NODE_ENV=test jest --runInBand --no-cache --detectOpenHandles --forceExit --coverage",
+    "test:withlogs": "cross-env NODE_ENV=testwithlogs jest --runInBand --no-cache --detectOpenHandles --forceExit --coverage",
     "dev": "ts-node src/start.ts",
-    "start": "node dist/start.js",
+    "start": "cross-env NODE_ENV=production node dist/start.js",
+    "start:debug": "cross-env NODE_ENV=dev node -r ts-node/register src/start.ts",
     "postbuild": "ncp ./src/openapi.yaml ./dist/openapi.yaml",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix"
+    "lint:fix": "eslint . --ext .ts --fix",
+    "clean": "rm -rf dist && rm -rf coverage && rm -rf logs"
   },
   "keywords": [],
   "author": "",
