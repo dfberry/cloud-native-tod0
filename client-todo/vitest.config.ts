@@ -17,5 +17,4 @@ const config = {
     },
 };
 
-// @ts-ignore
 export default defineConfig(config); 

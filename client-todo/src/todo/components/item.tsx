@@ -18,4 +18,4 @@ export default function Item({ todo, onDelete }: ItemProps) {
       </td>
     </tr>
   );
-};
+}
