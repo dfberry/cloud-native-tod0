@@ -10,7 +10,7 @@ on:
       - 'main'
 
 jobs:
-  build:
+  build-api:
 
     runs-on: ubuntu-latest
 
@@ -21,7 +21,28 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: |
-          cd api-todo
-          npm ci
-          npm run lint
-          npm run test
+          npm ci --workspace=api-todo
+          npm run lint --workspace=api-todo
+          npm run build --workspace=api-todo
+          npm run test --workspace=api-todo
+
+  build-client:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: |
+          npm ci --workspace=client-todo
+          npm run lint --workspace=client-todo
+          npm run build --workspace=client-todo
+          npm run test --workspace=client-todo
