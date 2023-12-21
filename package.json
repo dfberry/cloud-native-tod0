@@ -1,6 +1,6 @@
 {
   "name": "cloud-native-todo",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "This repo documents my journey to solidify my cloud native understand. I'll use ChatGPT conversations to learn. This includes building a roadmap, and accomplishing each goal on the roadmap.",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,7 @@
   "license": "ISC",
   "workspaces": [
     "api-todo",
-    "api-todo-test"
+    "api-todo-test",
+    "client-todo"
   ]
 }
