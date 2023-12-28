@@ -1,6 +1,11 @@
 import { NewTodo } from './models';
 
-export const API_URL = `${import.meta.env.VITE_API_URL}/todo`;
+const ENV_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+if (!ENV_URL) {
+  console.log('VITE_API_URL is not defined');
+}
+
+export const API_URL = `${ENV_URL}/todo`;
 
 export const addTodo = async (newTodo: NewTodo): Promise<Response> => {
     return await fetch(API_URL, {

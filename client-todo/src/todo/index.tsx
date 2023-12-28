@@ -36,13 +36,13 @@ export default function Todo() {
         }
     }
 
-    if (error && requestError) return <div className="border-red-500 p-2">failed to load {error ? JSON.stringify(error) : requestError}</div>
-    if (isLoading) return <div className="border-gray-500 p-2">loading...{JSON.stringify(isLoading)}</div>
+    if (error && requestError) return <div >failed to load {error ? JSON.stringify(error) : requestError}</div>
+    if (isLoading) return <div >loading...{JSON.stringify(isLoading)}</div>
 
     return (
-        <div className="p-10 font-sans">
+        <div >
             <TodoForm onSubmit={handleSubmit} requestError={requestError} />
-            <div className="border-gray-500 mt-5 rounded">
+            <div >
                 <List todos={data} onDelete={handleDelete} />
             </div>
         </div>

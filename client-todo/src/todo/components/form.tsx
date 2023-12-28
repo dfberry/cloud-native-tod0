@@ -43,29 +43,28 @@ export default function TodoForm({ onSubmit, requestError }: Props) {
     };
     return (
         <div >
-            <div className="pb-5">
-                <h1 className="text-center text-gray-700" >What do you have to do?</h1>
+            <div>
+                <h1 >What do you have to do?</h1>
             </div>
-            <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col items-start" data-testid="todo-form">
-                <div className="w-full">
+            <form ref={formRef} onSubmit={handleSubmit} data-testid="todo-form">
+                <div>
                     <input
                         id="todoTitle"
                         name="title"
                         type="text"
                         value={newTodo.title}
                         placeholder="Title"
-                        className="p-2 w-full bg-black text-white box-border"
                         onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
                         data-testid="todo-form-input-title"
                     />
                 </div>
                 {requestError && (
-                    <div className="mt-2 text-red-500" data-testid="todo-error">
+                    <div data-testid="todo-error">
                         {requestError}
                     </div>
                 )}
-                <button type="submit" disabled={!newTodo.title} className="mt-2 px-2 py-1 bg-blue-500 text-white border-none rounded cursor-pointer text-xs" data-testid="todo-button">Add Todo</button>
+                <button type="submit" disabled={!newTodo.title} data-testid="todo-button">Add Todo</button>
             </form>
         </div>
     );

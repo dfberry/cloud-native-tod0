@@ -15,9 +15,9 @@ export default function List({ todos, onDelete }: Props) {
       <table style={{ width: '100%', marginTop: '20px', borderCollapse: 'collapse' }} data-testid="list">
         <thead>
           <tr>
-            <th className="px-2 border-b border-gray-300 text-left">ID</th>
-            <th className="px-2 border-b border-gray-300 text-left">Title</th>
-            <th className="px-2 border-b border-gray-300 text-left">Delete</th>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
