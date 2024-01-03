@@ -11,7 +11,7 @@ hooks:
         run: |
             pwd
             echo "***** Root postdeploy"
-            ./scripts/postdeploy.sh "./api-todo-test"  
+    # ./scripts/postdeploy.sh "./api-todo-test"  
 services:
     api-todo:
         project: api-todo
@@ -24,4 +24,14 @@ services:
                 shell: sh
                 run: |
                     echo "***** api-todo postdeploy"
-
+    client-todo:
+        project: client-todo
+        language: js
+        host: containerapp
+        docker:
+            path: Dockerfile
+        hooks:
+            postprovision: 
+                shell: sh
+                run: |
+                    echo "***** client-todo predeploy"          
