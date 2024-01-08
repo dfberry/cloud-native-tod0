@@ -14,6 +14,7 @@
 
 ## order of operations
 
-* Package creates images but endpoint URLs aren't known so can't be built into image
+* Infra containers build first API container, then Front-end container based on implicit order of the API url being passed into client container. 
+* Package creates images but endpoint URLs aren't known so API endpoint URL can't be built into image the way front-end clients typically build APIs into static source code.
 * Provisioning pushes images to container registry and figures out endpoint URIs by end, into the .env of the environment in .azure
 * Deploy -> pushing container image, updating container revision

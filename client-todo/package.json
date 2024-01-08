@@ -1,20 +1,25 @@
 {
   "name": "client-todo",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2a",
   "type": "module",
   "scripts": {
-    "envconfig": "node entrypoint.js -e .env -o ./public/env-config.js",
-    "prebuild": "npm run envconfig",
+
     "start": "vite",
     "dev": "vite",
+
     "build": "tsc && vite build",
+    "build:env": "bash ./generate-dotenv.sh",
+
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "pretest": "npm run envconfig",
+    
     "test": "vitest --run",
     "test:dev": "vitest",
-    "help": "npm run build outputs to dist"
+    
+    "help": "npm run build outputs to dist",
+
+    "clean": "bash clean.sh"
   },
   "dependencies": {
     "dotenv": "^16.3.1",
