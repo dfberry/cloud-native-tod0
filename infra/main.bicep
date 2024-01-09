@@ -23,6 +23,9 @@ var corsAcaUrl = 'https://${apiContainerAppNameOrDefault}.${appsEnv.outputs.doma
 @description('Id of the user or app to assign application roles')
 param principalId string
 
+param deploymentDateTimeUtc string = utcNow()
+param deploymentName string = deployment().name
+
 // Tags that should be applied to all resources.
 // 
 // Note that 'azd-service-name' tags should be applied separately to service host resources.
@@ -30,6 +33,8 @@ param principalId string
 //   tags: union(tags, { 'azd-service-name': <service name in azure.yaml> })
 var tags = {
   'azd-env-name': environmentName
+  'azd-deployment-id': deploymentName
+  'azd-deployment-utc': deploymentDateTimeUtc
 }
 
 var abbrs = loadJsonContent('./abbreviations.json')
@@ -147,3 +152,5 @@ output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
 // MONITORING
 output AZURE_MONITORING_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY string = monitoring.outputs.instrumentationKey
 output AZURE_MONITORING_APPLICATION_INSIGHTS_CONNECTION_STRING string = monitoring.outputs.applicationInsightsConnectionString
+output DEPLOYMENT_NAME string = deploymentName
+output DEPLOYMENT_DATETIME_UTC string = deploymentDateTimeUtc
