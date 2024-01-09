@@ -3,10 +3,8 @@ import { useState, useEffect} from 'react';
 import Todo from './todo'
 import { isServerAvailable, API_BASE_URL } from './todo/service';
 import { version } from '../package.json';
-console.log('SRC/APP: API_BASE_URL', API_BASE_URL);
-console.log('SRC/APP: version', version);
 
-
+console.log(`Client version: ${version}`);
 function App() {
   const [serverAvailable, setServerAvailable] = useState(false);
 

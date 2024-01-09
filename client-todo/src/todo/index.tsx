@@ -6,8 +6,6 @@ import { NewTodo, Todo } from './models';
 import { API_URL, addTodo, deleteTodo } from './service';
 import { fetcher } from './api';
 
-console.log('SRC/TODO: API_URL', API_URL);
-
 export default function Todo() {
     const [requestError, setRequestError] = useState('');
     const { data, error, isLoading } = useSWR(API_URL, fetcher)

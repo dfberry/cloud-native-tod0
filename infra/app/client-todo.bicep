@@ -25,12 +25,6 @@ module app '../shared/host/container-app-upsert.bicep' = {
     exists: exists
     containerAppsEnvironmentName: containerAppsEnvironmentName
     containerRegistryName: containerRegistryName
-    env: [
-      {
-        name: 'VITE_API_URL'
-        value: apiBaseUrl
-      }
-    ]
     targetPort: 80
   }
 }
