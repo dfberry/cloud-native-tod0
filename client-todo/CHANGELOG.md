@@ -1,5 +1,12 @@
 ## Todo Client
 
+# 1.0.3
+
+* Added container app for client-todo to infra folder
+* Add client-todo version to console.log
+* Add config to project to determine which backend URL is used
+* isServerAvailable to check if server is available
+
 ## 1.0.1
 
 * Remove unnecessary css
