@@ -23,6 +23,7 @@ var corsAcaUrl = 'https://${apiContainerAppNameOrDefault}.${appsEnv.outputs.doma
 @description('Id of the user or app to assign application roles')
 param principalId string
 
+param fullBuild bool = true 
 param deploymentDateTimeUtc string = utcNow()
 param deploymentName string = deployment().name
 
@@ -101,7 +102,7 @@ module appsEnv './shared/apps-env.bicep' = {
   scope: rg
 }
 
-module apiTodo './app/api-todo.bicep' = {
+module apiTodo '../api-todo/api-todo.bicep' = {
   name: 'api-todo'
   params: {
     name: '${abbrs.appContainerApps}api-todo-${resourceToken}'
@@ -113,12 +114,13 @@ module apiTodo './app/api-todo.bicep' = {
     containerRegistryName: registry.outputs.name
     exists: apiTodoExists
     corsAcaUrl: corsAcaUrl
+    fullBuild: true
     }
   scope: rg
 }
 
 // Web frontend
-module clientTodo './app/client-todo.bicep' = {
+module clientTodo '../client-todo/client-todo.bicep' = {
   name: 'client-todo'
   scope: rg
   params: {
@@ -129,17 +131,17 @@ module clientTodo './app/client-todo.bicep' = {
     containerAppsEnvironmentName: appsEnv.outputs.name
     containerRegistryName: registry.outputs.name
     exists: webAppExists
-    apiBaseUrl: !empty(webApiBaseUrl) ? webApiBaseUrl : apiTodo.outputs.uri
+    fullBuild: true
   }
 }
 
 // CLIENT FRONTEND
 output CLIENT_TODO_NAME string = clientTodo.outputs.CLIENT_WEB_NAME
 output CLIENT_TODO_ENDPOINT string = clientTodo.outputs.CLIENT_WEB_URI
-output VITE_API_URL string = apiTodo.outputs.uri
+output VITE_API_URL string = apiTodo.outputs.API_WEB_URI
 
 // API BACKEND
-output API_TODO_ENDPOINT string = apiTodo.outputs.uri
+output API_TODO_ENDPOINT string = apiTodo.outputs.API_WEB_URI
 
 // APPS ENVIRONMENT
 output APPS_DEFAULT_DOMAIN string = appsEnv.outputs.domain
@@ -150,6 +152,7 @@ output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
 output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
 
 // MONITORING
+output AZURE_MONITORING_APPLICATION_INSIGHTS_NAME string = monitoring.outputs.applicationInsightsName
 output AZURE_MONITORING_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY string = monitoring.outputs.instrumentationKey
 output AZURE_MONITORING_APPLICATION_INSIGHTS_CONNECTION_STRING string = monitoring.outputs.applicationInsightsConnectionString
 output DEPLOYMENT_NAME string = deploymentName

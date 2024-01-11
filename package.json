@@ -6,7 +6,11 @@
   "scripts": {
     "test": "npm run test -ws --if-present",
     "build": "npm run build -ws --if-present",
-    "start": "npm run start -ws --if-present"
+    "start": "npm run start -ws --if-present",
+    "client-todo:provision": "azd provision -C client-todo",
+    "client-todo:deploy": "azd deploy -C client-todo",
+    "api-todo:provision": "azd provision -C api-todo",
+    "api-todo:deploy": "azd deploy -C api-todo"
   },
   "keywords": [],
   "author": "",
