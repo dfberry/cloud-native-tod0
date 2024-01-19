@@ -15,7 +15,8 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		3000,
-		80
+		80,
+		27017
 	],
 	// add labels to ports
 	"portsAttributes": {
@@ -25,6 +26,10 @@
 		},
 		"80": {
 			"label": "CLIENT",
+			"onAutoForward": "notify"
+		},
+		"27017": {
+			"label": "MONGO",
 			"onAutoForward": "notify"
 		}
 	},
@@ -39,7 +44,9 @@
 				"GitHub.copilot-chat",
 				"ms-playwright.playwright",
 				"ms-azuretools.vscode-bicep",
-				"ms-vscode.powershell"
+				"ms-vscode.powershell",
+				"ms-azuretools.vscode-docker",
+				"mongodb.mongodb-vscode"
 			]
 		}
 	},

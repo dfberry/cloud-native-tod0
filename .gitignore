@@ -23,3 +23,7 @@ yarn-error.log*
 
 # vitest
 test-output/
+
+.old*/
+.env*
+mongodata/
