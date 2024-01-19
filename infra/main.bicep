@@ -1,5 +1,9 @@
 targetScope = 'subscription'
 
+param infraAppVersion string = '3.0.0' // Infrastructure app version
+param portClient string = '3005'
+param portApi string = '3000'
+
 @minLength(1)
 @maxLength(64)
 @description('Name of the environment that can be used as part of naming resource convention')
@@ -12,6 +16,8 @@ param location string
 // API
 @description('The base URL used by the web service for sending API requests')
 param webApiBaseUrl string = ''
+param deploymentSpecificGuid string = newGuid()
+var apiStatusPassword = uniqueString(deploymentSpecificGuid)
 
 // CLIENT WEB APP
 param apiTodoExists bool = false
@@ -19,6 +25,10 @@ param webAppExists bool = false
 param webContainerAppName string = ''
 var apiContainerAppNameOrDefault = '${abbrs.appContainerApps}web-${resourceToken}'
 var corsAcaUrl = 'https://${apiContainerAppNameOrDefault}.${appsEnv.outputs.domain}'
+
+// MONGOD DB
+param cosmosAccountName string = ''
+param cosmosDatabaseName string = ''
 
 @description('Id of the user or app to assign application roles')
 param principalId string
@@ -35,6 +45,7 @@ var tags = {
   'azd-env-name': environmentName
   'azd-deployment-id': deploymentName
   'azd-deployment-utc': deploymentDateTimeUtc
+  'azd-app-version': infraAppVersion
 }
 
 var abbrs = loadJsonContent('./abbreviations.json')
@@ -101,45 +112,80 @@ module appsEnv './shared/apps-env.bicep' = {
   scope: rg
 }
 
-module apiTodo './app/api-todo.bicep' = {
-  name: 'api-todo'
+// ****** Add Database module here ******
+// Use todo-nodejs-mongo-aca as template
+// Change collection shape
+// Connection Id stored in Key vault and returned in output
+// Key vault key is 'AZURE-COSMOS-CONNECTION-STRING'
+module cosmos './app/db.bicep' = {
+  name: 'cosmos'
+  scope: rg
   params: {
-    name: '${abbrs.appContainerApps}api-todo-${resourceToken}'
+    accountName: !empty(cosmosAccountName) ? cosmosAccountName : '${abbrs.documentDBDatabaseAccounts}${resourceToken}'
+    databaseName: cosmosDatabaseName
     location: location
     tags: tags
-    identityName: '${abbrs.managedIdentityUserAssignedIdentities}api-todo-${resourceToken}'
+    keyVaultName: keyVault.outputs.name
+  }
+}
+
+// var secretsBackend = [
+//   {
+//     AZURE_KEY_VAULT_COSMOSDB_CONNECTION_STRING_KEY_NAME: cosmos.outputs.connectionStringKey
+//     AZURE_KEY_VAULT_ENDPOINT: keyVault.outputs.endpoint
+//   }
+// ]
+
+module apiTodo './app/api.bicep' = {
+  name: 'api'
+  params: {
+    name: 'api-${abbrs.appContainerApps}${resourceToken}'
+    location: location
+    tags: tags
+    identityName: 'api-${abbrs.managedIdentityUserAssignedIdentities}-${resourceToken}'
     applicationInsightsName: monitoring.outputs.applicationInsightsName
     containerAppsEnvironmentName: appsEnv.outputs.name
     containerRegistryName: registry.outputs.name
     exists: apiTodoExists
     corsAcaUrl: corsAcaUrl
+    keyVaultName: keyVault.outputs.name
+    apiStatusPassword: apiStatusPassword
+    port: portApi
     }
   scope: rg
 }
 
 // Web frontend
-module clientTodo './app/client-todo.bicep' = {
-  name: 'client-todo'
+module clientTodo './app/client.bicep' = {
+  name: 'client'
   scope: rg
   params: {
-    name: !empty(webContainerAppName) ? webContainerAppName : '${abbrs.appContainerApps}client-todo-${resourceToken}'
+    name: !empty(webContainerAppName) ? webContainerAppName : 'client-${abbrs.appContainerApps}${resourceToken}'
     location: location
     tags: tags
-    identityName: '${abbrs.managedIdentityUserAssignedIdentities}web-${resourceToken}'
+    identityName: 'client-${abbrs.managedIdentityUserAssignedIdentities}-${resourceToken}'
+    applicationInsightsName: monitoring.outputs.applicationInsightsName
     containerAppsEnvironmentName: appsEnv.outputs.name
     containerRegistryName: registry.outputs.name
     exists: webAppExists
-    apiBaseUrl: !empty(webApiBaseUrl) ? webApiBaseUrl : apiTodo.outputs.uri
+    apiBaseUrl: !empty(webApiBaseUrl) ? webApiBaseUrl : apiTodo.outputs.SERVICE_WEB_URI
+    port: portClient
   }
 }
 
+// RESOURCE GROUP
+output RESOURCE_GROUP_NAME string = rg.name
+output INFRA_APP_VERSION string = infraAppVersion
+
 // CLIENT FRONTEND
-output CLIENT_TODO_NAME string = clientTodo.outputs.CLIENT_WEB_NAME
-output CLIENT_TODO_ENDPOINT string = clientTodo.outputs.CLIENT_WEB_URI
-output VITE_API_URL string = apiTodo.outputs.uri
+output CLIENT_TODO_NAME string = clientTodo.outputs.SERVICE_WEB_NAME
+output CLIENT_TODO_ENDPOINT string = clientTodo.outputs.SERVICE_WEB_URI
+output VITE_API_URL string = apiTodo.outputs.SERVICE_WEB_URI
+output CLIENT_IMAGE_NAME string = clientTodo.outputs.SERVICE_WEB_IMAGE_NAME
 
 // API BACKEND
-output API_TODO_ENDPOINT string = apiTodo.outputs.uri
+output API_TODO_ENDPOINT string = apiTodo.outputs.SERVICE_WEB_URI
+output API_IMAGE_NAME string = apiTodo.outputs.SERVICE_WEB_IMAGE_NAME
 
 // APPS ENVIRONMENT
 output APPS_DEFAULT_DOMAIN string = appsEnv.outputs.domain
@@ -148,9 +194,14 @@ output AZURE_CONTAINER_REGISTRY_ENDPOINT string = registry.outputs.loginServer
 // KEY VAULT
 output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
 output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
+output AZURE_KEY_VAULT_COSMOSDB_CONNECTION_STRING_KEY_NAME string = cosmos.outputs.connectionStringKey
 
 // MONITORING
 output AZURE_MONITORING_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY string = monitoring.outputs.instrumentationKey
 output AZURE_MONITORING_APPLICATION_INSIGHTS_CONNECTION_STRING string = monitoring.outputs.applicationInsightsConnectionString
 output DEPLOYMENT_NAME string = deploymentName
 output DEPLOYMENT_DATETIME_UTC string = deploymentDateTimeUtc
+
+// DATABASE
+output AZURE_COSMOSDB_DATABASE_NAME string = cosmos.outputs.databaseName
+output AZURE_COSMOSDB_ENDPOINT string = cosmos.outputs.endpoint

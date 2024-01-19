@@ -1,0 +1,108 @@
+name: E2E
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - '*'
+    paths:
+      - 'api-todo/**'
+      # - 'client-todo/**'
+  pull_request:
+    branches: 
+      - 'main'
+    paths:
+      - 'api-todo/**'
+      # - 'client-todo/**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+
+      # Start environment
+      - uses: actions/checkout@v2
+
+      - name: E2E-Start Mongoose database
+        run: docker-compose -f "docker-compose.yml" up -d mongodb
+
+      - name: E2E-Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: E2E-Install jq
+        run: |
+          sudo apt-get install jq
+
+      # App versions
+      - name: E2E API version
+        run: |
+          cat api-todo/package.json | jq .version
+
+      - name: E2E Client version
+        run: |
+          cat client-todo/package.json | jq .version
+
+      - name: E2E Playwright API test version
+        run: |
+          cat api-todo-test/package.json | jq .version
+
+      # Start apps
+      - name: E2E Start API uses MongoDB
+        run: |
+          cd api-todo
+          npm install
+          npm run lint:fix
+          npm run build
+          npm run start &
+        env: # Add your environment variables here
+          DATABASE_URI: mongodb://mongo:MongoPass@localhost:27017/
+          DATABASE_USE_MONGODB: true
+          NODE_ENV: development
+
+      # https://github.com/vitejs/vite/issues/5801
+      - name: E2E Start Client
+        run: |
+          cd client-todo
+          npm install
+          npm run lint
+          npm run build
+          npx http-server dist -p 3005 &
+        env: # Add your environment variables here
+          VITE_API_URL: http://localhost:3000
+          NODE_ENV: development
+
+
+      # Ping API
+      - name: E2E Ping API
+        run: |
+          curl http://localhost:3000/todos --verbose
+
+      # Ping Client
+      - name: E2E Ping Client
+        run: |
+          curl http://localhost:3005 --verbose
+
+
+
+      # Run end to end tests
+      - name: E2E Run Playwright tests
+        run: |
+          cd api-todo-test
+          npm install
+          npm run test
+        env: # Add your environment variables here
+          API_TODO_ENDPOINT: http://localhost:3000
+          NODE_ENV: development
+
+      # Stop environment
+      - name: E2E-Stop containers
+        if: always()
+        run: docker-compose -f "docker-compose.yml" down

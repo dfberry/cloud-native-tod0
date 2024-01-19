@@ -1,0 +1,94 @@
+name: API
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "*"
+    paths:
+      - "api/**"
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "api-todo/**"
+
+jobs:
+  test-with-inmem:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: API-Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: API-Install jq
+        run: |
+          sudo apt-get install jq
+
+      - name: API-todo version
+        run: |
+          cat api-todo/package.json | jq .version
+
+      - name: API-Start API
+        run: |
+          cd api-todo
+          npm ci
+          npm run lint:fix
+          npm run build
+          npm run test
+        env: # Add your environment variables here
+          DATABASE_USE_MONGODB: false
+          NODE_ENV: development
+
+      - name: API-Stop containers
+        if: always()
+        run: docker-compose -f "docker-compose.yml" down
+  test-with-mongodb:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: API-Start containers
+        run: docker-compose -f "docker-compose.yml" up -d mongodb
+
+      - name: API-Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: API-Install jq
+        run: |
+          sudo apt-get install jq
+
+      - name: API-todo version
+        run: |
+          cat api-todo/package.json | jq .version
+
+      - name: API-Start API
+        run: |
+          cd api-todo
+          npm ci
+          npm run lint:fix
+          npm run build
+          npm run test
+        env: # Add your environment variables here
+          DATABASE_URI: mongodb://mongo:MongoPass@localhost:27017/
+          DATABASE_USE_MONGODB: true
+          NODE_ENV: development
+
+      - name: API-Stop containers
+        if: always()
+        run: docker-compose -f "docker-compose.yml" down

@@ -16,6 +16,22 @@
       "internalConsoleOptions": "neverOpen",
       "type": "node"
     },
+
+
+    {
+      "name": "API tsnode",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
+
+      "args": ["src/start.ts", "--example", "hello"],
+      
+      "cwd": "${workspaceRoot}/api-todo",
+      "internalConsoleOptions": "openOnSessionStart",
+      "skipFiles": ["<node_internals>/**", "node_modules/**"]
+    },
+
     {
       "type": "node",
       "request": "launch",

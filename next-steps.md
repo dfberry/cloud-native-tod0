@@ -67,7 +67,7 @@ To produce and run the docker image locally:
 
 #### Exposed port
 
-Oryx will automatically set `PORT` to a default value of `80`. Additionally, it will auto-configure supported web servers such as `gunicorn` and `ASP .NET Core` to listen to the target `PORT`. If your application already listens to the port specified by the `PORT` variable, the application will work out-of-the-box. Otherwise, you may need to perform one of the steps below:
+Oryx will automatically set `PORT` to a default value of `3005`. Additionally, it will auto-configure supported web servers such as `gunicorn` and `ASP .NET Core` to listen to the target `PORT`. If your application already listens to the port specified by the `PORT` variable, the application will work out-of-the-box. Otherwise, you may need to perform one of the steps below:
 
 1. Update your application code or configuration to listen to the port specified by the `PORT` variable
 1. (Alternatively) Search for `targetPort` in a .bicep file under the `infra/app` folder, and update the variable to match the port used by the application.

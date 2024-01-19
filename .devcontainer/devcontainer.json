@@ -10,12 +10,14 @@
 		"ghcr.io/devcontainers/features/azure-cli:1": {},
 		"ghcr.io/azure/azure-dev/azd:0": {},
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
-		"ghcr.io/devcontainers/features/powershell:1": {}
+		"ghcr.io/devcontainers/features/powershell:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {}
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		3000,
-		80
+		3005,
+		27017
 	],
 	// add labels to ports
 	"portsAttributes": {
@@ -23,8 +25,12 @@
 			"label": "API",
 			"onAutoForward": "notify"
 		},
-		"80": {
+		"3005": {
 			"label": "CLIENT",
+			"onAutoForward": "notify"
+		},
+		"27017": {
+			"label": "MONGO",
 			"onAutoForward": "notify"
 		}
 	},
@@ -39,7 +45,12 @@
 				"GitHub.copilot-chat",
 				"ms-playwright.playwright",
 				"ms-azuretools.vscode-bicep",
-				"ms-vscode.powershell"
+				"ms-vscode.powershell",
+				"ms-azuretools.vscode-docker",
+				"mongodb.mongodb-vscode",
+				"esbenp.prettier-vscode",
+				"github.vscode-github-actions",
+				"me-dutour-mathieu.vscode-github-actions"
 			]
 		}
 	},

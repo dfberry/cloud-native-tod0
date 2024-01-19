@@ -1,5 +1,13 @@
 # Todo Monorepo
 
+## 3.0.0
+
+* Add MongoDB via Azure Cosmos DB for Mongo API
+    * Add infra
+    * Add local MongoDB
+    * Add API code
+    * Change Client code
+
 ## 2.1.0
 
 * Add client-todo infrastructure
