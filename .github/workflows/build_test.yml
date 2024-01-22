@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Start containers
-        run: docker-compose -f "docker-compose.yml" up mongodb
+        run: docker-compose -f "docker-compose.yml" up -d mongodb
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
