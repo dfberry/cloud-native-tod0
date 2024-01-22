@@ -1,3 +1,14 @@
+# 1.0.5
+
+* Add database
+* Add container to docker-compose file
+* Add `/data` layer
+* Update APIs
+* Updated openapi - but didn't test
+* Add supertest, curl, and mocked tests at a variety of layers
+* Add CRUD generic class
+* Kept in-mem db and updated that layer too
+
 # 1.0.4
 
 * Fix log location

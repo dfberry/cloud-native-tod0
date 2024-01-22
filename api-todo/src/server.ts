@@ -1,60 +1,63 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response /*, NextFunction*/ } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import path from 'path';
 import { StatusCodes } from 'http-status-codes';
-import todoRouter from './routes/todo';
-import { logger } from './logger';
+import todoRouter from './routes/todo/todo';
+import todosRouter from './routes/todo/todos';
 import { sendResponse, logRequest } from './middleware/response';
 import { setVersionHeader } from './middleware/version';
 import { version } from '../package.json';
+import { handle404, handleError } from './routes/handlers/global.handlers';
+import DatabaseService from './data/service';
+import { getConfig } from './config';
+import { logger } from './logger';
+// interface HttpError extends Error {
+//   status?: number;
+// }
 
-interface HttpError extends Error {
-  status?: number;
-}
+const configureApp = async () => {
+  const CONFIG = getConfig(logger);
+  const { db } = await DatabaseService(CONFIG, logger);
 
-const swaggerDocument = YAML.load(path.resolve(__dirname, './openapi.yaml'));
+  const swaggerDocument = YAML.load(path.resolve(__dirname, './openapi.yaml'));
 
-const app = express();
-app.use(bodyParser.json());
-app.use(cors());
+  const app = express();
+  app.locals.db = db;
+  app.use(bodyParser.json());
+  app.use(cors());
 
-// add preroute handlers
-app.use(logRequest);
-app.use(setVersionHeader);
+  // add preroute handlers
+  app.use(logRequest);
+  app.use(setVersionHeader);
 
-// add swagger docsLearn
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  // add swagger docsLearn
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// import and use todo route
-app.use('/todo', todoRouter);
-app.use('/', (req: Request, res: Response) => {
-  sendResponse(req, res, StatusCodes.ACCEPTED, {
-    data: `Hello World! ${version} `,
-  });
-  return;
-});
+  // Route that operates on a single todo
+  app.use('/todo', todoRouter);
 
-// Catch 404 and forward to error handler
-app.use((req: Request, res: Response, next: NextFunction) => {
-  const err: HttpError = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+  // Route that operates on multiple todos
+  app.use('/todos', todosRouter);
 
-// Error handler
-app.use((err: HttpError, req: Request, res: Response) => {
-  // Set locals, only providing error in development
-  logger.error(`${req.method} ${req.path} error ${JSON.stringify(err)}`);
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  const rootHandler = (req: Request, res: Response) => {
+    sendResponse(req, res, StatusCodes.ACCEPTED, {
+      data: `Hello World! ${version} `,
+    });
+    return;
+  };
 
-  // Render the error page
-  logger.error(`Server error hande - ${err.message}`);
-  sendResponse(req, res, err.status || 500, { error: err.message });
-  return;
-});
+  app.use('/', rootHandler);
 
-export default app;
+  // Catch 404 and forward to error handler
+  app.use(handle404);
+
+  // Error handler
+  app.use(handleError);
+
+  return { app, CONFIG, connection: db.connection };
+};
+
+export default configureApp;

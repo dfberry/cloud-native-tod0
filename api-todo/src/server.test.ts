@@ -1,156 +1,162 @@
 import request from 'supertest';
-import { StatusCodes } from 'http-status-codes';
-import { initialData, setTodos } from './data/todo';
+import configureApp from './server'; // Import your Express app
+import 'dotenv/config';
 
-import app from './server';
+//write a function to test the shape of a Todo
+const testTodoShape = (todo) => {
+  const keys = Object.keys(todo);
 
-const regexTodoNotFound = /Todo not found/;
-const INVALID_TODO_ERROR = { error: 'Invalid todo' };
-const INVALID_ID_ERROR = { error: 'Invalid id' };
-const TODO_NOT_FOUND_ERROR = {
-  error: expect.stringMatching(regexTodoNotFound),
+  expect(keys.length).toEqual(5);
+  expect(keys).toContainEqual('id');
+  expect(keys).toContainEqual('title');
+  expect(keys).toContainEqual('description');
+  expect(keys).toContainEqual('createdAt');
+  expect(keys).toContainEqual('updatedAt');
+};
+const testTodoArrayShape = (todos) => {
+  expect(todos).toBeInstanceOf(Array);
+  todos.forEach(testTodoShape);
 };
 
-describe('todo', () => {
-  describe('GET /todo', () => {
-    beforeEach(() => {
-      setTodos(initialData);
-    });
+const testAdd = (addResponse) => {
+  // operational error
+  expect(addResponse.error).toEqual(false);
 
-    it('responds with json', async () => {
-      const response = await request(app).get('/todo');
-      expect(response.statusCode).toBe(StatusCodes.OK);
-      expect(response.body).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            id: expect.any(Number),
-            title: expect.any(String),
-          }),
-        ])
-      );
-    });
-    it('responds with 404 when GET /id', async () => {
-      const response = await request(app).get('/todo/1');
-      expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
-    });
-  });
+  const { status, body } = addResponse;
+  expect(status).toEqual(201);
+  const { data, error } = body;
+  expect(error).toEqual(null);
+  expect(data).not.toEqual(null);
+  testTodoShape(data);
+};
 
-  describe('POST /todo', () => {
-    it('responds with the posted todo', async () => {
-      const todo = { title: 'Test Todo' };
-      const response = await request(app).post('/todo').send(todo);
-      expect(response.statusCode).toBe(StatusCodes.CREATED);
-      expect(response.body).toEqual(
-        expect.objectContaining({
-          id: expect.any(Number),
-          title: 'Test Todo',
-        })
-      );
-    });
-    it('responds with the error', async () => {
-      const todo = { title: '' };
-      const response = await request(app).post('/todo').send(todo);
-      expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
-      expect(response.body).toEqual(
-        expect.objectContaining(INVALID_TODO_ERROR)
-      );
-    });
-    it('responds with the error when title has over 1000k', async () => {
-      const todo = { title: 'a'.repeat(1001) };
-      const response = await request(app).post('/todo').send(todo);
-      expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
-      expect(response.body).toEqual(
-        expect.objectContaining(INVALID_TODO_ERROR)
-      );
-    });
-    it('responds with the error when Todo has extra properties', async () => {
-      setTodos(initialData);
-      const todo = { title: 'hello', id: 5, note: 'help me' };
-      const response = await request(app).post('/todo').send(todo);
-      expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
-      expect(response.body).toEqual(
-        expect.objectContaining(INVALID_TODO_ERROR)
-      );
-    });
-  });
+const testUpdate = (updateResponse) => {
+  // operational error
+  expect(updateResponse.error).toEqual(false);
 
-  describe('PUT /todo/:id', () => {
-    beforeEach(() => {
-      setTodos(initialData);
-    });
+  const { status, body } = updateResponse;
+  expect(status).toEqual(202);
+  const { data, error } = body;
+  expect(error).toEqual(null);
+  expect(data).not.toEqual(null);
+  testTodoShape(data);
+};
 
-    it('updates the todo with the given id', async () => {
-      setTodos(initialData);
+const testDelete = (deleteResponse) => {
+  // operational error
+  expect(deleteResponse.error).toEqual(false);
 
-      // id in this case is ignored
-      const todo = { id: 1, title: 'Updated Todo' };
+  const { status, body } = deleteResponse;
+  expect(status).toEqual(202);
+  const { data, error } = body;
+  expect(error).toEqual(null);
+  expect(data).not.toEqual(null);
+  testTodoShape(data);
+};
 
-      const response = await request(app).put('/todo/1').send(todo);
-      expect(response.statusCode).toBe(StatusCodes.ACCEPTED);
-      expect(response.body).toEqual(
-        expect.objectContaining({
-          // partial match of title string
-          title: 'Updated Todo',
-        })
-      );
-    });
-    it('responds with the error when malformed Todo', async () => {
-      setTodos(initialData);
-      const todo = { title: '', id: 'dog' };
-      const response = await request(app).put('/todo/2').send(todo);
-      expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
-      expect(response.body).toEqual(
-        expect.objectContaining(INVALID_TODO_ERROR)
-      );
-    });
-    it('responds with the error when id not found', async () => {
-      setTodos(initialData);
-      const todo = { title: 'This is a test', id: 2 };
-      const response = await request(app).put('/todo/100').send(todo);
-      expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
-      expect(response.body).toEqual(
-        expect.objectContaining(TODO_NOT_FOUND_ERROR)
-      );
-    });
-    it('responds with the error when Todo has extra properties', async () => {
-      setTodos(initialData);
-      const todo = { title: '', id: 100, note: 'help me' };
-      const response = await request(app).put('/todo/2').send(todo);
-      expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
-      expect(response.body).toEqual(
-        expect.objectContaining(INVALID_TODO_ERROR)
-      );
-    });
-    it('responds with the error when title has over 1000k', async () => {
-      const todo = { title: 'a'.repeat(1001) };
-      const response = await request(app).put('/todo/2').send(todo);
-      expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
-      expect(response.body).toEqual(
-        expect.objectContaining(INVALID_TODO_ERROR)
-      );
-    });
-  });
-  describe('DELETE /todo/:id', () => {
-    beforeEach(() => {
-      setTodos(initialData);
-    });
+const testBatch = (batchResponse) => {
+  // operational error
+  expect(batchResponse.error).toEqual(false);
 
-    it('deletes the todo with the given id', async () => {
-      const response = await request(app).delete('/todo/1');
-      expect(response.statusCode).toBe(StatusCodes.ACCEPTED);
-      expect(response.body).toEqual(expect.objectContaining({ id: 1 }));
-    });
-    it('responds with the error when malformed id', async () => {
-      const response = await request(app).delete('/todo/dog');
-      expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
-      expect(response.body).toEqual(expect.objectContaining(INVALID_ID_ERROR));
-    });
-    it('responds with the error when id not found', async () => {
-      const response = await request(app).delete('/todo/100');
-      expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
-      expect(response.body).toEqual(
-        expect.objectContaining(TODO_NOT_FOUND_ERROR)
-      );
-    });
-  });
+  const { status, body } = batchResponse;
+  expect(status).toEqual(201);
+  const { data, error } = body;
+  expect(error).toEqual(null);
+  expect(data).not.toEqual(null);
+  testTodoArrayShape(data);
+};
+
+const testGetAll = (getAllResponse, dataLength) => {
+  // operational error
+  expect(getAllResponse.error).toEqual(false);
+
+  const { status, body } = getAllResponse;
+  expect(status).toEqual(200);
+  const { data, error } = body;
+  expect(error).toEqual(null);
+  expect(data).not.toEqual(null);
+  expect(data.length).toEqual(dataLength);
+  testTodoArrayShape(data);
+};
+
+const testDeleteAll = (deleteAllResponse, dataLength) => {
+  // operational error
+  expect(deleteAllResponse.error).toEqual(false);
+
+  const { status, body } = deleteAllResponse;
+  expect(status).toEqual(202);
+  const { data, error } = body;
+  expect(error).toEqual(null);
+  expect(data).not.toEqual(null);
+  expect(data.deletedCount).toEqual(dataLength);
+};
+
+describe('Todo API against running MongoDB', () => {
+  it('test all todo routes', async () => {
+    process.env.NODE_ENV = 'test';
+
+    const { app, connection } = await configureApp();
+    await request(app).delete('/todos');
+
+    // Add one
+    const addOneResponse = await request(app)
+      .post('/todo')
+      .send({
+        todo: {
+          title: 'Sa1 - ' + Date.now(),
+          description: 'Sa2 - ' + Date.now(),
+        },
+      });
+    testAdd(addOneResponse);
+
+    // // Update one
+    const updateOneResponse = await request(app)
+      .put('/todo/' + addOneResponse.body.data.id)
+      .send({
+        todo: {
+          title: 'Su1 - ' + Date.now(),
+          description: 'su2 ' + Date.now(),
+        },
+      });
+    testUpdate(updateOneResponse);
+
+    // // Delete `Sa1`, `Su1` should still be there
+    const deletedOneResponse = await request(app).delete(
+      '/todo/' + addOneResponse.body.data.id
+    );
+    testDelete(deletedOneResponse);
+
+    // Batch all - after this call 3 items should be in the database
+    // 3 B
+    const addThreeBody = {
+      todos: [
+        {
+          title: 'B1a ' + Date.now(),
+          description: 'B1b' + Date.now(),
+        },
+        {
+          title: 'B2a' + Date.now(),
+          description: 'B2b' + Date.now(),
+        },
+        {
+          title: 'B3a' + Date.now(),
+          description: 'B3b' + Date.now(),
+        },
+      ],
+    };
+    const batchResponse = await request(app).patch('/todos').send(addThreeBody);
+    testBatch(batchResponse);
+
+    // // Get All - should return four items
+    const getAllResponse = await request(app).get('/todos');
+    testGetAll(getAllResponse, 3);
+
+    // Delete All
+    const deleteAllResponse = await request(app).delete('/todos');
+    testDeleteAll(deleteAllResponse, 3);
+
+    if (connection) {
+      connection.close();
+    }
+  }, 30000);
 });

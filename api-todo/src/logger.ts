@@ -4,30 +4,42 @@ let logger: Logger;
 
 const logPath = path.join(__dirname, process.env.LOG_PATH || '../logs');
 
-if (process.env.NODE_ENV !== 'test') {
-  logger = winston.createLogger({
-    level: process.env.LOGLEVEL || 'debug',
-    format: winston.format.json(),
-    defaultMeta: { service: 'todo-service' },
-    transports: [
-      new winston.transports.File({ filename: logPath + '/combined.log' }),
-    ],
-  });
-  if (process.env.NODE_ENV !== 'production') {
-    logger.add(
-      new winston.transports.Console({
-        format: winston.format.simple(),
-      })
-    );
-  }
-} else {
-  const mockLogger = {
-    info: jest.fn(),
-    error: jest.fn(),
-    warn: jest.fn(),
-    debug: jest.fn(),
-  };
-  logger = mockLogger as unknown as Logger;
+const winstonSimple = {
+  format: winston.format.simple(),
+};
+
+const winstonComplete = {
+  level: process.env.LOGLEVEL || 'debug',
+  format: winston.format.json(),
+  defaultMeta: { service: 'todo-service' },
+  transports: [
+    new winston.transports.File({ filename: logPath + '/combined.log' }),
+  ],
+};
+
+const mockLogger = {
+  info: jest.fn(),
+  error: jest.fn(),
+  warn: jest.fn(),
+  debug: console.log,
+};
+
+const env = process.env.NODE_ENV || 'development';
+
+switch (env) {
+  case 'development':
+    logger = winston.createLogger(winstonComplete);
+    logger.add(new winston.transports.Console(winstonSimple));
+    break;
+  case 'production':
+    logger = winston.createLogger(winstonComplete);
+    break;
+  case 'test':
+  case 'testwithlogs':
+    logger = mockLogger as unknown as Logger;
+    break;
+  default:
+    logger = mockLogger as unknown as Logger;
 }
 
 export { logger };

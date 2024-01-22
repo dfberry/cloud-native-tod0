@@ -8,6 +8,8 @@ export function sendResponse(req, res, status, body) {
     req.path
   } ${status}: ${JSON.stringify(body)}`;
 
+  const { data, error } = body;
+
   if (status >= 500) {
     logger.error(message);
   } else if (status >= 400) {
@@ -16,5 +18,10 @@ export function sendResponse(req, res, status, body) {
     logger.info(message);
   }
 
-  res.status(status).json(body);
+  const returnBody = {
+    data: !data ? null : data,
+    error: !error ? null : error,
+  };
+
+  res.status(status).json(returnBody);
 }

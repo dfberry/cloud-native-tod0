@@ -46,7 +46,8 @@
 				"ms-azuretools.vscode-bicep",
 				"ms-vscode.powershell",
 				"ms-azuretools.vscode-docker",
-				"mongodb.mongodb-vscode"
+				"mongodb.mongodb-vscode",
+				"esbenp.prettier-vscode"
 			]
 		}
 	},

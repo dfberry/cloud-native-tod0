@@ -1,5 +1,4 @@
-import app from './server';
-
+import configureApp from './server';
 type RejectionReason = Error | string | null | undefined;
 
 const port: number = !isNaN(Number(process.env.PORT))
@@ -21,6 +20,12 @@ process.on(
   }
 );
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+configureApp()
+  .then(({ app }) => {
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Error while configuring the app:', error);
+  });
