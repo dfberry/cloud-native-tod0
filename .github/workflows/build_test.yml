@@ -33,6 +33,9 @@ jobs:
           npm ci
           npm run lint
           npm run test
+        env: # Add your environment variables here
+          DATABASE_URI: mongodb://mongo:MongoPass@localhost:27017/
+          DATABASE_USE_MONGODB: true
 
       - name: Stop containers
         if: always()
