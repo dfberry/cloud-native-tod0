@@ -5,9 +5,13 @@ on:
   push:
     branches: 
       - '*'
+    paths:
+      - 'client-todo/**'
   pull_request:
     branches: 
       - 'main'
+    paths:
+      - 'client-todo/**'
 
 jobs:
   build:
