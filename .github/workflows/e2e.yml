@@ -78,6 +78,19 @@ jobs:
           VITE_API_URL: http://localhost:3000
           NODE_ENV: development
 
+
+      # Ping API
+      - name: E2E Ping API
+        run: |
+          curl http://localhost:3000/todos --verbose
+
+      # Ping Client
+      - name: E2E Ping Client
+        run: |
+          curl http://localhost:80 --verbose
+
+
+
       # Run end to end tests
       - name: E2E Run Playwright tests
         run: |
