@@ -85,7 +85,7 @@ jobs:
         run: |
           curl http://localhost:3000/todos --verbose
 
-      Ping Client
+      # Ping Client
       - name: E2E Ping Client
         run: |
           curl http://localhost:3005 --verbose
