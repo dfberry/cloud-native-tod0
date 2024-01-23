@@ -61,7 +61,7 @@ jobs:
           npm install
           npm run lint:fix
           npm run build
-          npm run start
+          npm run start &
         env: # Add your environment variables here
           DATABASE_URI: mongodb://mongo:MongoPass@localhost:27017/
           DATABASE_USE_MONGODB: true
@@ -73,7 +73,7 @@ jobs:
           npm install
           npm run lint:fix
           npm run build
-          npm run dev
+          npm run dev &
         env: # Add your environment variables here
           VITE_API_URL: http://localhost:3000
           NODE_ENV: development
