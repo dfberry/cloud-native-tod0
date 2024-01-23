@@ -94,17 +94,19 @@ class TodoInMemoryService implements IDataClass<Todo> {
     }
 
     const index: number = this.#todos.findIndex((todo) => todo.id === id);
+    const item = this.#todos[index];
 
     if (index > -1) {
       this.#todos.splice(index, 1);
-      return Promise.resolve({ data: null, error: null });
+      return Promise.resolve({ data: item, error: null });
     } else {
       return Promise.resolve({ data: null, error: toError('id not found') });
     }
   }
   async deleteAll(): Promise<CrudServiceResponse<Todo[]>> {
+    const length = this.#todos.length;
     this.#todos = [];
-    return Promise.resolve({ data: [], error: null });
+    return Promise.resolve({ data: { deletedCount: length }, error: null });
   }
 }
 export { TodoValidation, TodoInMemoryService };

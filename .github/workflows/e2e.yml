@@ -42,23 +42,23 @@ jobs:
           sudo apt-get install jq
 
       # App versions
-      - name: E2E-API-todo version
+      - name: E2E API version
         run: |
           cat api-todo/package.json | jq .version
 
-      - name: E2E-Client-todo version
+      - name: E2E Client version
         run: |
           cat client-todo/package.json | jq .version
 
-      - name: E2E-Playwright API test version
+      - name: E2E Playwright API test version
         run: |
           cat api-todo-test/package.json | jq .version
 
       # Start apps
-      - name: E2E-Start API 
+      - name: E2E Start API uses MongoDB
         run: |
           cd api-todo
-          npm ci
+          npm install
           npm run lint:fix
           npm run build
           npm run start
@@ -67,10 +67,10 @@ jobs:
           DATABASE_USE_MONGODB: true
           NODE_ENV: development
 
-      - name: E2E-Start Client
+      - name: E2E Start Client
         run: |
           cd client-todo
-          npm ci
+          npm install
           npm run lint:fix
           npm run build
           npm run dev
@@ -79,7 +79,7 @@ jobs:
           NODE_ENV: development
 
       # Run end to end tests
-      - name: E2E-Run API Playwright tests
+      - name: E2E Run Playwright tests
         run: |
           cd api-todo-test
           npm install
