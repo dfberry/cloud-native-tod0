@@ -1,21 +1,57 @@
-name: API 
+name: API
 
 on:
   workflow_dispatch:
   push:
-    branches: 
-      - '*'
+    branches:
+      - "*"
     paths:
-      - 'api/**'
+      - "api/**"
   pull_request:
-    branches: 
-      - 'main'
+    branches:
+      - "main"
     paths:
-      - 'api-todo/**'
+      - "api-todo/**"
 
 jobs:
-  build:
+  test-with-inmem:
+    runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: API-Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: API-Install jq
+        run: |
+          sudo apt-get install jq
+
+      - name: API-todo version
+        run: |
+          cat api-todo/package.json | jq .version
+
+      - name: API-Start API
+        run: |
+          cd api-todo
+          npm ci
+          npm run lint:fix
+          npm run build
+          npm run test
+        env: # Add your environment variables here
+          DATABASE_USE_MONGODB: false
+          NODE_ENV: development
+
+      - name: API-Stop containers
+        if: always()
+        run: docker-compose -f "docker-compose.yml" down
+  test-with-mongodb:
     runs-on: ubuntu-latest
 
     strategy:
@@ -41,7 +77,7 @@ jobs:
         run: |
           cat api-todo/package.json | jq .version
 
-      - name: API-Start API 
+      - name: API-Start API
         run: |
           cd api-todo
           npm ci
