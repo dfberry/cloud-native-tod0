@@ -56,7 +56,7 @@ jobs:
 
       # Start apps
       - name: Start API 
-      - run: |
+        run: |
           cd api-todo
           npm ci
           npm run lint:fix
@@ -68,7 +68,7 @@ jobs:
           NODE_ENV: development
 
       - name: Start Client
-      - run: |
+        run: |
           cd client-todo
           npm ci
           npm run lint:fix
