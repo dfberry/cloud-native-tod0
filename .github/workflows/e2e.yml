@@ -74,7 +74,7 @@ jobs:
           npm install
           npm run lint
           npm run build
-          npm run start:workflow &
+          npx http-server dist -p 80 &
         env: # Add your environment variables here
           VITE_API_URL: http://localhost:3000
           NODE_ENV: development
