@@ -12,7 +12,8 @@ test(`should get all todos from ${baseURL}/todos`, async ({ request }) => {
     const response = await request.get('/todos');
     expect(response.status()).toBe(200);
 
-    const todos = await response.json();
-    console.log('todos', todos);
-    expect(todos.length).toBe(3);
+    const {data, error } = await response.json();
+
+    expect(data.length).toBe(0);
+    expect(error).toBeNull();
 });
