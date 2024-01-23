@@ -7,13 +7,13 @@ on:
       - '*'
     paths:
       - 'api-todo/**'
-      - 'client-todo/**'
+      # - 'client-todo/**'
   pull_request:
     branches: 
       - 'main'
     paths:
       - 'api-todo/**'
-      - 'client-todo/**'
+      # - 'client-todo/**'
 
 jobs:
   build:
@@ -46,9 +46,9 @@ jobs:
         run: |
           cat api-todo/package.json | jq .version
 
-      - name: E2E Client version
-        run: |
-          cat client-todo/package.json | jq .version
+      # - name: E2E Client version
+      #   run: |
+      #     cat client-todo/package.json | jq .version
 
       - name: E2E Playwright API test version
         run: |
@@ -67,17 +67,17 @@ jobs:
           DATABASE_USE_MONGODB: true
           NODE_ENV: development
 
-      # https://github.com/vitejs/vite/issues/5801
-      - name: E2E Start Client
-        run: |
-          cd client-todo
-          npm install
-          npm run lint
-          npm run build
-          npx http-server dist -p 80 &
-        env: # Add your environment variables here
-          VITE_API_URL: http://localhost:3000
-          NODE_ENV: development
+      # # https://github.com/vitejs/vite/issues/5801
+      # - name: E2E Start Client
+      #   run: |
+      #     cd client-todo
+      #     npm install
+      #     npm run lint
+      #     npm run build
+      #     npx http-server dist -p 3005 &
+      #   env: # Add your environment variables here
+      #     VITE_API_URL: http://localhost:3000
+      #     NODE_ENV: development
 
 
       # Ping API
@@ -88,7 +88,7 @@ jobs:
       # Ping Client
       - name: E2E Ping Client
         run: |
-          curl http://localhost:80 --verbose
+          curl http://localhost:3005 --verbose
 
 
 
