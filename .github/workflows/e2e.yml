@@ -1,4 +1,4 @@
-name: e2e
+name: E2E
 
 on:
   workflow_dispatch:
@@ -29,33 +29,33 @@ jobs:
       # Start environment
       - uses: actions/checkout@v2
 
-      - name: Start Mongoose database
+      - name: E2E-Start Mongoose database
         run: docker-compose -f "docker-compose.yml" up -d mongodb
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: E2E-Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install jq
+      - name: E2E-Install jq
         run: |
           sudo apt-get install jq
 
       # App versions
-      - name: API-todo version
+      - name: E2E-API-todo version
         run: |
           cat api-todo/package.json | jq .version
 
-      - name: Client-todo version
+      - name: E2E-Client-todo version
         run: |
           cat client-todo/package.json | jq .version
 
-      - name: Playwright API test version
+      - name: E2E-Playwright API test version
         run: |
           cat api-todo-test/package.json | jq .version
 
       # Start apps
-      - name: Start API 
+      - name: E2E-Start API 
         run: |
           cd api-todo
           npm ci
@@ -67,7 +67,7 @@ jobs:
           DATABASE_USE_MONGODB: true
           NODE_ENV: development
 
-      - name: Start Client
+      - name: E2E-Start Client
         run: |
           cd client-todo
           npm ci
@@ -79,7 +79,7 @@ jobs:
           NODE_ENV: development
 
       # Run end to end tests
-      - name: Run API Playwright tests
+      - name: E2E-Run API Playwright tests
         run: |
           cd api-todo-test
           npm install
@@ -89,6 +89,6 @@ jobs:
           NODE_ENV: development
 
       # Stop environment
-      - name: Stop containers
+      - name: E2E-Stop containers
         if: always()
         run: docker-compose -f "docker-compose.yml" down

@@ -1,4 +1,4 @@
-name: API Build/Test
+name: API 
 
 on:
   workflow_dispatch:
@@ -25,29 +25,34 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Start containers
+      - name: API-Start containers
         run: docker-compose -f "docker-compose.yml" up -d mongodb
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: API-Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: API-todo version
+      - name: API-Install jq
         run: |
           sudo apt-get install jq
+
+      - name: API-todo version
+        run: |
           cat api-todo/package.json | jq .version
 
-      - name: Build and run tests
+      - name: API-Start API 
         run: |
           cd api-todo
           npm ci
-          npm run lint
+          npm run lint:fix
+          npm run build
           npm run test
         env: # Add your environment variables here
           DATABASE_URI: mongodb://mongo:MongoPass@localhost:27017/
           DATABASE_USE_MONGODB: true
+          NODE_ENV: development
 
-      - name: Stop containers
+      - name: API-Stop containers
         if: always()
         run: docker-compose -f "docker-compose.yml" down
