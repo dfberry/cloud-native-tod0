@@ -12,9 +12,11 @@ export const getConfig = (logger) => {
       : false;
 
   logger.debug(`CONFIG: Using ${isMongoDB ? 'MongoDB' : 'in-memory'} database`);
+  console.log(`CONFIG: Using ${isMongoDB ? 'MongoDB' : 'in-memory'} database`);
 
   const dbUri = isMongoDB ? DATABASE_URI || DEFAULT_MONGO_DB : null;
   logger.debug(`CONFIG: dbUri: ${dbUri}`);
+  console.log(`CONFIG: dbUri: ${dbUri}`);
 
   const appConfig = {
     database: {
@@ -25,6 +27,8 @@ export const getConfig = (logger) => {
       },
     },
   };
+
+  console.log('CONFIG: appConfig: ', appConfig);
 
   return appConfig;
 };

@@ -18,10 +18,11 @@ const winstonComplete = {
 };
 
 const mockLogger = {
-  info: jest.fn(),
-  error: jest.fn(),
-  warn: jest.fn(),
-  debug: console.log,
+  info: () => {},
+  error: () => {},
+  warn: () => {},
+  debug: (x) => console.log(x),
+  verbose: (x) => console.log(x),
 };
 
 const env = process.env.NODE_ENV || 'development';

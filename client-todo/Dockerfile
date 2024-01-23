@@ -1,3 +1,5 @@
+# Client Dockerfile
+
 FROM node:18-alpine AS build
 
 # make the 'app' folder the current working directory

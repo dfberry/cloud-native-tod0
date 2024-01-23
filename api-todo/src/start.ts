@@ -21,8 +21,9 @@ process.on(
 );
 
 configureApp()
-  .then(({ app }) => {
+  .then(({ app, CONFIG }) => {
     app.listen(port, () => {
+      console.log(`CONFIG: ${JSON.stringify(CONFIG)}`);
       console.log(`Server is running on port ${port}`);
     });
   })

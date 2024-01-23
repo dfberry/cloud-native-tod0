@@ -1,3 +1,5 @@
+# API-TODO Dockerfile
+
 # Use an official Node.js runtime as the base image
 FROM node:18
 
@@ -9,7 +11,6 @@ COPY . .
 
 # Install the application dependencies
 RUN npm install
-RUN npm run build
 
 # If you are building your code for production
 # RUN npm ci --only=production

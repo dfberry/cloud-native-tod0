@@ -32,6 +32,13 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: API-todo version
+        run: |
+          sudo apt-get install jq
+          cat api-todo/package.json | jq .version
+
+
       - run: |
           cd api-todo
           npm ci

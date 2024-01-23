@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test"
+    "test": "npx playwright test",
+    "build": "echo \"Error: no build specified\" && exit 0",
+    "docker:build": "docker build -t playwright-api-test .",
+    "docker:runconnect": "docker run -it -v ${PWD}:/app playwright-api-test /bin/bash"
   },
   "keywords": [],
   "author": "",
