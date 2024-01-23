@@ -29,13 +29,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-
       - name: Client-todo version
         run: |
           sudo apt-get install jq
           cat client-todo/package.json | jq .version
 
-      - run: |
+      - name: Build and run tests
+        run: |
           npm ci --workspace=client-todo
           npm run lint --workspace=client-todo
           npm run build --workspace=client-todo

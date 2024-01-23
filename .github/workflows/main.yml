@@ -16,11 +16,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: BUILD-API Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - run: |
+
+      - name: BUILD-API Build and run tests
+        run: |
           npm ci --workspace=api-todo
           npm run lint --workspace=api-todo
           npm run build --workspace=api-todo
@@ -36,12 +38,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      
+      - name: BUILD-CLIENT Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
 
-      - run: |
+      - name: BUILD-CLIENT Build and run tests
+        run: |
           npm ci --workspace=client-todo
           npm run lint --workspace=client-todo
           npm run build --workspace=client-todo

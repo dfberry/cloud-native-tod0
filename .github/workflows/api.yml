@@ -38,8 +38,8 @@ jobs:
           sudo apt-get install jq
           cat api-todo/package.json | jq .version
 
-
-      - run: |
+      - name: Build and run tests
+        run: |
           cd api-todo
           npm ci
           npm run lint
