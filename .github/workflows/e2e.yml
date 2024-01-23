@@ -67,13 +67,14 @@ jobs:
           DATABASE_USE_MONGODB: true
           NODE_ENV: development
 
+      # https://github.com/vitejs/vite/issues/5801
       - name: E2E Start Client
         run: |
           cd client-todo
           npm install
           npm run lint
           npm run build
-          npm run dev &
+          npm run start:workflow &
         env: # Add your environment variables here
           VITE_API_URL: http://localhost:3000
           NODE_ENV: development
