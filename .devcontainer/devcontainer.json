@@ -48,7 +48,9 @@
 				"ms-vscode.powershell",
 				"ms-azuretools.vscode-docker",
 				"mongodb.mongodb-vscode",
-				"esbenp.prettier-vscode"
+				"esbenp.prettier-vscode",
+				"github.vscode-github-actions",
+				"me-dutour-mathieu.vscode-github-actions"
 			]
 		}
 	},
