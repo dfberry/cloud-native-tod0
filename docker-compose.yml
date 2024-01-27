@@ -6,8 +6,8 @@ services:
       context: ./api-todo
     ports:
       - "3000:3000"
-    # depends_on:
-    #   - mongodb
+    depends_on:
+      - mongodb
     environment:
       - DATABASE_URI=mongodb://mongo:MongoPass@localhost:27017/
       - DATABASE_USE_MONGODB=true
@@ -24,27 +24,27 @@ services:
     depends_on:
       - api-todo
 
-  # mongodb:
-  #   image: mongo:5.0
-  #   restart: always
-  #   environment:
-  #     - MONGO_INITDB_ROOT_USERNAME=mongo
-  #     - MONGO_INITDB_ROOT_PASSWORD=MongoPass
-  #   ports:
-  #     - "27017:27017"
-  #   volumes:
-  #     - ./mongodata:/data/db
+  mongodb:
+    image: mongo:5.0
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=MongoPass
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodata:/data/db
 
-  # test-api-todo:
-  #   build:
-  #     context: ./api-todo-test
-  #   environment:
-  #     - API_TODO_ENDPOINT=http://localhost:3000
-  #   volumes:
-  #     - ./api-todo-test:/app
-  #   depends_on:
-  #     - api-todo
-  #     - mongodb
+  test-api-todo:
+    build:
+      context: ./api-todo-test
+    environment:
+      - API_TODO_ENDPOINT=http://localhost:3000
+    volumes:
+      - ./api-todo-test:/app
+    depends_on:
+      - api-todo
+      - mongodb
 
-# volumes:
-#   mongodata:
+volumes:
+  mongodata:
