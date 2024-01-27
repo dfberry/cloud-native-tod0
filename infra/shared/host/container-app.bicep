@@ -156,7 +156,7 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-04-01-
 
 output defaultDomain string = containerAppsEnvironment.properties.defaultDomain
 output identityPrincipalId string = normalizedIdentityType == 'None' ? '' : (empty(identityName) ? app.identity.principalId : userIdentity.properties.principalId)
-output imageName string = imageName
+output imageName string = app.properties.template.containers[0].image
 output name string = app.name
 output serviceBind object = !empty(serviceType) ? { serviceId: app.id, name: name } : {}
 output uri string = ingressEnabled ? 'https://${app.properties.configuration.ingress.fqdn}' : ''
