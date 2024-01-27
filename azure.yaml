@@ -3,13 +3,22 @@
 name: cloud-native-todo
 metadata:
     template: azd-init@1.5.0
- 
+hooks:
+  postpackage: # Example of an inline script. (shell is required for inline scripts)
+    shell: sh
+    run: echo 'Package complete!'
+  postprovision: # Example of an inline script. (shell is required for inline scripts)
+    shell: sh
+    run: echo 'Provision complete!'
+  postdeploy: # Example of an inline script. (shell is required for inline scripts)
+    shell: sh
+    run: echo 'Deploy complete!'
 services:
-    api-todo:
+    api:
         project: api-todo
         host: containerapp
         language: js
-    client-todo:
+    client:
         project: client-todo
         language: js
         host: containerapp
@@ -21,6 +30,9 @@ services:
             # Reference: engineering PR https://github.com/Azure-Samples/todo-nodejs-mongo-aca/compare/staging...pr/3171#diff-7d76d7533653c23b753fc7ce638cf64bdb5e419927d276af836d3a03fdf1745a      
             tag: 'cloud-native-todo/${AZURE_ENV_NAME}:azd-deploy'
         hooks:
+            postpackage: # Example of an inline script. (shell is required for inline scripts)
+                shell: sh
+                run: echo 'Client Package complete!'
             predeploy:
                 # windows is provided but untested - use at your own risk
                 windows:
@@ -31,3 +43,6 @@ services:
                     shell: sh
                     run: |
                         npm run build:env
+            postdeploy:
+                shell: sh
+                run: echo 'Client deploy complete!'

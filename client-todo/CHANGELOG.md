@@ -1,5 +1,9 @@
 ## Todo Client
 
+# 1.1.0
+
+* Update API routes to /todos and /todo
+
 # 1.0.3
 
 * Added container app for client-todo to infra folder

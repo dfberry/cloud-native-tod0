@@ -7,7 +7,6 @@
     "test": "npm run test -ws --if-present",
     "build": "npm run build -ws --if-present",
     "start": "npm run start -ws --if-present",
-
     "docker:buildnrun": "docker-compose up --build",
     "docker:run": "docker compose up",
     "docker:stop": "docker compose down",
@@ -21,5 +20,8 @@
     "api-todo",
     "api-todo-test",
     "client-todo"
-  ]
+  ],
+  "dependencies": {
+    "applicationinsights": "^2.9.2"
+  }
 }

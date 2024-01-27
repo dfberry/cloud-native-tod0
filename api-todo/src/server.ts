@@ -7,6 +7,7 @@ import path from 'path';
 import { StatusCodes } from 'http-status-codes';
 import todoRouter from './routes/todo/todo';
 import todosRouter from './routes/todo/todos';
+import statusRouter from './routes/status';
 import { sendResponse, logRequest } from './middleware/response';
 import { setVersionHeader } from './middleware/version';
 import { version } from '../package.json';
@@ -19,7 +20,7 @@ import { logger } from './logger';
 // }
 
 const configureApp = async () => {
-  const CONFIG = getConfig(logger);
+  const CONFIG = await getConfig(logger);
   const { db } = await DatabaseService(CONFIG, logger);
 
   const swaggerDocument = YAML.load(path.resolve(__dirname, './openapi.yaml'));
@@ -41,6 +42,9 @@ const configureApp = async () => {
 
   // Route that operates on multiple todos
   app.use('/todos', todosRouter);
+
+  // Route for status
+  app.use('/status', statusRouter);
 
   const rootHandler = (req: Request, res: Response) => {
     sendResponse(req, res, StatusCodes.ACCEPTED, {

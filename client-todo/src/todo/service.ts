@@ -2,22 +2,26 @@ import { NewTodo } from './models';
 import { ENV_URL } from '../config';
 
 export const API_BASE_URL = ENV_URL;
-export const API_URL = `${ENV_URL}/todo`;
+
+export const API_GET_ALL_TODOS = `${API_BASE_URL}/todos`;
+export const API_ADD_TODO = `${API_BASE_URL}/todo`;
+export const API_DELETE_TODO = `${API_BASE_URL}/todo`;
 
 export const listTodos = async (): Promise<Response> => {
-  return await fetch(API_URL);
+  return await fetch(API_GET_ALL_TODOS);
+
 }
 export const addTodo = async (newTodo: NewTodo): Promise<Response> => {
-  return await fetch(API_URL, {
+  return await fetch(API_ADD_TODO, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(newTodo),
+    body: JSON.stringify({todo: newTodo}),
   });
 };
 export const deleteTodo = async (id: number): Promise<Response> => {
-  return await fetch(`${API_URL}/${id}`, {
+  return await fetch(`${API_DELETE_TODO}${id}`, {
     method: 'DELETE',
   });
 };

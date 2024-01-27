@@ -9,7 +9,7 @@ export class TodoService implements IDataClass<Todo> {
   #service: CrudService<Todo>;
 
   constructor(connection: mongoose.Connection) {
-    const ConnectedTodoModel = connection.model<Todo>('Todo', TodoSchema);
+    const ConnectedTodoModel = connection.model<Todo>('todo', TodoSchema);
     this.#service = new CrudService<Todo>(ConnectedTodoModel);
   }
 

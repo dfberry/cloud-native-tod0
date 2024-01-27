@@ -1,4 +1,6 @@
-# 1.0.5
+# 2.0.0
+
+Breaking change is route change from single route to 2 routes: `todos` and `todo`
 
 * Add database
 * Add container to docker-compose file
@@ -8,6 +10,10 @@
 * Add supertest, curl, and mocked tests at a variety of layers
 * Add CRUD generic class
 * Kept in-mem db and updated that layer too
+* Get secret from keyvault for config (mongoDB connection string)
+* Update routes to /todos and /todo
+* Force mongo db and collection to be `todo` - make sure infra also has this
+* /status route with random password (env var on container)
 
 # 1.0.4
 

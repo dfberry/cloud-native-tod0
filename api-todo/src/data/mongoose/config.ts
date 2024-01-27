@@ -10,6 +10,10 @@ class DatabaseConnectionError extends Error {
 const connectAppToMongoose = async (CONFIG, process, logger) => {
   try {
     await connectMongoose(CONFIG.database.uri, CONFIG.database.options, logger);
+
+    // don't pluralize collection names
+    mongoose.pluralize(null);
+
     return mongoose.connection;
   } catch (err) {
     logger.error('Error connecting to database:', err);

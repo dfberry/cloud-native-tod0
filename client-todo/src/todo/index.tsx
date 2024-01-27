@@ -3,12 +3,12 @@ import useSWR, { mutate } from 'swr';
 import TodoForm from './components/form';
 import List from './components/list';
 import { NewTodo, Todo } from './models';
-import { API_URL, addTodo, deleteTodo } from './service';
+import { addTodo, deleteTodo, API_ADD_TODO, API_DELETE_TODO, API_GET_ALL_TODOS } from './service';
 import { fetcher } from './api';
 
 export default function Todo() {
     const [requestError, setRequestError] = useState('');
-    const { data, error, isLoading } = useSWR(API_URL, fetcher)
+    const { data, error, isLoading } = useSWR(API_GET_ALL_TODOS, fetcher)
 
     async function handleSubmit(newTodoItem: NewTodo) {
         setRequestError('');
@@ -17,8 +17,11 @@ export default function Todo() {
             const result = await addTodo(newTodoItem);
 
             if (!result.ok) throw new Error(`result: ${result.status} ${result.statusText}`);
-            const savedTodo = await result.json();
-            mutate(API_URL, [...data, savedTodo], false);
+            const { data: savedTodo, error: returnedError } = await result.json();
+
+            if (returnedError) throw new Error(returnedError);
+
+            mutate(API_ADD_TODO, [...data, savedTodo], false);
 
         } catch (error: unknown) {
             setRequestError(String(error));
@@ -30,7 +33,11 @@ export default function Todo() {
         try {
             const result = await deleteTodo(id);
             if (!result.ok) throw new Error(`result: ${result.status} ${result.statusText}`);
-            mutate(API_URL, data.filter((todo: Todo) => todo.id !== id), false);
+            const { data: deletedTodo, error: returnedError } = await result.json();
+
+            if (returnedError) throw new Error(returnedError);
+
+            mutate(API_DELETE_TODO, data.filter((todo: Todo) => todo.id !== deletedTodo.id), false);
         } catch (error: unknown) {
             setRequestError(String(error));
         }
