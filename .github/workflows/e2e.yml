@@ -74,7 +74,7 @@ jobs:
           npm install
           npm run lint
           npm run build
-          npx http-server dist -p 80 &
+          npx http-server dist -p 3005 &
         env: # Add your environment variables here
           VITE_API_URL: http://localhost:3000
           NODE_ENV: development
@@ -88,7 +88,7 @@ jobs:
       # Ping Client
       - name: E2E Ping Client
         run: |
-          curl http://localhost:80 --verbose
+          curl http://localhost:3005 --verbose
 
 
 

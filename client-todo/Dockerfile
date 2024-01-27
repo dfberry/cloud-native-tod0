@@ -38,7 +38,7 @@ COPY --from=build /app/dist .
 #COPY --from=build /app/ls*.txt ./archive
 COPY --from=build /app/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 3005
 
 RUN echo "Building nginx image - complete"
 

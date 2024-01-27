@@ -16,7 +16,7 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
 		3000,
-		80,
+		3005,
 		27017
 	],
 	// add labels to ports
@@ -25,7 +25,7 @@
 			"label": "API",
 			"onAutoForward": "notify"
 		},
-		"80": {
+		"3005": {
 			"label": "CLIENT",
 			"onAutoForward": "notify"
 		},

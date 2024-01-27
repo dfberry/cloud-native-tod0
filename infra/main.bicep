@@ -1,7 +1,7 @@
 targetScope = 'subscription'
 
 param infraAppVersion string = '3.0.0' // Infrastructure app version
-param portClient string = '80'
+param portClient string = '3005'
 param portApi string = '3000'
 
 @minLength(1)

@@ -34,7 +34,7 @@ services:
       VITE_USE_LOCAL_API: "true"
       VITE_API_URL: http://localhost:3000
     ports:
-      - "80:80"
+      - "3005:3005"
     depends_on:
       - api-todo
 
