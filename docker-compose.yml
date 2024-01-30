@@ -1,9 +1,9 @@
 version: "3"
 
 services:
-  api-todo:
+  api:
     build:
-      context: ./api-todo
+      context: ./api
     ports:
       - "3000:3000"
     depends_on:
@@ -22,7 +22,7 @@ services:
     ports:
       - "3005:3005"
     depends_on:
-      - api-todo
+      - api
 
   mongodb:
     image: mongo:5.0
@@ -35,15 +35,15 @@ services:
     volumes:
       - ./mongodata:/data/db
 
-  test-api-todo:
+  test-api:
     build:
-      context: ./api-todo-test
+      context: ./api-test
     environment:
       - API_TODO_ENDPOINT=http://localhost:3000
     volumes:
-      - ./api-todo-test:/app
+      - ./api-test:/app
     depends_on:
-      - api-todo
+      - api
       - mongodb
 
 volumes:

@@ -13,7 +13,7 @@
 
 1. Modify or add environment variables to configure the running application. Environment variables can be configured by updating the `settings` node(s) for each service in [main.parameters.json](./infra/main.parameters.json).
 2. For services using a database, environment variables have been pre-configured under the `env` node in the following files to allow connection to the database. Modify the name of these variables as needed to match your application.
-    - [app/api-todo.bicep](./infra/app/api-todo.bicep)
+   - [app/api.bicep](./infra/app/api.bicep)
 3. For services using Redis, environment variables will not show up under `env` explicitly, but are available as: `REDIS_ENDPOINT`, `REDIS_HOST`, `REDIS_PASSWORD`, and `REDIS_PORT`.
 
 ### Provision infrastructure and deploy application code
@@ -46,7 +46,7 @@ To describe the infrastructure and application, `azure.yaml` along with Infrastr
 
 Each bicep file declares resources to be provisioned. The resources are provisioned when running `azd up` or `azd provision`.
 
-- [app/api-todo.bicep](./infra/app/api-todo.bicep) - Azure Container Apps resources to host the 'api-todo' service.
+- [app/api.bicep](./infra/app/api.bicep) - Azure Container Apps resources to host the 'api' service.
 - [shared/keyvault.bicep](./infra/shared/keyvault.bicep) - Azure KeyVault to store secrets.
 - [shared/monitoring.bicep](./infra/shared/monitoring.bicep) - Azure Log Analytics workspace and Application Insights to log and store instrumentation logs.
 - [shared/registry.bicep](./infra/shared/registry.bicep) - Azure Container Registry to store docker images.
@@ -62,7 +62,7 @@ If your project does not contain a Dockerfile, we will use [Buildpacks](https://
 To produce and run the docker image locally:
 
 1. Run `azd package` to build the image.
-2. Copy the *Image Tag* shown.
+2. Copy the _Image Tag_ shown.
 3. Run `docker run -it <Image Tag>` to run the image locally.
 
 #### Exposed port
@@ -74,7 +74,7 @@ Oryx will automatically set `PORT` to a default value of `3005`. Additionally, i
 
 ## Billing
 
-Visit the *Cost Management + Billing* page in Azure Portal to track current spend. For more information about how you're billed, and how you can monitor the costs incurred in your Azure subscriptions, visit [billing overview](https://learn.microsoft.com/en-us/azure/developer/intro/azure-developer-billing).
+Visit the _Cost Management + Billing_ page in Azure Portal to track current spend. For more information about how you're billed, and how you can monitor the costs incurred in your Azure subscriptions, visit [billing overview](https://learn.microsoft.com/en-us/azure/developer/intro/azure-developer-billing).
 
 ## Troubleshooting
 
@@ -84,11 +84,11 @@ A: Your service may have failed to start or misconfigured. To investigate furthe
 
 1. Click on the resource group link shown to visit Azure Portal.
 2. Navigate to the specific Azure Container App resource for the service.
-3. Select *Monitoring -> Log stream* under the navigation pane.
+3. Select _Monitoring -> Log stream_ under the navigation pane.
 4. Observe the log output to identify any errors.
 5. If there are no errors, ensure that the ingress target port matches the port that your service listens on:
-    1. Under *Settings -> Ingress*, ensure the *Target port* matches the desired port.
-    2. After modifying this setting, also update the `targetPort` setting in the .bicep file for the service under `infra/app`.
-6. If logs are written to disk, examine the local logs or debug the application by using the *Console* to connect to a shell within the running container.
+   1. Under _Settings -> Ingress_, ensure the _Target port_ matches the desired port.
+   2. After modifying this setting, also update the `targetPort` setting in the .bicep file for the service under `infra/app`.
+6. If logs are written to disk, examine the local logs or debug the application by using the _Console_ to connect to a shell within the running container.
 
 For additional information about setting up your `azd` project, visit our official [docs](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/make-azd-compatible?pivots=azd-convert).

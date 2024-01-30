@@ -1,5 +1,5 @@
 import { getSecretFromKeyVault } from './azure/keyvault';
-// api-todo/.env
+// api/.env
 //const DATABASE_URI = process.env.DATABASE_URI;
 
 // ./docker-compose.yml

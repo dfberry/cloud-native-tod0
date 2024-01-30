@@ -1,4 +1,4 @@
-dfberry: What do you suggest I do to setup up my local developer environment for my cloud native repository? 
+dfberry: What do you suggest I do to setup up my local developer environment for my cloud native repository?
 
 GitHub Copilot: To set up your local developer environment for a cloud native repository, you can follow these steps:
 
@@ -50,7 +50,7 @@ npm test # or python -m unittest discover
 
 Please replace the placeholders with your actual data. Also, the commands might vary depending on the OS and the programming language you are using.
 
-dfberry: What do you suggest I do to setup up my local developer environment for my new cloud native repository? 
+dfberry: What do you suggest I do to setup up my local developer environment for my new cloud native repository?
 
 GitHub Copilot: Setting up a local development environment for a new cloud native repository involves several steps. Here's a general guide:
 
@@ -209,7 +209,7 @@ This configuration installs the Azure CLI, Azure Functions Core Tools, and Azure
 
 Please replace the placeholders with your actual data. Also, the commands might vary depending on the OS and the programming language you are using.
 
-dfberry: Why do I need the configure the integrated shell? 
+dfberry: Why do I need the configure the integrated shell?
 
 GitHub Copilot: The `"terminal.integrated.shell.linux": "/bin/bash"` setting in the `devcontainer.json` file specifies the default shell for the integrated terminal in Visual Studio Code when running in the dev container.
 
@@ -248,7 +248,7 @@ dfberry: Add error handling to the start.ts that is necessary for any express.js
 GitHub Copilot: In an Express.js application, error handling is typically done using middleware. Here's how you can add basic error handling to your `start.ts` file:
 
 ```typescript
-import express from 'express';
+import express from "express";
 
 const app = express();
 
@@ -256,7 +256,7 @@ const app = express();
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new Error('Not Found');
+  const err = new Error("Not Found");
   err.status = 404;
   next(err);
 });
@@ -265,15 +265,15 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   // Set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // Render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render("error");
 });
 
 app.listen(3000, () => {
-  console.log('Server is listening on port 3000');
+  console.log("Server is listening on port 3000");
 });
 ```
 
@@ -286,7 +286,7 @@ dfberry: This is missing a top level set of errors if the app crashes. Add that 
 GitHub Copilot: To handle uncaught exceptions and unhandled promise rejections at the top level, you can add the following code to your `start.ts` file:
 
 ```typescript
-import express from 'express';
+import express from "express";
 
 const app = express();
 
@@ -294,7 +294,7 @@ const app = express();
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new Error('Not Found');
+  const err = new Error("Not Found");
   err.status = 404;
   next(err);
 });
@@ -303,27 +303,27 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   // Set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // Render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render("error");
 });
 
 // Handle uncaught exceptions
-process.on('uncaughtException', (err) => {
-  console.error('There was an uncaught error', err);
+process.on("uncaughtException", (err) => {
+  console.error("There was an uncaught error", err);
   process.exit(1); //mandatory (as per the Node.js docs)
 });
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
   process.exit(1);
 });
 
 app.listen(3000, () => {
-  console.log('Server is listening on port 3000');
+  console.log("Server is listening on port 3000");
 });
 ```
 
@@ -338,14 +338,14 @@ dfberry: Add type safety to start.ts
 GitHub Copilot: To add type safety to your `start.ts` file, you can use TypeScript's static typing. Here's how you can modify your code:
 
 ```typescript
-import express, { Request, Response, NextFunction } from 'express';
-import app from './server';
+import express, { Request, Response, NextFunction } from "express";
+import app from "./server";
 
 const port: number = 3000;
 
 // Catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {
-  const err: any = new Error('Not Found');
+  const err: any = new Error("Not Found");
   err.status = 404;
   next(err);
 });
@@ -354,24 +354,27 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   // Set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // Render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render("error");
 });
 
 // Handle uncaught exceptions
-process.on('uncaughtException', (err: Error) => {
-  console.error('There was an uncaught error', err);
+process.on("uncaughtException", (err: Error) => {
+  console.error("There was an uncaught error", err);
   process.exit(1); //mandatory (as per the Node.js docs)
 });
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', (reason: {} | null | undefined, promise: Promise<any>) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  process.exit(1);
-});
+process.on(
+  "unhandledRejection",
+  (reason: {} | null | undefined, promise: Promise<any>) => {
+    console.error("Unhandled Rejection at:", promise, "reason:", reason);
+    process.exit(1);
+  }
+);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
@@ -393,7 +396,7 @@ GitHub Copilot: In this `start.ts` file, the `express` module is imported for a 
 In this specific code snippet, the actual `express` function (usually used to create an Express application) is not being used, so if you're not using any other part of the `express` module in this file, you could potentially only import the types you need:
 
 ```typescript
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from "express";
 ```
 
 dfberry: create a better type for err in the two app.use functions
@@ -401,8 +404,8 @@ dfberry: create a better type for err in the two app.use functions
 GitHub Copilot: To create a better type for the `err` object in the two `app.use` functions, you can define a custom `HttpError` interface that extends the built-in `Error` interface and adds a `status` property. Here's how you can modify your code:
 
 ```typescript
-import express, { Request, Response, NextFunction } from 'express';
-import app from './server';
+import express, { Request, Response, NextFunction } from "express";
+import app from "./server";
 
 interface HttpError extends Error {
   status?: number;
@@ -412,7 +415,7 @@ const port: number = 3000;
 
 // Catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {
-  const err: HttpError = new Error('Not Found');
+  const err: HttpError = new Error("Not Found");
   err.status = 404;
   next(err);
 });
@@ -421,24 +424,27 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
   // Set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // Render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render("error");
 });
 
 // Handle uncaught exceptions
-process.on('uncaughtException', (err: Error) => {
-  console.error('There was an uncaught error', err);
+process.on("uncaughtException", (err: Error) => {
+  console.error("There was an uncaught error", err);
   process.exit(1); //mandatory (as per the Node.js docs)
 });
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', (reason: {} | null | undefined, promise: Promise<any>) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  process.exit(1);
-});
+process.on(
+  "unhandledRejection",
+  (reason: {} | null | undefined, promise: Promise<any>) => {
+    console.error("Unhandled Rejection at:", promise, "reason:", reason);
+    process.exit(1);
+  }
+);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
@@ -449,21 +455,21 @@ In this code, I've defined an `HttpError` interface that has a `status` property
 
 dfberry: Where is Error defined?
 
-GitHub Copilot: The `Error` interface is a built-in interface in TypeScript that represents runtime errors. It is defined in the global scope, so you don't need to import it from anywhere. 
+GitHub Copilot: The `Error` interface is a built-in interface in TypeScript that represents runtime errors. It is defined in the global scope, so you don't need to import it from anywhere.
 
 The `Error` interface includes the `name` and `message` properties, which are common properties of JavaScript Error objects. By extending the `Error` interface with your `HttpError` interface, you're adding the `status` property to the standard set of properties that an Error object can have.
 
 dfberry: create a better type for reason
 
-GitHub Copilot: The `reason` parameter in the `unhandledRejection` event handler represents the reason why a Promise was rejected. This is typically an Error object, but it could potentially be any value. 
+GitHub Copilot: The `reason` parameter in the `unhandledRejection` event handler represents the reason why a Promise was rejected. This is typically an Error object, but it could potentially be any value.
 
 To provide better type safety, you could define a type that includes `Error` and other types that might commonly be used as rejection reasons. However, in most cases, it's best to encourage the use of `Error` objects for Promise rejections, as they provide a stack trace and are generally easier to work with.
 
 Here's how you can modify your code:
 
 ```typescript
-import { Request, Response, NextFunction } from 'express';
-import app from './server';
+import { Request, Response, NextFunction } from "express";
+import app from "./server";
 
 interface HttpError extends Error {
   status?: number;
@@ -475,7 +481,7 @@ const port: number = 3000;
 
 // Catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {
-  const err: HttpError = new Error('Not Found');
+  const err: HttpError = new Error("Not Found");
   err.status = 404;
   next(err);
 });
@@ -484,24 +490,24 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use((err: HttpError, req: Request, res: Response) => {
   // Set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // Render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render("error");
 });
 
 // Handle uncaught exceptions
-process.on('uncaughtException', (err: Error) => {
-  console.error('There was an uncaught error', err);
+process.on("uncaughtException", (err: Error) => {
+  console.error("There was an uncaught error", err);
   process.exit(1); //mandatory (as per the Node.js docs)
 });
 
 // Handle unhandled promise rejections
 process.on(
-  'unhandledRejection',
+  "unhandledRejection",
   (reason: RejectionReason, promise: Promise<any>) => {
-    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    console.error("Unhandled Rejection at:", promise, "reason:", reason);
     process.exit(1);
   }
 );
@@ -513,7 +519,7 @@ app.listen(port, () => {
 
 In this code, I've defined a `RejectionReason` type that includes `Error`, `string`, `null`, and `undefined`, and used this type for the `reason` parameter in your `unhandledRejection` event handler. This provides better type safety and makes it clear that the `reason` can be an `Error`, a `string`, `null`, or `undefined`.
 
-dfberry: Can you provide a better type for the promise: Promise<any> 
+dfberry: Can you provide a better type for the promise: Promise<any>
 
 GitHub Copilot: In TypeScript, you can use `Promise<unknown>` instead of `Promise<any>` to represent a Promise that can resolve to any value. The `unknown` type is a safer alternative to `any` because it forces you to perform some type of checking before you can use the value or its properties.
 
@@ -522,9 +528,9 @@ Here's how you can modify your code:
 ```typescript
 // Handle unhandled promise rejections
 process.on(
-  'unhandledRejection',
+  "unhandledRejection",
   (reason: RejectionReason, promise: Promise<unknown>) => {
-    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    console.error("Unhandled Rejection at:", promise, "reason:", reason);
     process.exit(1);
   }
 );
@@ -539,7 +545,9 @@ GitHub Copilot: The `port` variable in your code is already being set to the val
 However, if `process.env.PORT` is not a number, you might run into issues. To handle this, you can add a check to ensure that `process.env.PORT` is a number before using it:
 
 ```typescript
-const port: number = !isNaN(Number(process.env.PORT)) ? Number(process.env.PORT) : 3000;
+const port: number = !isNaN(Number(process.env.PORT))
+  ? Number(process.env.PORT)
+  : 3000;
 ```
 
 In this code, `!isNaN(Number(process.env.PORT))` checks if `process.env.PORT` is a number. If it is, `Number(process.env.PORT)` is used as the port. If it's not, `3000` is used as the default port.
@@ -551,7 +559,7 @@ GitHub Copilot: Sure, you can create a new `todo.ts` file and move the business 
 First, create a `todo.ts` file:
 
 ```typescript
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 
 interface Todo {
   id: number;
@@ -559,9 +567,9 @@ interface Todo {
 }
 
 const todos: Todo[] = [
-  { id: 1, title: 'First Todo' },
-  { id: 2, title: 'Second Todo' },
-  { id: 3, title: 'Third Todo' },
+  { id: 1, title: "First Todo" },
+  { id: 2, title: "Second Todo" },
+  { id: 3, title: "Third Todo" },
 ];
 
 export const getTodos = (req: Request, res: Response) => {
@@ -586,7 +594,7 @@ export const updateTodo = (req: Request, res: Response) => {
     todos[index] = { id, title: req.body.title };
     res.send(todos[index]);
   } else {
-    res.status(404).send({ message: 'Todo not found' });
+    res.status(404).send({ message: "Todo not found" });
   }
 };
 ```
@@ -594,27 +602,27 @@ export const updateTodo = (req: Request, res: Response) => {
 Then, in your `server.ts` file, import the functions from `todo.ts` and use them in your routes:
 
 ```typescript
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import swaggerUi from 'swagger-ui-express';
-import YAML from 'yamljs';
-import path from 'path';
-import { getTodos, createTodo, updateTodo } from './todo';
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import swaggerUi from "swagger-ui-express";
+import YAML from "yamljs";
+import path from "path";
+import { getTodos, createTodo, updateTodo } from "./todo";
 
-const swaggerDocument = YAML.load(path.resolve(__dirname, './openapi.yaml'));
+const swaggerDocument = YAML.load(path.resolve(__dirname, "./openapi.yaml"));
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get('/todos', getTodos);
+app.get("/todos", getTodos);
 
-app.post('/todos', createTodo);
+app.post("/todos", createTodo);
 
-app.put('/todos/:id', updateTodo);
+app.put("/todos/:id", updateTodo);
 
 // ... rest of your code
 ```
@@ -665,14 +673,14 @@ GitHub Copilot: To configure Jest to run tests for both JavaScript and TypeScrip
 
 ```javascript
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
+  preset: "ts-jest",
+  testEnvironment: "node",
   testMatch: ["**/?(*.)+(spec|test).[jt]s?(x)"],
-  'ts-jest': {
+  "ts-jest": {
     tsconfig: {
-      rootDir: '.'
-    }
-  }
+      rootDir: ".",
+    },
+  },
 };
 ```
 
@@ -716,13 +724,13 @@ You can use this enum in your code like this:
 
 ```typescript
 // Get all todos
-todoRouter.get('/', (req: Request, res: Response) => {
+todoRouter.get("/", (req: Request, res: Response) => {
   const todos: Todo[] = getAllTodos();
   res.status(HttpStatusCode.OK).send(todos);
 });
 
 // Add a new todo
-todoRouter.post('/', (req: Request, res: Response) => {
+todoRouter.post("/", (req: Request, res: Response) => {
   const todo: Todo = {
     id: 0,
     title: req.body.title,
@@ -743,7 +751,7 @@ GitHub Copilot: You can create a function to validate the properties of an incom
 
 ```typescript
 export const validateTodo = (todo: any): todo is Todo => {
-  return todo && typeof todo.title === 'string';
+  return todo && typeof todo.title === "string";
 };
 ```
 
@@ -754,7 +762,7 @@ You can use this function in your `addTodo` function to validate the incoming to
 ```typescript
 export const addTodo = (todo: any): Todo | null => {
   if (!validateTodo(todo)) {
-    console.error('Invalid todo object:', todo);
+    console.error("Invalid todo object:", todo);
     return null;
   }
 
@@ -773,7 +781,7 @@ GitHub Copilot: To ignore the `any` error on line 7 of `todo.ts`, you can use a 
 ```typescript
 // @ts-ignore
 export const validateTodo = (todo: any): todo is Todo => {
-  return todo && typeof todo.title === 'string';
+  return todo && typeof todo.title === "string";
 };
 ```
 
@@ -789,7 +797,7 @@ GitHub Copilot: To ignore a line in both ESLint and TypeScript, you can use the 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 // @ts-ignore
 export const validateTodo = (todo: any): todo is Todo => {
-  return todo && typeof todo.title === 'string';
+  return todo && typeof todo.title === "string";
 };
 ```
 
@@ -804,7 +812,7 @@ GitHub Copilot: I apologize for the confusion. The correct directive to disable 
 ```typescript
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const validateTodo = (todo: any): todo is Todo => {
-  return todo && typeof todo.title === 'string';
+  return todo && typeof todo.title === "string";
 };
 ```
 
@@ -816,7 +824,7 @@ interface PartialTodo {
 }
 
 export const validateTodo = (todo: PartialTodo): todo is Todo => {
-  return typeof todo.title === 'string';
+  return typeof todo.title === "string";
 };
 ```
 
@@ -828,17 +836,17 @@ GitHub Copilot: You can validate if the `id` is a number by using the `isNaN` fu
 
 ```typescript
 // Update a todo
-todoRouter.put('/:id', (req: Request, res: Response) => {
+todoRouter.put("/:id", (req: Request, res: Response) => {
   const id: number = parseInt(req.params.id, 10);
 
   if (isNaN(id)) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid id' });
+    return res.status(StatusCodes.BAD_REQUEST).json({ error: "Invalid id" });
   }
 
   const todo: Todo | null = updateTodo(id, req.body);
 
   if (!validateTodo(todo)) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid todo' });
+    return res.status(StatusCodes.BAD_REQUEST).json({ error: "Invalid todo" });
   }
 
   if (todo) {
@@ -862,7 +870,7 @@ interface PartialTodo {
 }
 
 export const validateTodo = (todo: PartialTodo): todo is Todo => {
-  return typeof todo.id === 'number' && typeof todo.title === 'string';
+  return typeof todo.id === "number" && typeof todo.title === "string";
 };
 ```
 
@@ -880,7 +888,12 @@ Here's how you can update the `validateTodo` function to include these checks:
 
 ```typescript
 export const validateTodo = (todo: PartialTodo): todo is Todo => {
-  return typeof todo.id === 'number' && todo.id > 0 && typeof todo.title === 'string' && todo.title.trim() !== '';
+  return (
+    typeof todo.id === "number" &&
+    todo.id > 0 &&
+    typeof todo.title === "string" &&
+    todo.title.trim() !== ""
+  );
 };
 ```
 
@@ -893,15 +906,18 @@ dfberry: Change the validateTodo to have a flag if this is a new todo without an
 GitHub Copilot: You can add a `isNewTodo` parameter to the `validateTodo` function to indicate whether the todo is new or not. If the todo is new, you can skip the `id` validation. Here's how you can do it:
 
 ```typescript
-export const validateTodo = (todo: PartialTodo, isNewTodo: boolean): todo is Todo => {
+export const validateTodo = (
+  todo: PartialTodo,
+  isNewTodo: boolean
+): todo is Todo => {
   if (isNewTodo) {
-    return typeof todo.title === 'string' && todo.title.trim() !== '';
+    return typeof todo.title === "string" && todo.title.trim() !== "";
   } else {
     return (
-      typeof todo.id === 'number' &&
+      typeof todo.id === "number" &&
       todo.id > 0 &&
-      typeof todo.title === 'string' &&
-      todo.title.trim() !== ''
+      typeof todo.title === "string" &&
+      todo.title.trim() !== ""
     );
   }
 };
@@ -914,7 +930,7 @@ You can use this function in your `addTodo` and `updateTodo` functions like this
 ```typescript
 export const addTodo = (todo: PartialTodo): Todo | null => {
   if (!validateTodo(todo, true)) {
-    console.error('Invalid todo object:', todo);
+    console.error("Invalid todo object:", todo);
     return null;
   }
 
@@ -923,7 +939,7 @@ export const addTodo = (todo: PartialTodo): Todo | null => {
 
 export const updateTodo = (id: number, todo: PartialTodo): Todo | null => {
   if (!validateTodo(todo, false)) {
-    console.error('Invalid todo object:', todo);
+    console.error("Invalid todo object:", todo);
     return null;
   }
 
@@ -944,9 +960,7 @@ GitHub Copilot: You can create a new configuration in your `launch.json` file to
   "request": "launch",
   "cwd": "${workspaceFolder}/003-api-test",
   "runtimeExecutable": "npm",
-  "runtimeArgs": [
-    "test"
-  ],
+  "runtimeArgs": ["test"],
   "console": "integratedTerminal",
   "internalConsoleOptions": "neverOpen"
 }
@@ -976,15 +990,15 @@ In your current test case, it seems like you're expecting a 202 Accepted status 
 
 dfberry: how to fix this express error Cannot set headers after they are sent to the client
 
-GitHub Copilot: The error "Cannot set headers after they are sent to the client" typically occurs in Express.js when you're trying to send a response and set headers after the response has already been sent. 
+GitHub Copilot: The error "Cannot set headers after they are sent to the client" typically occurs in Express.js when you're trying to send a response and set headers after the response has already been sent.
 
 Looking at the code you've provided, it seems like the error might be occurring because the `fn(req, res, next)` function is trying to send a response after `next()` has already been called.
 
 Here's a common scenario that can cause this error:
 
 ```javascript
-app.get('/route', function(req, res, next) {
-  res.send('Hello World');
+app.get("/route", function (req, res, next) {
+  res.send("Hello World");
   next();
 });
 ```
@@ -996,8 +1010,8 @@ To fix this error, you need to ensure that you're only sending one response per 
 1. **Return after sending a response**: This will prevent any subsequent code from running and trying to send another response.
 
 ```javascript
-app.get('/route', function(req, res, next) {
-  res.send('Hello World');
+app.get("/route", function (req, res, next) {
+  res.send("Hello World");
   return;
 });
 ```
@@ -1005,11 +1019,11 @@ app.get('/route', function(req, res, next) {
 2. **Use `else` to ensure only one response is sent**: This is useful if you have an `if` statement that sends a response in both the `if` and `else` blocks.
 
 ```javascript
-app.get('/route', function(req, res, next) {
+app.get("/route", function (req, res, next) {
   if (condition) {
-    res.send('Response 1');
+    res.send("Response 1");
   } else {
-    res.send('Response 2');
+    res.send("Response 2");
   }
 });
 ```
@@ -1017,9 +1031,9 @@ app.get('/route', function(req, res, next) {
 3. **Only call `next()` if you're not sending a response**: This will prevent the next middleware from running and potentially trying to send another response.
 
 ```javascript
-app.get('/route', function(req, res, next) {
+app.get("/route", function (req, res, next) {
   if (condition) {
-    res.send('Response');
+    res.send("Response");
   } else {
     next();
   }
@@ -1028,9 +1042,9 @@ app.get('/route', function(req, res, next) {
 
 Without seeing the rest of your code, it's hard to say exactly how to fix your issue, but these tips should help you troubleshoot the problem.
 
-dfberry: how do I configure jest to run syncrhonously 
+dfberry: how do I configure jest to run syncrhonously
 
-GitHub Copilot: Jest runs tests in parallel by default to maximize performance. However, if you want to run tests serially (synchronously), you can use the `--runInBand` option. 
+GitHub Copilot: Jest runs tests in parallel by default to maximize performance. However, if you want to run tests serially (synchronously), you can use the `--runInBand` option.
 
 You can add this option to the `test` script in your `package.json` file:
 
@@ -1046,7 +1060,7 @@ In this code, `--runInBand` tells Jest to run all tests in the same process, whi
 
 dfberry: how is the route returning an empty object
 
-GitHub Copilot: The code excerpt you've provided doesn't show how the route is returning an empty object. However, if the `updateTodo` function doesn't find a todo with the provided `id`, it might return `null` (as indicated by its type `Todo | null`). 
+GitHub Copilot: The code excerpt you've provided doesn't show how the route is returning an empty object. However, if the `updateTodo` function doesn't find a todo with the provided `id`, it might return `null` (as indicated by its type `Todo | null`).
 
 If you're seeing an empty object `{}` as a response instead of `null`, it might be because of how your `updateTodo` function is implemented. If `updateTodo` returns an empty object when it doesn't find a todo with the provided `id`, that would explain the behavior you're seeing.
 
@@ -1056,7 +1070,7 @@ To fix this, you should ensure that `updateTodo` returns `null` when it doesn't 
 if (updatedTodo) {
   return res.status(StatusCodes.ACCEPTED).json(updatedTodo);
 } else {
-  return res.status(StatusCodes.NOT_FOUND).json({ error: 'Todo not found' });
+  return res.status(StatusCodes.NOT_FOUND).json({ error: "Todo not found" });
 }
 ```
 
@@ -1072,10 +1086,10 @@ To fix this, you should define your `/todos` route before the middleware that ca
 
 ```typescript
 // import and use todo route
-app.use('/todos', todoRouter);
+app.use("/todos", todoRouter);
 
-app.use('/', (req: Request, res: Response) => {
-  res.send('Hello World!').json({ message: 'Hello World!' });
+app.use("/", (req: Request, res: Response) => {
+  res.send("Hello World!").json({ message: "Hello World!" });
 });
 ```
 
@@ -1113,7 +1127,7 @@ In Express.js, you define route handlers for different HTTP methods and paths us
 Here's how you can define a route handler for a PUT request at the "/todo" endpoint:
 
 ```javascript
-app.put('/todo', function(req, res) {
+app.put("/todo", function (req, res) {
   // Handle the request...
 });
 ```
@@ -1158,7 +1172,7 @@ So, while it might seem like these `try/catch` blocks are adding extra code, the
 
 dfberry: What would express do if they weren't there
 
-GitHub Copilot: If the `try/catch` blocks were not there, Express would not be able to handle errors that occur within the route handlers. 
+GitHub Copilot: If the `try/catch` blocks were not there, Express would not be able to handle errors that occur within the route handlers.
 
 For instance, if an error occurs when parsing the `id` from the request parameters or when calling `updateTodo` or `deleteTodo`, this error would not be caught and handled. It would then bubble up to the global error handler, if one is defined, or it could potentially crash your Node.js process, depending on the nature of the error and your error handling setup.
 
@@ -1177,7 +1191,7 @@ If you need to send both text and JSON data, you could either:
 1. Convert the text to a string and include it in the JSON data:
 
 ```javascript
-res.json({ message: 'Hello World', data: jsonData });
+res.json({ message: "Hello World", data: jsonData });
 ```
 
 2. Or, convert the JSON data to a string and include it in the text:
@@ -1188,7 +1202,7 @@ res.send(`Hello World. Data: ${JSON.stringify(jsonData)}`);
 
 Remember to replace `jsonData` with your actual JSON data.
 
-dfberry: construct a regext to handle `Todo not found` in the text 
+dfberry: construct a regext to handle `Todo not found` in the text
 
 GitHub Copilot: To construct a regular expression (regex) that matches the text "Todo not found", you can simply use the text itself as the pattern. Here's how you can do it in JavaScript:
 
@@ -1196,14 +1210,14 @@ GitHub Copilot: To construct a regular expression (regex) that matches the text 
 const regex = /Todo not found/;
 ```
 
-In this code, `/Todo not found/` is a regex that matches the exact text "Todo not found". 
+In this code, `/Todo not found/` is a regex that matches the exact text "Todo not found".
 
 You can use this regex with the `test()` method to check if a string contains "Todo not found":
 
 ```javascript
-const text = 'Error: Todo not found';
+const text = "Error: Todo not found";
 const regex = /Todo not found/;
-console.log(regex.test(text));  // Outputs: true
+console.log(regex.test(text)); // Outputs: true
 ```
 
 In this code, `regex.test(text)` returns `true` because `text` contains "Todo not found".
@@ -1215,7 +1229,7 @@ GitHub Copilot: You can use `expect.stringMatching()` in combination with `expec
 ```typescript
 expect(response.body).toEqual(
   expect.objectContaining({
-    error: expect.stringMatching(/Todo not found/)
+    error: expect.stringMatching(/Todo not found/),
   })
 );
 ```
@@ -1226,7 +1240,7 @@ This will allow you to partially match the value of the `error` property in the 
 
 dfberry: how do I make the post or put route fail if the todo object is sent in with properties that aren't defined in Todo interface
 
-GitHub Copilot: To make the POST or PUT route fail when the `Todo` object contains properties that aren't defined in the `Todo` interface, you can validate the request body against the `Todo` interface. 
+GitHub Copilot: To make the POST or PUT route fail when the `Todo` object contains properties that aren't defined in the `Todo` interface, you can validate the request body against the `Todo` interface.
 
 Here's an example of how you can do this using the `joi` library:
 
@@ -1239,7 +1253,7 @@ npm install joi
 Then, define a schema that matches your `Todo` interface:
 
 ```javascript
-const Joi = require('joi');
+const Joi = require("joi");
 
 const todoSchema = Joi.object({
   id: Joi.number().required(),
@@ -1253,10 +1267,10 @@ In this code, `Joi.object({...}).unknown(false)` creates a schema that matches a
 Then, use this schema to validate the request body in your route:
 
 ```javascript
-app.put('/todo', (req, res) => {
+app.put("/todo", (req, res) => {
   const { error } = todoSchema.validate(req.body);
   if (error) {
-    return res.status(400).json({ error: 'Invalid todo' });
+    return res.status(400).json({ error: "Invalid todo" });
   }
 
   // Handle the request...
@@ -1269,7 +1283,7 @@ Remember to replace `// Handle the request...` with your actual request handling
 
 dfberry: can I do it with just typescript
 
-GitHub Copilot: Yes, you can perform basic validation using TypeScript, but it's important to note that TypeScript is a static type checker, which means it only checks types at compile time, not at runtime. 
+GitHub Copilot: Yes, you can perform basic validation using TypeScript, but it's important to note that TypeScript is a static type checker, which means it only checks types at compile time, not at runtime.
 
 However, you can create a type guard function to check if an object matches the `Todo` interface at runtime. Here's an example:
 
@@ -1281,14 +1295,16 @@ interface Todo {
 }
 
 function isTodo(obj: any): obj is Todo {
-  return typeof obj.id === 'number' &&
-         typeof obj.title === 'string' &&
-         Object.keys(obj).length === 2;  // Adjust this number based on the number of properties in Todo
+  return (
+    typeof obj.id === "number" &&
+    typeof obj.title === "string" &&
+    Object.keys(obj).length === 2
+  ); // Adjust this number based on the number of properties in Todo
 }
 
-app.put('/todo', (req, res) => {
+app.put("/todo", (req, res) => {
   if (!isTodo(req.body)) {
-    return res.status(400).json({ error: 'Invalid todo' });
+    return res.status(400).json({ error: "Invalid todo" });
   }
 
   // Handle the request...
@@ -1306,7 +1322,7 @@ dfberry: add the todoSchema check to the validateTodo function
 GitHub Copilot: You can use the `todoSchema` to validate the `todo` object in the `validateTodo` function. Here's how you can do it:
 
 ```typescript
-import Joi from 'joi';
+import Joi from "joi";
 
 export interface Todo {
   id: number;
@@ -1328,7 +1344,7 @@ export const validateTodo = (
   isNewTodo: boolean = false
 ): todo is Todo => {
   console.log(`validateTodo: ${JSON.stringify(todo)}`);
-  
+
   const { error } = todoSchema.validate(todo);
   if (error) {
     console.log(`Validation error: ${error.details[0].message}`);
@@ -1336,13 +1352,13 @@ export const validateTodo = (
   }
 
   if (isNewTodo) {
-    return typeof todo.title === 'string' && todo.title.trim() !== '';
+    return typeof todo.title === "string" && todo.title.trim() !== "";
   } else {
     return (
-      typeof todo.id === 'number' &&
+      typeof todo.id === "number" &&
       todo.id > 0 &&
-      typeof todo.title === 'string' &&
-      todo.title.trim() !== ''
+      typeof todo.title === "string" &&
+      todo.title.trim() !== ""
     );
   }
 };
@@ -1403,7 +1419,7 @@ GitHub Copilot: Sure, the POST route can be cleaned up by removing some unnecess
 
 ```typescript
 // Add a new todo
-todoRouter.post('/', (req: Request, res: Response, next: NextFunction) => {
+todoRouter.post("/", (req: Request, res: Response, next: NextFunction) => {
   try {
     const potentialTodo: PartialTodo = req.body;
 
@@ -1411,7 +1427,7 @@ todoRouter.post('/', (req: Request, res: Response, next: NextFunction) => {
     if (!valid) {
       return res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ error: 'Invalid todo', details: error });
+        .json({ error: "Invalid todo", details: error });
     }
 
     const addedTodo = addTodo(todo as PartialTodo);
@@ -1432,11 +1448,11 @@ GitHub Copilot: Sure, the PUT route can be cleaned up by removing some unnecessa
 
 ```typescript
 // Update a todo
-todoRouter.put('/:id', (req: Request, res: Response, next: NextFunction) => {
+todoRouter.put("/:id", (req: Request, res: Response, next: NextFunction) => {
   try {
     const id: number = parseInt(req.params.id, 10);
     if (isNaN(id)) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid id' });
+      return res.status(StatusCodes.BAD_REQUEST).json({ error: "Invalid id" });
     }
 
     const potentialTodo: PartialTodo = req.body;
@@ -1444,7 +1460,7 @@ todoRouter.put('/:id', (req: Request, res: Response, next: NextFunction) => {
     if (!valid) {
       return res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ error: 'Invalid todo', details: error });
+        .json({ error: "Invalid todo", details: error });
     }
 
     const updatedTodo: Todo | null = updateTodo(id, req.body);
@@ -1476,44 +1492,50 @@ GitHub Copilot: Looking at the provided code, it seems to be well-structured and
 Here's how you can apply these improvements:
 
 ```typescript
-const INVALID_TODO_ERROR = { error: 'Invalid todo' };
-const INVALID_ID_ERROR = { error: 'Invalid id' };
-const TODO_NOT_FOUND_ERROR = { error: expect.stringMatching(regexTodoNotFound) };
+const INVALID_TODO_ERROR = { error: "Invalid todo" };
+const INVALID_ID_ERROR = { error: "Invalid id" };
+const TODO_NOT_FOUND_ERROR = {
+  error: expect.stringMatching(regexTodoNotFound),
+};
 
-describe('Todo routes', () => {
+describe("Todo routes", () => {
   beforeEach(() => {
     setTodos(initialData);
   });
 
   // ...
 
-  describe('PUT /todo/:id', () => {
-    it('responds with the error when title is empty', async () => {
-      const todo = { title: '', id: 100, note: 'help me' };
-      const response = await request(app).put('/todo/2').send(todo);
+  describe("PUT /todo/:id", () => {
+    it("responds with the error when title is empty", async () => {
+      const todo = { title: "", id: 100, note: "help me" };
+      const response = await request(app).put("/todo/2").send(todo);
 
-      expect(response.body).toEqual(expect.objectContaining(INVALID_TODO_ERROR));
+      expect(response.body).toEqual(
+        expect.objectContaining(INVALID_TODO_ERROR)
+      );
       expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
     });
 
     // ...
 
-    it('responds with the error when title has over 1000k', async () => {
-      const todo = { title: 'a'.repeat(1001) };
-      const response = await request(app).put('/todo/2').send(todo);
+    it("responds with the error when title has over 1000k", async () => {
+      const todo = { title: "a".repeat(1001) };
+      const response = await request(app).put("/todo/2").send(todo);
 
-      expect(response.body).toEqual(expect.objectContaining(INVALID_TODO_ERROR));
+      expect(response.body).toEqual(
+        expect.objectContaining(INVALID_TODO_ERROR)
+      );
       expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
     });
   });
 
   // ...
 
-  describe('DELETE /todo/:id', () => {
+  describe("DELETE /todo/:id", () => {
     // ...
 
-    it('responds with the error when malformed id', async () => {
-      const response = await request(app).delete('/todo/dog');
+    it("responds with the error when malformed id", async () => {
+      const response = await request(app).delete("/todo/dog");
 
       expect(response.body).toEqual(expect.objectContaining(INVALID_ID_ERROR));
       expect(response.statusCode).toBe(StatusCodes.BAD_REQUEST);
@@ -1521,10 +1543,12 @@ describe('Todo routes', () => {
 
     // ...
 
-    it('responds with the error when id not found', async () => {
-      const response = await request(app).delete('/todo/100');
+    it("responds with the error when id not found", async () => {
+      const response = await request(app).delete("/todo/100");
 
-      expect(response.body).toEqual(expect.objectContaining(TODO_NOT_FOUND_ERROR));
+      expect(response.body).toEqual(
+        expect.objectContaining(TODO_NOT_FOUND_ERROR)
+      );
       expect(response.statusCode).toBe(StatusCodes.NOT_FOUND);
     });
   });
@@ -1549,7 +1573,7 @@ Here's how you can apply these improvements:
 // Error handling middleware
 function handleError(err, req, res, next) {
   console.error(err);
-  res.status(500).send('Something broke!');
+  res.status(500).send("Something broke!");
 }
 
 // Validation middleware
@@ -1558,7 +1582,7 @@ function validateRequestBody(req, res, next) {
   if (!valid) {
     return res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ error: 'Invalid todo', details: error });
+      .json({ error: "Invalid todo", details: error });
   }
   req.todo = todo;
   next();
@@ -1573,7 +1597,7 @@ function addTodoHandler(req, res, next) {
 function updateTodoHandler(req, res, next) {
   const id: number = parseInt(req.params.id, 10);
   if (isNaN(id)) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid id' });
+    return res.status(StatusCodes.BAD_REQUEST).json({ error: "Invalid id" });
   }
 
   const updatedTodo: Todo | null = updateTodo(id, req.todo);
@@ -1587,14 +1611,14 @@ function updateTodoHandler(req, res, next) {
 }
 
 // Routes
-todoRouter.post('/', validateRequestBody, addTodoHandler);
-todoRouter.put('/:id', validateRequestBody, updateTodoHandler);
+todoRouter.post("/", validateRequestBody, addTodoHandler);
+todoRouter.put("/:id", validateRequestBody, updateTodoHandler);
 todoRouter.use(handleError);
 ```
 
 In this code, `handleError` is a middleware function that handles errors. `validateRequestBody` is a middleware function that validates the request body and adds the validated todo to `req.todo`. `addTodoHandler` and `updateTodoHandler` are route handlers for the POST and PUT routes, respectively. These handlers use `req.todo`, which is set by `validateRequestBody`. The routes are then defined using these handlers.
 
-dfberry: can you add  the delete handler and route
+dfberry: can you add the delete handler and route
 
 GitHub Copilot: Sure, I can add a delete handler and route for you. Here's how you can do it:
 
@@ -1603,7 +1627,7 @@ GitHub Copilot: Sure, I can add a delete handler and route for you. Here's how y
 function deleteTodoHandler(req, res, next) {
   const id: number = parseInt(req.params.id, 10);
   if (isNaN(id)) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid id' });
+    return res.status(StatusCodes.BAD_REQUEST).json({ error: "Invalid id" });
   }
 
   const deletedTodo: Todo | null = deleteTodo(id);
@@ -1617,7 +1641,7 @@ function deleteTodoHandler(req, res, next) {
 }
 
 // Delete route
-todoRouter.delete('/:id', deleteTodoHandler);
+todoRouter.delete("/:id", deleteTodoHandler);
 ```
 
 In this code, `deleteTodoHandler` is a route handler for the DELETE route. It parses the `id` from `req.params.id`, checks if it's a valid number, and then calls `deleteTodo(id)`. If a todo with the given `id` is found and deleted, it returns a response with the deleted todo. If no todo with the given `id` is found, it returns a `Todo not found` error. The DELETE route is then defined using this handler.
@@ -1637,22 +1661,24 @@ npm install winston
 Then, create a new `logger.js` file:
 
 ```javascript
-const winston = require('winston');
+const winston = require("winston");
 
 const logger = winston.createLogger({
-  level: 'info',
+  level: "info",
   format: winston.format.json(),
-  defaultMeta: { service: 'todo-service' },
+  defaultMeta: { service: "todo-service" },
   transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' }),
+    new winston.transports.File({ filename: "error.log", level: "error" }),
+    new winston.transports.File({ filename: "combined.log" }),
   ],
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple(),
-  }));
+if (process.env.NODE_ENV !== "production") {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    })
+  );
 }
 
 module.exports = logger;
@@ -1661,7 +1687,7 @@ module.exports = logger;
 Now, you can use this logger in your routes:
 
 ```javascript
-const logger = require('./logger');
+const logger = require("./logger");
 
 app.use((err, req, res, next) => {
   logger.error(`Error ${err.message}`);
@@ -1680,14 +1706,14 @@ npm install prom-client
 Then, create a new `metrics.js` file:
 
 ```javascript
-const client = require('prom-client');
+const client = require("prom-client");
 
 const collectDefaultMetrics = client.collectDefaultMetrics;
 collectDefaultMetrics({ timeout: 5000 });
 
 const counter = new client.Counter({
-  name: 'node_request_operations_total',
-  help: 'The total number of processed requests',
+  name: "node_request_operations_total",
+  help: "The total number of processed requests",
 });
 
 module.exports = (req, res, next) => {
@@ -1699,7 +1725,7 @@ module.exports = (req, res, next) => {
 Now, you can use this middleware in your routes:
 
 ```javascript
-const collectMetrics = require('./metrics');
+const collectMetrics = require("./metrics");
 
 app.use(collectMetrics);
 ```
@@ -1707,8 +1733,8 @@ app.use(collectMetrics);
 Finally, expose a `/metrics` endpoint for Prometheus to scrape:
 
 ```javascript
-app.get('/metrics', (req, res) => {
-  res.set('Content-Type', client.register.contentType);
+app.get("/metrics", (req, res) => {
+  res.set("Content-Type", client.register.contentType);
   res.end(client.register.metrics());
 });
 ```
@@ -1720,13 +1746,13 @@ dfberry: convert this to typescript
 GitHub Copilot: Sure, here's how you can convert the require statement to an import statement in TypeScript:
 
 ```typescript
-import logger from './logger';
+import logger from "./logger";
 ```
 
 This assumes that your `logger` module has a default export. If it doesn't, you might need to import it like this:
 
 ```typescript
-import * as logger from './logger';
+import * as logger from "./logger";
 ```
 
 This will import all exported members from the `logger` module.
@@ -1736,22 +1762,24 @@ dfberry: convert this logger file to typescript
 GitHub Copilot: Sure, here's how you can convert the `logger.js` file to TypeScript:
 
 ```typescript
-import winston from 'winston';
+import winston from "winston";
 
 const logger = winston.createLogger({
-  level: 'info',
+  level: "info",
   format: winston.format.json(),
-  defaultMeta: { service: 'todo-service' },
+  defaultMeta: { service: "todo-service" },
   transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' }),
+    new winston.transports.File({ filename: "error.log", level: "error" }),
+    new winston.transports.File({ filename: "combined.log" }),
   ],
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple(),
-  }));
+if (process.env.NODE_ENV !== "production") {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    })
+  );
 }
 
 export default logger;
@@ -1759,7 +1787,7 @@ export default logger;
 
 In this code, the `require` statements have been replaced with `import` statements, and `module.exports` has been replaced with `export default`. This is the standard way to import and export modules in TypeScript.
 
-dfberry: can you abstract out the logged from the handlers 
+dfberry: can you abstract out the logged from the handlers
 
 GitHub Copilot: Sure, you can abstract out the logging from the handlers by creating a middleware function that logs the request and response details. Here's how you can do it:
 
@@ -1773,7 +1801,7 @@ function logRequest(req, res, next) {
 }
 
 function logResponse(req, res, next) {
-  res.on('finish', () => {
+  res.on("finish", () => {
     const { statusCode } = res;
     const logMessage = `Response: ${statusCode} ${res.statusMessage}`;
 
@@ -1801,7 +1829,7 @@ Now, you can remove the logging from your handlers:
 function updateTodoHandler(req, res) {
   const id: number = parseInt(req.params.id, 10);
   if (isNaN(id)) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid id' });
+    return res.status(StatusCodes.BAD_REQUEST).json({ error: "Invalid id" });
   }
 
   const updatedTodo: Todo | null = updateTodo(id, req.todo);
@@ -1817,7 +1845,7 @@ function updateTodoHandler(req, res) {
 function deleteTodoHandler(req, res) {
   const id: number = parseInt(req.params.id, 10);
   if (isNaN(id)) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid id' });
+    return res.status(StatusCodes.BAD_REQUEST).json({ error: "Invalid id" });
   }
 
   const deletedTodo: number | null = deleteTodo(id);
@@ -1853,22 +1881,22 @@ dfberry: set logger to not log when in NODE_ENV == test
 GitHub Copilot: You can modify the logger creation logic to not log when `NODE_ENV` is set to `test`. Here's how you can do it:
 
 ```typescript
-import winston, { Logger } from 'winston';
+import winston, { Logger } from "winston";
 
 let logger: Logger;
 
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== "test") {
   logger = winston.createLogger({
-    level: 'info',
+    level: "info",
     format: winston.format.json(),
-    defaultMeta: { service: 'todo-service' },
+    defaultMeta: { service: "todo-service" },
     transports: [
-      new winston.transports.File({ filename: 'error.log', level: 'error' }),
-      new winston.transports.File({ filename: 'combined.log' }),
+      new winston.transports.File({ filename: "error.log", level: "error" }),
+      new winston.transports.File({ filename: "combined.log" }),
     ],
   });
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== "production") {
     logger.add(
       new winston.transports.Console({
         format: winston.format.simple(),
@@ -1879,7 +1907,7 @@ if (process.env.NODE_ENV !== 'test') {
   logger = winston.createLogger({
     transports: [
       new winston.transports.Stream({
-        stream: new require('stream').Writable({
+        stream: new require("stream").Writable({
           write: () => {},
         }),
       }),
@@ -1989,7 +2017,7 @@ This Dockerfile starts from the same image as your dev container and installs Do
   "name": "Node.js & TypeScript",
   "dockerFile": "Dockerfile",
   "runArgs": ["--privileged"], // Add this line
-  "features": {},
+  "features": {}
 }
 ```
 
@@ -2011,7 +2039,7 @@ Here's how you can do it:
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm",
   "features": {
     "docker-in-docker": "true"
-  },
+  }
 }
 ```
 
@@ -2035,9 +2063,7 @@ GitHub Copilot: To install the Azure CLI in your dev container, you can use the 
   "postCreateCommand": "node -v && npm -v && git -v && az --version",
   "customizations": {
     "vscode": {
-      "extensions": [
-        "GitHub.copilot-chat"
-      ]
+      "extensions": ["GitHub.copilot-chat"]
     }
   },
   "remoteUser": "root"
@@ -2098,9 +2124,7 @@ Update your `devcontainer.json` file to install the Azure CLI:
   "postCreateCommand": "node -v && npm -v && git -v && az --version",
   "customizations": {
     "vscode": {
-      "extensions": [
-        "GitHub.copilot-chat"
-      ]
+      "extensions": ["GitHub.copilot-chat"]
     }
   },
   "remoteUser": "root"
@@ -2129,9 +2153,7 @@ Here's how you can do it:
   "postCreateCommand": "node -v && npm -v && git -v && azd --version && bicep --version",
   "customizations": {
     "vscode": {
-      "extensions": [
-        "GitHub.copilot-chat"
-      ]
+      "extensions": ["GitHub.copilot-chat"]
     }
   },
   "remoteUser": "root"
@@ -2162,7 +2184,7 @@ Now, when you reopen your workspace in the dev container, it will have the Azure
 
 dfberry: This isn't correct. The answe should be `azd init`.
 
-GitHub Copilot: I apologize for the confusion. To initialize Azure Developer CLI (azd), you should indeed use the `azd init` command. 
+GitHub Copilot: I apologize for the confusion. To initialize Azure Developer CLI (azd), you should indeed use the `azd init` command.
 
 You can add this command to the `postCreateCommand` field in your `devcontainer.json` file. Here's how you can do it:
 
@@ -2170,15 +2192,13 @@ You can add this command to the `postCreateCommand` field in your `devcontainer.
 {
   "name": "Node.js & TypeScript",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-18-bookworm",
-  "features": {	
+  "features": {
     "ghcr.io/azure/azure-dev/azd:latest": "latest"
   },
   "postCreateCommand": "azd init && node -v && npm -v && git -v",
   "customizations": {
     "vscode": {
-      "extensions": [
-        "GitHub.copilot-chat"
-      ]
+      "extensions": ["GitHub.copilot-chat"]
     }
   },
   "remoteUser": "root"
@@ -2187,17 +2207,17 @@ You can add this command to the `postCreateCommand` field in your `devcontainer.
 
 In this `devcontainer.json` file, `"azd init"` initializes the Azure Developer CLI after the container is created.
 
-dfberry: How do I build the docker image from the DockerFile in api-todo from inside the container to test it
+dfberry: How do I build the docker image from the DockerFile in api from inside the container to test it
 
 GitHub Copilot: To build a Docker image from a Dockerfile in a specific directory from inside a container, you would typically use the `docker build` command. However, this requires Docker to be installed and accessible inside the container, which is not always the case.
 
 If Docker is installed and accessible inside your container, you can use the following command to build the Docker image:
 
 ```bash
-docker build -t api-todo-image -f /path/to/api-todo/Dockerfile /path/to/api-todo
+docker build -t api-image -f /path/to/api/Dockerfile /path/to/api
 ```
 
-Replace `/path/to/api-todo` with the actual path to the `api-todo` directory inside your container.
+Replace `/path/to/api` with the actual path to the `api` directory inside your container.
 
 If Docker is not accessible inside your container, you would need to install Docker inside the container (which is not recommended due to security reasons), use Docker-in-Docker (which also has security implications), or use a different approach to test your Dockerfile, such as building the Docker image on your host machine and then running the tests inside the Docker container.
 
@@ -2240,7 +2260,7 @@ Remember to update the version number each time you make changes to the Dockerfi
 
 dfberry: How can I make the label turn into the tag
 
-GitHub Copilot: To use the label value as a tag when building the Docker image, you would need to extract the label value and use it in the `docker build` command. However, Docker CLI does not provide a direct way to do this. 
+GitHub Copilot: To use the label value as a tag when building the Docker image, you would need to extract the label value and use it in the `docker build` command. However, Docker CLI does not provide a direct way to do this.
 
 You can use a shell script to extract the label value from the Dockerfile and use it as a tag. Here's an example of how you can do it in a bash script:
 
@@ -2274,7 +2294,7 @@ You can run these steps manually using the Azure CLI and Docker CLI, but azd aut
 
 dfberry: Where is the label in the DockerFile visible in the Azure Portal for Container Registry
 
-GitHub Copilot: The labels you add to a Docker image using the `LABEL` instruction in a Dockerfile are not directly visible in the Azure Portal for Azure Container Registry (ACR). 
+GitHub Copilot: The labels you add to a Docker image using the `LABEL` instruction in a Dockerfile are not directly visible in the Azure Portal for Azure Container Registry (ACR).
 
 However, you can view the labels of a Docker image stored in ACR by pulling the image and inspecting it locally using Docker CLI.
 
@@ -2381,7 +2401,7 @@ Now, when you run `azd up`, it will extract the version label from the Dockerfil
 
 dfberry: that doesn't look like the right syntax for a hook
 
-GitHub Copilot: You're correct, the `azure.yaml` file you've provided doesn't include a hook. Hooks in Azure Developer CLI (azd) allow you to run custom scripts at different stages of the deployment process. 
+GitHub Copilot: You're correct, the `azure.yaml` file you've provided doesn't include a hook. Hooks in Azure Developer CLI (azd) allow you to run custom scripts at different stages of the deployment process.
 
 To add a preprovision hook that reads the label from the Dockerfile and passes it into the provisioning process, you can modify your `azure.yaml` file like this:
 
@@ -2390,17 +2410,17 @@ To add a preprovision hook that reads the label from the Dockerfile and passes i
 
 name: cloud-native-todo
 metadata:
-    template: azd-init@1.5.0
+  template: azd-init@1.5.0
 services:
-    api-todo:
-        project: api-todo
-        host: containerapp
-        language: ts
-        docker:
-            path: Dockerfile
-        hooks:
-            preprovision:
-                command: ./preprovision.sh
+  api:
+    project: api
+    host: containerapp
+    language: ts
+    docker:
+      path: Dockerfile
+    hooks:
+      preprovision:
+        command: ./preprovision.sh
 ```
 
 In this `azure.yaml` file, the `hooks.preprovision.command` field has been added to run the `preprovision.sh` script before the provisioning process. This script should extract the version label from the Dockerfile and export it as an environment variable.
@@ -2421,21 +2441,21 @@ Now, when you run `azd up`, it will extract the version label from the Dockerfil
 
 dfberry: add a response header that includes the package.json's version property as a version of the api
 
-GitHub Copilot: To include the version of the API from the `package.json` file in the response headers, you can create a middleware function that sets a custom response header. 
+GitHub Copilot: To include the version of the API from the `package.json` file in the response headers, you can create a middleware function that sets a custom response header.
 
 Here's how you can do it:
 
 First, import the `version` property from the `package.json` file:
 
 ```typescript
-import { version } from './package.json';
+import { version } from "./package.json";
 ```
 
 Then, create a middleware function that sets a custom response header:
 
 ```typescript
 function setVersionHeader(_, res, next) {
-  res.setHeader('X-API-Version', version);
+  res.setHeader("X-API-Version", version);
   next();
 }
 ```
@@ -2449,15 +2469,15 @@ app.use(setVersionHeader);
 Here's the complete code:
 
 ```typescript
-import express from 'express';
-import { version } from './package.json';
+import express from "express";
+import { version } from "./package.json";
 
 // Create an Express app
 const app = express();
 
 // Middleware function to set the version header
 function setVersionHeader(_, res, next) {
-  res.setHeader('X-API-Version', version);
+  res.setHeader("X-API-Version", version);
   next();
 }
 
@@ -2469,7 +2489,7 @@ app.use(setVersionHeader);
 
 Now, every response from your Express app will include a `X-API-Version` header with the version of your API from the `package.json` file.
 
-dfberry: how do I ignore the error 
+dfberry: how do I ignore the error
 
 GitHub Copilot: The error you're seeing is likely due to TypeScript's module resolution system not recognizing JSON files by default. You can fix this by enabling the `resolveJsonModule` compiler option in your `tsconfig.json` file.
 
@@ -2482,9 +2502,9 @@ Here's how you can do it:
 ```json
 {
   "compilerOptions": {
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
     // Other compiler options...
-  },
+  }
   // Other tsconfig.json fields...
 }
 ```
@@ -2501,23 +2521,23 @@ Here's how you can do it:
 
 ```typescript
 // @ts-ignore
-import { version } from './package.json';
+import { version } from "./package.json";
 ```
 
 This will ignore the TS6059 error for the import line. However, please note that using `// @ts-ignore` is generally discouraged because it suppresses all errors on the line, not just the specific error you're trying to ignore. It's better to fix the underlying issue causing the error if possible.
 
 dfberry: Make the ignore statement more specific
 
-GitHub Copilot: Unfortunately, TypeScript does not currently support ignoring specific error codes. The `// @ts-ignore` comment suppresses all TypeScript errors on the next line. 
+GitHub Copilot: Unfortunately, TypeScript does not currently support ignoring specific error codes. The `// @ts-ignore` comment suppresses all TypeScript errors on the next line.
 
 However, you can add a comment to indicate why the `// @ts-ignore` comment is being used:
 
 ```typescript
 // @ts-ignore: Ignoring TS6059 as we want to import version from package.json
-import { version } from './package.json';
+import { version } from "./package.json";
 ```
 
-This makes it clear to anyone reading the code why the `// @ts-ignore` comment is there. 
+This makes it clear to anyone reading the code why the `// @ts-ignore` comment is there.
 
 Remember that using `// @ts-ignore` should be a last resort. It's generally better to fix the underlying issue causing the error if possible.
 
@@ -2561,9 +2581,9 @@ Please note that you need to have the necessary permissions to change the file's
 
 dfberry: what is the correct syntax for the path to the DockerFile that the bash script should use
 
-GitHub Copilot: The path to the Dockerfile in your bash script depends on where the script is located relative to the Dockerfile. 
+GitHub Copilot: The path to the Dockerfile in your bash script depends on where the script is located relative to the Dockerfile.
 
-In the provided script, the path `../api-todo/Dockerfile` suggests that the script is located in a directory at the same level as the `api-todo` directory, and the Dockerfile is located inside the `api-todo` directory.
+In the provided script, the path `../api/Dockerfile` suggests that the script is located in a directory at the same level as the `api` directory, and the Dockerfile is located inside the `api` directory.
 
 Here's a visual representation of the directory structure:
 
@@ -2571,7 +2591,7 @@ Here's a visual representation of the directory structure:
 .
 ├── scripts
 │   └── preprovision.sh
-└── api-todo
+└── api
     └── Dockerfile
 ```
 
@@ -2587,7 +2607,7 @@ GitHub Copilot: Sure, you can refactor the script to store the location of the D
 #!/bin/bash
 
 # Define the location of the Dockerfile
-DOCKERFILE_PATH='../api-todo/Dockerfile'
+DOCKERFILE_PATH='../api/Dockerfile'
 
 # Extract the version label from the Dockerfile
 VERSION=$(grep 'LABEL version=' "$DOCKERFILE_PATH" | cut -d'"' -f2)
@@ -2608,7 +2628,7 @@ GitHub Copilot: Sure, you can add a check to the script to ensure that the Docke
 #!/bin/bash
 
 # Define the location of the Dockerfile
-DOCKERFILE_PATH='../api-todo/Dockerfile'
+DOCKERFILE_PATH='../api/Dockerfile'
 
 # Check if the Dockerfile exists
 if [ ! -f "$DOCKERFILE_PATH" ]; then
@@ -2627,39 +2647,39 @@ export DOCKER_IMAGE_VERSION=$VERSION
 
 In this script, the `if [ ! -f "$DOCKERFILE_PATH" ]; then` line checks if the Dockerfile exists. If it doesn't, the script prints an error message and exits with a non-zero status code, indicating that an error occurred.
 
-dfberry: refactor the path how do I fix the azure.yaml file so it finds the preprovision script and the Dockerfile in the correct context of the root or the api-todo folder
+dfberry: refactor the path how do I fix the azure.yaml file so it finds the preprovision script and the Dockerfile in the correct context of the root or the api folder
 
-GitHub Copilot: The paths in your `azure.yaml` file should be relative to the location of the `azure.yaml` file itself. If your `azure.yaml` file is in the root of your project, and the `scripts` directory and `api-todo` directory are also in the root, you can adjust the paths like this:
+GitHub Copilot: The paths in your `azure.yaml` file should be relative to the location of the `azure.yaml` file itself. If your `azure.yaml` file is in the root of your project, and the `scripts` directory and `api` directory are also in the root, you can adjust the paths like this:
 
 ```yaml
 metadata:
-    template: azd-init@1.5.0
-hooks: 
-    # Run with:
-    # azd hooks run preprovision --debug
-    preprovision: 
+  template: azd-init@1.5.0
+hooks:
+  # Run with:
+  # azd hooks run preprovision --debug
+  preprovision:
+    shell: sh
+    run: |
+      pwd
+      ./scripts/preprovision.sh "./" "./api/Dockerfile"
+services:
+  api:
+    project: ./api
+    host: containerapp
+    language: ts
+    docker:
+      path: Dockerfile
+    hooks:
+      # Run with:
+      # azd hooks run preprovision --service "api" --debug
+      preprovision:
         shell: sh
         run: |
-            pwd
-            ./scripts/preprovision.sh "./" "./api-todo/Dockerfile"
-services:
-    api-todo:
-        project: ./api-todo
-        host: containerapp
-        language: ts
-        docker:
-            path: Dockerfile
-        hooks: 
-            # Run with:
-            # azd hooks run preprovision --service "api-todo" --debug
-            preprovision: 
-                shell: sh
-                run: |
-                    pwd
-                    ./scripts/preprovision.sh "./api-todo" "./api-todo/Dockerfile"
+          pwd
+          ./scripts/preprovision.sh "./api" "./api/Dockerfile"
 ```
 
-In this updated `azure.yaml` file, the paths to the `preprovision.sh` script and the Dockerfile have been adjusted to be relative to the location of the `azure.yaml` file. The `preprovision.sh` script is in the `scripts` directory in the root of your project, and the Dockerfile is in the `api-todo` directory, also in the root of your project.
+In this updated `azure.yaml` file, the paths to the `preprovision.sh` script and the Dockerfile have been adjusted to be relative to the location of the `azure.yaml` file. The `preprovision.sh` script is in the `scripts` directory in the root of your project, and the Dockerfile is in the `api` directory, also in the root of your project.
 
 dfberry: azd hooks run --help
 
@@ -2679,7 +2699,7 @@ Options:
 
 - `--help`: Show help information for the `azd hooks run` command.
 
-For example, the command `azd hooks run preprovision --service "api-todo" --debug` will run the `preprovision` hook for the `api-todo` service with debug output enabled.
+For example, the command `azd hooks run preprovision --service "api" --debug` will run the `preprovision` hook for the `api` service with debug output enabled.
 
 Please note that the actual options available might vary depending on the version of Azure Developer CLI you're using. You can always run `azd hooks run --help` to see the most up-to-date usage information.
 
@@ -2714,10 +2734,10 @@ printenv | sort
 You can update the `run` command in your `azure.yaml` file to use this command:
 
 ```yaml
-preprovision: 
-    shell: sh
-    run: |
-        printenv | sort
+preprovision:
+  shell: sh
+  run: |
+    printenv | sort
 ```
 
 This will print all environment variables sorted in alphabetical order.
@@ -2728,15 +2748,15 @@ GitHub Copilot: The `export` command in a script only sets the environment varia
 
 1. **Source the script:** Instead of running the script normally, you can source it. This runs the script in the current shell instead of a subshell, so any environment variables set by the script persist after the script ends. You can source a script by using the `source` command or the `.` command:
 
-    ```bash
-    source ./preprovision.sh
-    ```
+   ```bash
+   source ./preprovision.sh
+   ```
 
-    or
+   or
 
-    ```bash
-    . ./preprovision.sh
-    ```
+   ```bash
+   . ./preprovision.sh
+   ```
 
 2. **Set the environment variable in your shell profile:** If you want the environment variable to be set every time you open a new shell, you can add the `export` command to your shell profile file (like `~/.bashrc` or `~/.bash_profile` for bash, or `~/.zshrc` for zsh).
 
@@ -2754,22 +2774,22 @@ To set an environment variable that's available to Azure Developer CLI, you can 
 
 ```yaml
 services:
-  api-todo:
-    project: ./api-todo
+  api:
+    project: ./api
     host: containerapp
     language: ts
     docker:
       path: Dockerfile
     env:
-      DOCKER_IMAGE_VERSION: '1.0.0'
+      DOCKER_IMAGE_VERSION: "1.0.0"
     hooks:
-      preprovision: 
+      preprovision:
         shell: sh
         run: |
           printenv | sort
 ```
 
-In this example, the `DOCKER_IMAGE_VERSION` environment variable is set to `'1.0.0'` for the `api-todo` service. This environment variable will be available to the service and any hooks associated with the service.
+In this example, the `DOCKER_IMAGE_VERSION` environment variable is set to `'1.0.0'` for the `api` service. This environment variable will be available to the service and any hooks associated with the service.
 
 Please replace `'1.0.0'` with the actual version you want to set.
 
@@ -2785,7 +2805,7 @@ Here's how you can do it:
 #!/bin/bash
 
 # Define the location of the Dockerfile
-DOCKERFILE_PATH='./api-todo/Dockerfile'
+DOCKERFILE_PATH='./api/Dockerfile'
 
 # Check if the Dockerfile exists
 if [ ! -f "$DOCKERFILE_PATH" ]; then
@@ -2804,20 +2824,20 @@ echo "DOCKER_IMAGE_VERSION=$VERSION" > .env
 
 ```yaml
 services:
-  api-todo:
-    project: ./api-todo
+  api:
+    project: ./api
     host: containerapp
     language: ts
     docker:
       path: Dockerfile
     env_file: .env
     hooks:
-      preprovision: 
+      preprovision:
         shell: sh
         run: |
           pwd
           echo "Root provisioning"
-          ./scripts/preprovision.sh "./api-todo/Dockerfile"  
+          ./scripts/preprovision.sh "./api/Dockerfile"  
           printenv | sort
 ```
 
@@ -2861,21 +2881,21 @@ GitHub Copilot: Debugging Azure Developer CLI (azd) and Bicep for Container Apps
 
 Remember to replace any placeholders in the commands with the actual values for your deployment.
 
-dfberry: in the postprovision.sh, add code to get the AZURE_TODO_URL to the ./api-todo-test in a .env file then call the npm string in that directory called test
+dfberry: in the postprovision.sh, add code to get the AZURE_TODO_URL to the ./api-test in a .env file then call the npm string in that directory called test
 
-GitHub Copilot: To achieve this, you can modify your `postprovision.sh` script to write the `AZURE_TODO_URL` to a `.env` file in the `./api-todo-test` directory, and then run the `npm test` command in that directory. Here's how you can do it:
+GitHub Copilot: To achieve this, you can modify your `postprovision.sh` script to write the `AZURE_TODO_URL` to a `.env` file in the `./api-test` directory, and then run the `npm test` command in that directory. Here's how you can do it:
 
 ```bash
 #!/bin/bash
 
 # Define the location of the .env file
-ENV_FILE='./api-todo-test/.env'
+ENV_FILE='./api-test/.env'
 
 # Write the AZURE_TODO_URL to the .env file
 echo "AZURE_TODO_URL=$AZURE_TODO_URL" > "$ENV_FILE"
 
-# Change to the api-todo-test directory
-cd ./api-todo-test
+# Change to the api-test directory
+cd ./api-test
 
 # Run the npm test command
 npm test
@@ -2907,9 +2927,9 @@ docker volume prune
 
 Remember to be careful when removing Docker images and volumes, as this can delete data that you might need. Always make sure to backup any important data before running these commands.
 
-dfberry: how does azd and bicep set the endpoint for the api-todo service
+dfberry: how does azd and bicep set the endpoint for the api service
 
-GitHub Copilot: Azure Developer CLI (azd) and Bicep work together to deploy your services to Azure Container Apps. The endpoint for your `api-todo` service is determined by the configuration of your Container App and the routing rules you've set up.
+GitHub Copilot: Azure Developer CLI (azd) and Bicep work together to deploy your services to Azure Container Apps. The endpoint for your `api` service is determined by the configuration of your Container App and the routing rules you've set up.
 
 Here's a high-level overview of how it works:
 
@@ -2919,23 +2939,23 @@ Here's a high-level overview of how it works:
 
 3. **Container App:** The Container App service in Azure runs your Docker containers. Each service you define in your `azure.yaml` file corresponds to a container in your Container App.
 
-4. **Endpoint:** The endpoint for your `api-todo` service is determined by the DNS name of your Container App and the routing rules you've set up. By default, the DNS name is `<app-name>.<region>.azurecontainer.io`, and each service is available at a path corresponding to its name (e.g., `api-todo`).
+4. **Endpoint:** The endpoint for your `api` service is determined by the DNS name of your Container App and the routing rules you've set up. By default, the DNS name is `<app-name>.<region>.azurecontainer.io`, and each service is available at a path corresponding to its name (e.g., `api`).
 
 You can customize the endpoint by changing the DNS name of your Container App or by setting up custom routing rules. You can do this in the Azure portal or by modifying your Bicep file.
 
 Remember to replace any placeholders in the commands with the actual values for your deployment.
 
-dfberry: can I print out any other values from the api-todo like the endpoint is output
+dfberry: can I print out any other values from the api like the endpoint is output
 
-GitHub Copilot: Yes, you can output additional values from the `api-todo` resource in your Bicep file. The exact values you can output depend on the properties of the resource.
+GitHub Copilot: Yes, you can output additional values from the `api` resource in your Bicep file. The exact values you can output depend on the properties of the resource.
 
-For example, if the `api-todo` resource has a property named `endpoint`, you can output it like this:
+For example, if the `api` resource has a property named `endpoint`, you can output it like this:
 
 ```bicep
 output API_TODO_ENDPOINT string = apiTodo.outputs.endpoint
 ```
 
-This will output the `endpoint` property of the `api-todo` resource as `API_TODO_ENDPOINT`.
+This will output the `endpoint` property of the `api` resource as `API_TODO_ENDPOINT`.
 
 Please replace `endpoint` with the actual property name you want to output. The property name is case-sensitive and must match the name used in the resource definition.
 
@@ -2945,13 +2965,13 @@ dfberry: can I display any more values in stdout like the endpoint
 
 GitHub Copilot: Yes, you can display more values in the standard output (stdout) by adding more `output` statements in your Bicep file. The `output` keyword in Bicep is used to define values that will be returned after the deployment.
 
-For example, if you want to display the name of the `api-todo` service, you can add the following line to your Bicep file:
+For example, if you want to display the name of the `api` service, you can add the following line to your Bicep file:
 
 ```bicep
 output API_TODO_NAME string = apiTodo.outputs.name
 ```
 
-This will output the `name` property of the `api-todo` resource as `API_TODO_NAME`.
+This will output the `name` property of the `api` resource as `API_TODO_NAME`.
 
 Please replace `name` with the actual property name you want to output. The property name is case-sensitive and must match the name used in the resource definition.
 
@@ -2963,7 +2983,7 @@ GitHub Copilot: The Azure Developer CLI (azd) uses the configuration provided in
 
 In the `azure.yaml` file, under each service's `hooks` section, there are `preprovision`, `postprovision`, and other lifecycle hooks. These hooks can contain shell scripts that are executed at different stages of the service's lifecycle. The output of these scripts is displayed in the stdout.
 
-For example, in your `azure.yaml` excerpt, the `preprovision` hook for the `api-todo` service contains several `echo` commands and other commands like `pwd`, `ls -la ../`, and `cat ../.env`. The output of these commands is displayed in the stdout when the `preprovision` hook is executed.
+For example, in your `azure.yaml` excerpt, the `preprovision` hook for the `api` service contains several `echo` commands and other commands like `pwd`, `ls -la ../`, and `cat ../.env`. The output of these commands is displayed in the stdout when the `preprovision` hook is executed.
 
 In addition, azd also displays its own logs and messages in the stdout, including information about the deployment process and any errors that occur.
 
@@ -2988,8 +3008,8 @@ ENV_FILE='.env'
 # Write the AZURE_TODO_URL to the .env file
 echo "AZURE_TODO_URL=$AZURE_TODO_URL" > "$ENV_FILE"
 
-# Change to the api-todo-test directory
-cd ./api-todo-test
+# Change to the api-test directory
+cd ./api-test
 
 # Run the npm test command
 npm test
@@ -3022,8 +3042,8 @@ npm install dotenv
 2. Import and configure `dotenv` at the top of your test file:
 
 ```typescript
-import { test, expect } from '@playwright/test';
-import dotenv from 'dotenv';
+import { test, expect } from "@playwright/test";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -3051,7 +3071,7 @@ GitHub Copilot: To validate that a header exists and its value, you can use the 
 Here's how you can modify your test to validate the `X-API-Version` header:
 
 ```typescript
-test('should get all todos', async ({ request }) => {
+test("should get all todos", async ({ request }) => {
   const response = await request.get(`/todo`);
   expect(response.ok()).toBeTruthy();
 
@@ -3061,8 +3081,8 @@ test('should get all todos', async ({ request }) => {
 
   // Validate the X-API-Version header
   const headers = response.headers();
-  expect(headers).toHaveProperty('x-api-version');
-  expect(headers['x-api-version']).toEqual(version);
+  expect(headers).toHaveProperty("x-api-version");
+  expect(headers["x-api-version"]).toEqual(version);
 });
 ```
 
@@ -3075,33 +3095,33 @@ GitHub Copilot: To refactor the code so that every test checks for the header, y
 Here's how you can refactor your code:
 
 ```typescript
-import { test, expect } from '@playwright/test';
-import dotenv from 'dotenv';
+import { test, expect } from "@playwright/test";
+import dotenv from "dotenv";
 dotenv.config();
 
-const API_URL = process.env.API_TODO_URL || 'http://localhost:3000';
-console.log('API_URL', API_URL);
+const API_URL = process.env.API_TODO_URL || "http://localhost:3000";
+console.log("API_URL", API_URL);
 
-const { version } = require('../api-todo/package.json');
+const { version } = require("../api/package.json");
 
 test.use({
   ignoreHTTPSErrors: true, // in case your certificate isn't properly signed
   baseURL: API_URL,
   extraHTTPHeaders: {
-    'Accept': 'application/vnd.github.v3+json',
+    Accept: "application/vnd.github.v3+json",
     // Add authorization token to all requests.
-    'Authorization': `token ${process.env.API_TOKEN}`,
-  }
+    Authorization: `token ${process.env.API_TOKEN}`,
+  },
 });
 
 test.beforeEach(async ({ request }, testInfo) => {
   const response = await request.get(testInfo.title);
   const headers = response.headers();
-  expect(headers).toHaveProperty('x-api-version');
-  expect(headers['x-api-version']).toEqual(version);
+  expect(headers).toHaveProperty("x-api-version");
+  expect(headers["x-api-version"]).toEqual(version);
 });
 
-test('should get all todos', async ({ request }) => {
+test("should get all todos", async ({ request }) => {
   const response = await request.get(`/todo`);
   expect(response.ok()).toBeTruthy();
 
@@ -3165,7 +3185,7 @@ You can specify the reporter in your Playwright config file like this:
 ```typescript
 export default defineConfig({
   // other config options...
-  reporter: 'list', // or 'line', 'json', 'junit', 'dot', 'html'
+  reporter: "list", // or 'line', 'json', 'junit', 'dot', 'html'
 });
 ```
 

@@ -3,21 +3,20 @@ name: E2E
 on:
   workflow_dispatch:
   push:
-    branches: 
-      - '*'
+    branches:
+      - "*"
     paths:
-      - 'api-todo/**'
+      - "api/**"
       # - 'client-todo/**'
   pull_request:
-    branches: 
-      - 'main'
+    branches:
+      - "main"
     paths:
-      - 'api-todo/**'
+      - "api/**"
       # - 'client-todo/**'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -25,7 +24,6 @@ jobs:
         node-version: [18.x]
 
     steps:
-
       # Start environment
       - uses: actions/checkout@v2
 
@@ -44,7 +42,7 @@ jobs:
       # App versions
       - name: E2E API version
         run: |
-          cat api-todo/package.json | jq .version
+          cat api/package.json | jq .version
 
       - name: E2E Client version
         run: |
@@ -52,12 +50,12 @@ jobs:
 
       - name: E2E Playwright API test version
         run: |
-          cat api-todo-test/package.json | jq .version
+          cat api-test/package.json | jq .version
 
       # Start apps
       - name: E2E Start API uses MongoDB
         run: |
-          cd api-todo
+          cd api
           npm install
           npm run lint:fix
           npm run build
@@ -79,7 +77,6 @@ jobs:
           VITE_API_URL: http://localhost:3000
           NODE_ENV: development
 
-
       # Ping API
       - name: E2E Ping API
         run: |
@@ -90,12 +87,10 @@ jobs:
         run: |
           curl http://localhost:3005 --verbose
 
-
-
       # Run end to end tests
       - name: E2E Run Playwright tests
         run: |
-          cd api-todo-test
+          cd api-test
           npm install
           npm run test
         env: # Add your environment variables here

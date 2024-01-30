@@ -2,20 +2,20 @@
 
 This repo documents my journey to solidify my cloud native understand. I'll use ChatGPT conversations to learn. This includes building a roadmap, and accomplishing each goal on the roadmap.
 
-## Which AI to use? 
+## Which AI to use?
 
-Generally, I'll use GitHub Copilot from inside Visual Studio Code for answers which are context-aware. If the answers don't align with my current understanding, I'll experiment with the conversation and the code until I think my solution is as cloud native (or cloud-agnostic) as I can get it. 
+Generally, I'll use GitHub Copilot from inside Visual Studio Code for answers which are context-aware. If the answers don't align with my current understanding, I'll experiment with the conversation and the code until I think my solution is as cloud native (or cloud-agnostic) as I can get it.
 
-## What is cloud native? 
+## What is cloud native?
 
-To me, cloud native means cloud-agnostic. The tools, processes, and code should generally work on any cloud. 
+To me, cloud native means cloud-agnostic. The tools, processes, and code should generally work on any cloud.
 
 Most of my current experience is on Azure and is Azure native, which uses tools that aren't available on other clouds. This will be my fallback for expediency but won't be my first method to solve a problem.
 
 ## YouTube playlists
 
-* [Install and configure Azure Developer CLI](https://www.youtube.com/watch?v=zxGl4L_WwoE&list=PLAQX7qAUlTDhMm-Lkr91NCPAvrCRcaFEF)
-* [Setup GitHub for deploy from repository](https://www.youtube.com/watch?v=zxGl4L_WwoE&list=PLAQX7qAUlTDhMm-Lkr91NCPAvrCRcaFEF&pp=iAQB)
+- [Install and configure Azure Developer CLI](https://www.youtube.com/watch?v=zxGl4L_WwoE&list=PLAQX7qAUlTDhMm-Lkr91NCPAvrCRcaFEF)
+- [Setup GitHub for deploy from repository](https://www.youtube.com/watch?v=zxGl4L_WwoE&list=PLAQX7qAUlTDhMm-Lkr91NCPAvrCRcaFEF&pp=iAQB)
 
 ## Open dev container
 
@@ -57,11 +57,11 @@ root ➜ /workspaces/cloud-native-todo (dfberry/fix-api-log-location) $ azd hook
 2023/12/19 02:42:16 middleware.go:124: running middleware 'debug'
 2023/12/19 02:42:16 middleware.go:124: running middleware 'experimentation'
     1 passed (1.7s)
-  
+
   To open last HTML report run:
-  
+
     npx playwright show-report
-  
+
   Test completed
 
   ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────2023/12/19 02:42:19 command_runner.go:307: Run exec: ' /tmp/azd-postdeploy-3726761669.sh' , exit code: 0
@@ -80,20 +80,20 @@ Additional env:
 ***** Root postdeploy
 postdeploy.sh
 Getting param 1
-ENV_PATH: ./api-todo-test/.env
+ENV_PATH: ./api-test/.env
 Remove old .env file
 Getting values from azd
-Run test at ./api-todo-test
+Run test at ./api-test
 
-> api-todo-test@1.0.0 test
+> api-test@1.0.0 test
 > npx playwright test
 
-baseURL https://ca-api-todo-123.redfield-123.eastus2.azurecontainerapps.io
+baseURL https://ca-api-123.redfield-123.eastus2.azurecontainerapps.io
 
 Running 1 test using 1 worker
-baseURL https://ca-api-todo-123.redfield-123.eastus2.azurecontainerapps.io
+baseURL https://ca-api-123.redfield-123.eastus2.azurecontainerapps.io
 api.spec.ts:11:5 › should get all todos
-baseURL https://ca-api-todo-123.redfield-123.eastus2.azurecontainerapps.io
+baseURL https://ca-api-123.redfield-123.eastus2.azurecontainerapps.io
   1 passed (1.7s)
 
 To open last HTML report run:
@@ -103,15 +103,15 @@ To open last HTML report run:
 Test completed
 -------------------------------------stderr-------------------------------------------
   (✓) Done: Running postdeploy command hook for project
-  Running postdeploy service hook for api-todo
+  Running postdeploy service hook for api
 
-  ──────────── api-todo: postdeploy hook output ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ──────────── api: postdeploy hook output ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 
-  ***** api-todo postdeploy
+  ***** api postdeploy
 2023/12/19 02:42:19 hooks_runner.go:162: Executing script '/tmp/azd-postdeploy-2881386505.sh'
   ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-  (✓) Done: Running postdeploy service hook for api-todo
+  (✓) Done: Running postdeploy service hook for api
 Additional env:
 SUCCESS: Your hooks have been run successfully
 ```
@@ -135,7 +135,7 @@ Configure your GitHub pipeline
 ? How would you like to authenticate GitHub CLI? Login with a web browser
 
 ! First copy your one-time code: 1234-1234
-Press Enter to open github.com in your browser... 
+Press Enter to open github.com in your browser...
 ✓ Authentication complete.
 - gh config set -h github.com git_protocol https
 ✓ Configured git protocol
@@ -156,10 +156,10 @@ Press Enter to open github.com in your browser...
   https://github.com/dfberry/cloud-native-todo/settings/secrets/actions
 
 ? Would you like to commit and push your local changes to start the configured CI pipeline? Yes
-remote: 
+remote:
 remote: Create a pull request for 'dfberry/docs-update' on GitHub by visiting:
 remote:      https://github.com/dfberry/cloud-native-todo/pull/new/dfberry/docs-update
-remote: 
+remote:
 
   (✓) Done: Pushing changes
   (✓) Done: Queuing pipeline

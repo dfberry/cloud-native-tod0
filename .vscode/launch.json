@@ -7,7 +7,7 @@
     {
       "name": "API run",
       "request": "launch",
-      "cwd": "${workspaceFolder}/api-todo",
+      "cwd": "${workspaceFolder}/api",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "start"
@@ -16,22 +16,28 @@
       "internalConsoleOptions": "neverOpen",
       "type": "node"
     },
-
-
     {
       "name": "API tsnode",
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
-
-      "args": ["src/start.ts", "--example", "hello"],
-      
-      "cwd": "${workspaceRoot}/api-todo",
+      "runtimeArgs": [
+        "--nolazy",
+        "-r",
+        "ts-node/register/transpile-only"
+      ],
+      "args": [
+        "src/start.ts",
+        "--example",
+        "hello"
+      ],
+      "cwd": "${workspaceRoot}/api",
       "internalConsoleOptions": "openOnSessionStart",
-      "skipFiles": ["<node_internals>/**", "node_modules/**"]
+      "skipFiles": [
+        "<node_internals>/**",
+        "node_modules/**"
+      ]
     },
-
     {
       "type": "node",
       "request": "launch",
@@ -53,7 +59,7 @@
     {
       "name": "API test",
       "request": "launch",
-      "cwd": "${workspaceFolder}/api-todo",
+      "cwd": "${workspaceFolder}/api",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "test"

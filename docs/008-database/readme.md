@@ -1,27 +1,27 @@
 # Add database to the project
 
-The goal of **iteration 008** is to add a database to the project. 
+The goal of **iteration 008** is to add a database to the project.
 
-At this point, it doesn't matter if it is no-SQL, or SQL-based because there are no relationships or transactions. Someone suggested I look at Prisma for my ORM. After some testing, I realized a free Azure SQL database wasn't going to work because, Prisma requires a 2nd database, although only temporarily, for diffing the migrations. 
+At this point, it doesn't matter if it is no-SQL, or SQL-based because there are no relationships or transactions. Someone suggested I look at Prisma for my ORM. After some testing, I realized a free Azure SQL database wasn't going to work because, Prisma requires a 2nd database, although only temporarily, for diffing the migrations.
 
-While I'm sure Prisma has its purpose, at this stage of the project, it seems like overkill compared to adding a database and client library I'm more familiar with. A point in the project where boring is good. 
+While I'm sure Prisma has its purpose, at this stage of the project, it seems like overkill compared to adding a database and client library I'm more familiar with. A point in the project where boring is good.
 
-Since I'm already on Azure, selecting some flavor of SQL Server or Cosmos DB makes sense if there is a consumption (pay-as-you-go) pricing tier (SKU) which is free-ish for such as small project. Mongoose and the Cosmos DB API for MongoDB are expedient choices given the wealth of documentation for both for TypeScript/JavaScript. 
+Since I'm already on Azure, selecting some flavor of SQL Server or Cosmos DB makes sense if there is a consumption (pay-as-you-go) pricing tier (SKU) which is free-ish for such as small project. Mongoose and the Cosmos DB API for MongoDB are expedient choices given the wealth of documentation for both for TypeScript/JavaScript.
 
-* Mongo DB developer guide for Cosmos DB
-* Mongoose documentation
+- Mongo DB developer guide for Cosmos DB
+- Mongoose documentation
 
 ## Add a MongoDB container to the development environment
 
-All the local services are managed by Docker compose for local development where possible. Add the MongoDB container so development and testing don't incur any pay-as-you-go costs. 
+All the local services are managed by Docker compose for local development where possible. Add the MongoDB container so development and testing don't incur any pay-as-you-go costs.
 
 ```yaml
 version: "3"
 
 services:
-  api-todo:
+  api:
     build:
-      context: ./api-todo
+      context: ./api
     ports:
       - "3000:3000"
     depends_on:
@@ -36,7 +36,7 @@ services:
     ports:
       - "3005:3005"
     depends_on:
-      - api-todo
+      - api
 
   mongodb:
     image: mongo:5.0
@@ -59,13 +59,13 @@ Start the service in a separate terminal with:
 docker compose up mongodb
 ```
 
-I stoke this idea from the Contoso Real Estate project which has a wealth of development environment configuration for you to use. 
+I stoke this idea from the Contoso Real Estate project which has a wealth of development environment configuration for you to use.
 
 Now that the database is running, add the MongoDB viewer.
 
 ## Visual Studio Code extension for MongoDB
 
-Make sure you add the [MongoDB](https://marketplace.visualstudio.com/items?itemName=mongodb.mongodb-vscode) viewer extension to the development environment, in the `devcontainer.json`. 
+Make sure you add the [MongoDB](https://marketplace.visualstudio.com/items?itemName=mongodb.mongodb-vscode) viewer extension to the development environment, in the `devcontainer.json`.
 
 ```json
 	"customizations": {
@@ -79,12 +79,11 @@ Make sure you add the [MongoDB](https://marketplace.visualstudio.com/items?itemN
 	},
 ```
 
-You can add a connection with a connection string so this can be used for both local and cloud databases. 
-
+You can add a connection with a connection string so this can be used for both local and cloud databases.
 
 ## TODO shape
 
-The shape of the TODO prior to this iteration was: 
+The shape of the TODO prior to this iteration was:
 
 ```json
 {
@@ -97,38 +96,38 @@ Update the shape to allow for data shape growth:
 
 ```json
 {
-  id: '65ad9ad0769c2853d2804f3f',
-  title: 'Get Milk',
-  description: 'the oaty kind',
-  createdAt: '2024-01-21T22:29:36.849Z',
-  updatedAt: ''
+  "id": "65ad9ad0769c2853d2804f3f",
+  "title": "Get Milk",
+  "description": "the oaty kind",
+  "createdAt": "2024-01-21T22:29:36.849Z",
+  "updatedAt": ""
 }
 ```
 
-The title and description should have a max size to help the UI. 
+The title and description should have a max size to help the UI.
 
 ## Install mongoose to API
 
-TypeScript types are already in the package so just install it. 
+TypeScript types are already in the package so just install it.
 
 ```bash
 npm install mongoose
 ```
 
-The `package.json` shows `"mongoose": "^8.0.4",` in the dependencies property. 
+The `package.json` shows `"mongoose": "^8.0.4",` in the dependencies property.
 
 ## Connect to the database
 
-Before jumping in with code in the API, make sure you can connect to the database with the client library. Design your schema and make sure any restrictions, validations, and transformations are complete. Leave the script in the repo, it will be handy for the next person onboarded to the project to not have to figure out how to connection and view data. Keep this connection script all as a single file. This allows someone new to the team and Mongoose to understand how the pieces fit together. 
+Before jumping in with code in the API, make sure you can connect to the database with the client library. Design your schema and make sure any restrictions, validations, and transformations are complete. Leave the script in the repo, it will be handy for the next person onboarded to the project to not have to figure out how to connection and view data. Keep this connection script all as a single file. This allows someone new to the team and Mongoose to understand how the pieces fit together.
 
 ```javascript
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const COLLECTION = 'TodoConnectionTest';
+const COLLECTION = "TodoConnectionTest";
 
 // Run mongo with `docker compose up mongodb`
-const URI = 'mongodb://mongo:MongoPass@localhost:27017/';
+const URI = "mongodb://mongo:MongoPass@localhost:27017/";
 
 const TodoSchema = new Schema(
   {
@@ -157,12 +156,12 @@ const TodoSchema = new Schema(
   }
 );
 
-TodoSchema.virtual('id').get(function () {
+TodoSchema.virtual("id").get(function () {
   return this._id.toHexString();
 });
 
 // Ensure virtual fields are serialised.
-TodoSchema.set('toJSON', {
+TodoSchema.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: function (doc, ret) {
@@ -179,21 +178,20 @@ const main = async () => {
 
   // Using create
   const saveResult1 = await TodoDb.create({
-    title: 'first todo',
-    description: 'description',
+    title: "first todo",
+    description: "description",
     createdAt: new Date().toISOString(),
   });
   const transformed1 = saveResult1.toJSON();
-  console.log('Created lean--------------------------------');
+  console.log("Created lean--------------------------------");
   console.log(transformed1);
 
   // ADD MORE COMMANDS
-
 };
 
 main()
   .then(() => {
-    console.log('done');
+    console.log("done");
     mongoose.disconnect();
   })
   .catch((e) => {
@@ -209,7 +207,7 @@ Add a script to the `package.json` so you can test the connection:
 
 ## TypeScript database service
 
-Start with a generic CRUD class. All MongoDB collections will use this class to enforce consistency. 
+Start with a generic CRUD class. All MongoDB collections will use this class to enforce consistency.
 
 ```typescript
 export default class CrudService<T> {
@@ -280,16 +278,16 @@ export default class CrudService<T> {
 }
 ```
 
-MongoDB and the Mongoose client provide a high degree of configuration for what type of information to return from the mongoose calls. Its important to play with this in the previous script to determine what you want returned then apply those changes to this Crud class and the schema via the model that it uses. 
+MongoDB and the Mongoose client provide a high degree of configuration for what type of information to return from the mongoose calls. Its important to play with this in the previous script to determine what you want returned then apply those changes to this Crud class and the schema via the model that it uses.
 
-* **`_id` versus `id`**: MongoDB stores the unique id as `_id` but I want the REST API and the UI to only use `id`. Any transformations need to be done at this data layer. If this data service was used for automation or other movement of data between backend services, that would probably require some strict contracts so an ambitious DBA didn't make assumptions that the native `_id` was required. 
-* transformation on **single versus multiple** items: many of the convenience functions run a query inside the mongoose client which is meant to operate on multiple values. When running queries, transformations applied to a single object (such as with create()) aren't applied to the objects. You need to either transform the objects yourself, or provide an aggregation pipeline to make sure you get the shape returned which you expect. This means your tests need to validate the shape of objects for all CRUD operations where you want data returned. You may opt to have have the transformations applied at the CRUD class level and the schema level, if the owner of the application code and the owner of the schema object definition are different people. For example, the tests might include:
-  * Test property property count
-  * Test property names
-  * Test that `_id` and `_v` aren't returned
-  * Test a new item only has the createdAt date
-  * Test an updated item only has the updatedAt data
-* **data returned**: the mongoose client methods can return a stunning variety of values and information. For example, when updating, the returned information can include the data set in, the data after it was updated, or include the number of items which were updated. Be clear in your design when to return what kind of information. The API layer should only return what the UI needs. 
+- **`_id` versus `id`**: MongoDB stores the unique id as `_id` but I want the REST API and the UI to only use `id`. Any transformations need to be done at this data layer. If this data service was used for automation or other movement of data between backend services, that would probably require some strict contracts so an ambitious DBA didn't make assumptions that the native `_id` was required.
+- transformation on **single versus multiple** items: many of the convenience functions run a query inside the mongoose client which is meant to operate on multiple values. When running queries, transformations applied to a single object (such as with create()) aren't applied to the objects. You need to either transform the objects yourself, or provide an aggregation pipeline to make sure you get the shape returned which you expect. This means your tests need to validate the shape of objects for all CRUD operations where you want data returned. You may opt to have have the transformations applied at the CRUD class level and the schema level, if the owner of the application code and the owner of the schema object definition are different people. For example, the tests might include:
+  - Test property property count
+  - Test property names
+  - Test that `_id` and `_v` aren't returned
+  - Test a new item only has the createdAt date
+  - Test an updated item only has the updatedAt data
+- **data returned**: the mongoose client methods can return a stunning variety of values and information. For example, when updating, the returned information can include the data set in, the data after it was updated, or include the number of items which were updated. Be clear in your design when to return what kind of information. The API layer should only return what the UI needs.
 
 ## Use the CRUD class for collections
 
@@ -307,7 +305,7 @@ export interface IDataClass<T> {
 }
 ```
 
-If there are specific validations or transformations for a collection, apply them at a layer above the generic CRUD class. 
+If there are specific validations or transformations for a collection, apply them at a layer above the generic CRUD class.
 
 ```typescript
 export type CrudServiceResponse<T> = {
@@ -320,13 +318,13 @@ export class TodoService implements IDataClass<Todo> {
   #service: CrudService<Todo>;
 
   constructor(connection: mongoose.Connection) {
-    const ConnectedTodoModel = connection.model<Todo>('Todo', TodoSchema);
+    const ConnectedTodoModel = connection.model<Todo>("Todo", TodoSchema);
     this.#service = new CrudService<Todo>(ConnectedTodoModel);
   }
 
   async get(id: string): Promise<CrudServiceResponse<Todo>> {
     if (!id) {
-      return { data: null, error: new Error('id is required') };
+      return { data: null, error: new Error("id is required") };
     }
 
     return await this.#service.get(id);
@@ -346,7 +344,7 @@ export class TodoService implements IDataClass<Todo> {
     todo: Partial<Todo>
   ): Promise<CrudServiceResponse<Todo>> {
     if (!id) {
-      return { data: null, error: new Error('id is required') };
+      return { data: null, error: new Error("id is required") };
     }
 
     const { valid, error } = isValidPartial(todo);
@@ -364,7 +362,7 @@ export class TodoService implements IDataClass<Todo> {
 
   async delete(id: string): Promise<CrudServiceResponse<Todo>> {
     if (!id) {
-      return { data: null, error: new Error('id is required') };
+      return { data: null, error: new Error("id is required") };
     }
 
     return await this.#service.delete(id);
@@ -386,7 +384,7 @@ export class TodoService implements IDataClass<Todo> {
 
 ## Create the API routes and handlers
 
-The API is separated between individual and multiple items. 
+The API is separated between individual and multiple items.
 
 ```typescript
 // Multiples Routes
@@ -394,13 +392,13 @@ The API is separated between individual and multiple items.
 // Create Todo router with all routes then export it
 const todosRouter = express.Router();
 
-todosRouter.get('/', getAllTodosHandler);
-todosRouter.patch('/', batchUploadTodoHandler);
-todosRouter.delete('/', deleteAllTodoHandler);
+todosRouter.get("/", getAllTodosHandler);
+todosRouter.patch("/", batchUploadTodoHandler);
+todosRouter.delete("/", deleteAllTodoHandler);
 
 // Catch-all route
-todosRouter.all('*', (req, res) => {
-  sendResponse(req, res, StatusCodes.NOT_FOUND, { error: 'Not Found' });
+todosRouter.all("*", (req, res) => {
+  sendResponse(req, res, StatusCodes.NOT_FOUND, { error: "Not Found" });
   return;
 });
 todosRouter.use(handleError);
@@ -411,32 +409,32 @@ todosRouter.use(handleError);
 // Create Todo router with all routes then export it
 const todoRouter = express.Router();
 
-todoRouter.get('/:id', getTodoHandler);
-todoRouter.post('/', addTodoHandler);
-todoRouter.put('/:id', updateTodoHandler);
-todoRouter.delete('/:id', deleteTodoHandler);
+todoRouter.get("/:id", getTodoHandler);
+todoRouter.post("/", addTodoHandler);
+todoRouter.put("/:id", updateTodoHandler);
+todoRouter.delete("/:id", deleteTodoHandler);
 
 // Catch-all route
-todoRouter.all('*', (req, res) => {
-  sendResponse(req, res, StatusCodes.NOT_FOUND, { error: 'Not Found' });
+todoRouter.all("*", (req, res) => {
+  sendResponse(req, res, StatusCodes.NOT_FOUND, { error: "Not Found" });
   return;
 });
 todoRouter.use(handleError);
 ```
 
-Pull in the routes to the Express app: 
+Pull in the routes to the Express app:
 
 ```typescript
 // Route that operates on a single todo
-app.use('/todo', todoRouter);
+app.use("/todo", todoRouter);
 
 // Route that operates on multiple todos
-app.use('/todos', todosRouter);
+app.use("/todos", todosRouter);
 ```
 
 ## Test the APIs
 
-You can use cURL, Postman, or Supertest. 
+You can use cURL, Postman, or Supertest.
 
 ```bash
 ## Single
@@ -452,42 +450,42 @@ curl -X DELETE http://localhost:3000/todos --verbose
 ```
 
 ```typescript
-import request from 'supertest';
-import configureApp from './server'; // Import your Express app
-import 'dotenv/config';
+import request from "supertest";
+import configureApp from "./server"; // Import your Express app
+import "dotenv/config";
 
-describe('Todo API against running MongoDB', () => {
-  it('test all todo routes', async () => {
-    process.env.NODE_ENV = 'test';
+describe("Todo API against running MongoDB", () => {
+  it("test all todo routes", async () => {
+    process.env.NODE_ENV = "test";
 
     const { app, connection } = await configureApp();
-    await request(app).delete('/todos');
+    await request(app).delete("/todos");
 
     // Add one
     const addOneResponse = await request(app)
-      .post('/todo')
+      .post("/todo")
       .send({
         todo: {
-          title: 'Sa1 - ' + Date.now(),
-          description: 'Sa2 - ' + Date.now(),
+          title: "Sa1 - " + Date.now(),
+          description: "Sa2 - " + Date.now(),
         },
       });
     testAdd(addOneResponse);
 
     // // Update one
     const updateOneResponse = await request(app)
-      .put('/todo/' + addOneResponse.body.data.id)
+      .put("/todo/" + addOneResponse.body.data.id)
       .send({
         todo: {
-          title: 'Su1 - ' + Date.now(),
-          description: 'su2 ' + Date.now(),
+          title: "Su1 - " + Date.now(),
+          description: "su2 " + Date.now(),
         },
       });
     testUpdate(updateOneResponse);
 
     // // Delete `Sa1`, `Su1` should still be there
     const deletedOneResponse = await request(app).delete(
-      '/todo/' + addOneResponse.body.data.id
+      "/todo/" + addOneResponse.body.data.id
     );
     testDelete(deletedOneResponse);
 
@@ -496,28 +494,28 @@ describe('Todo API against running MongoDB', () => {
     const addThreeBody = {
       todos: [
         {
-          title: 'B1a ' + Date.now(),
-          description: 'B1b' + Date.now(),
+          title: "B1a " + Date.now(),
+          description: "B1b" + Date.now(),
         },
         {
-          title: 'B2a' + Date.now(),
-          description: 'B2b' + Date.now(),
+          title: "B2a" + Date.now(),
+          description: "B2b" + Date.now(),
         },
         {
-          title: 'B3a' + Date.now(),
-          description: 'B3b' + Date.now(),
+          title: "B3a" + Date.now(),
+          description: "B3b" + Date.now(),
         },
       ],
     };
-    const batchResponse = await request(app).patch('/todos').send(addThreeBody);
+    const batchResponse = await request(app).patch("/todos").send(addThreeBody);
     testBatch(batchResponse);
 
     // // Get All - should return four items
-    const getAllResponse = await request(app).get('/todos');
+    const getAllResponse = await request(app).get("/todos");
     testGetAll(getAllResponse, 3);
 
     // Delete All
-    const deleteAllResponse = await request(app).delete('/todos');
+    const deleteAllResponse = await request(app).delete("/todos");
     testDeleteAll(deleteAllResponse, 3);
 
     if (connection) {
@@ -535,11 +533,11 @@ const testTodoShape = (todo) => {
   const keys = Object.keys(todo);
 
   expect(keys.length).toEqual(5);
-  expect(keys).toContainEqual('id');
-  expect(keys).toContainEqual('title');
-  expect(keys).toContainEqual('description');
-  expect(keys).toContainEqual('createdAt');
-  expect(keys).toContainEqual('updatedAt');
+  expect(keys).toContainEqual("id");
+  expect(keys).toContainEqual("title");
+  expect(keys).toContainEqual("description");
+  expect(keys).toContainEqual("createdAt");
+  expect(keys).toContainEqual("updatedAt");
 };
 const testTodoArrayShape = (todos) => {
   expect(todos).toBeInstanceOf(Array);
@@ -622,4 +620,4 @@ const testDeleteAll = (deleteAllResponse, dataLength) => {
 
 ## Next step
 
-The next step is to add this functionality to the cloud environment. 
+The next step is to add this functionality to the cloud environment.

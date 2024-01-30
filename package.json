@@ -17,8 +17,8 @@
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "api-todo",
-    "api-todo-test",
+    "api",
+    "api-test",
     "client-todo"
   ],
   "dependencies": {

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage: <script> <path-for-docker-file>
-# Example: ./scripts/preprovision.sh "./api-todo" 
+# Example: ./scripts/preprovision.sh "./api" 
 
 # Combine the context path with the Dockerfile path
 DOCKERFILE_CONTEXT_PATH=$1 || "Dockerfile"
