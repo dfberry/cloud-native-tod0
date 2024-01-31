@@ -1,7 +1,8 @@
 version: "3"
 
 services:
-  api-todo:
+  api:
+    container_name: api
     build:
       context: ./api-todo
     volumes:
@@ -14,21 +15,31 @@ services:
       - DATABASE_URI=mongodb://mongo:MongoPass@mongodb:27017/
       - DATABASE_USE_MONGODB=true
       - NODE_ENV=development
-    networks:
-      - api-db-network
+    # networks:
+    #   - api
+    #   - web
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
-  # client-todo:
-  #   build:
-  #     context: ./client-todo
-  #   environment:
-  #     - VITE_USE_LOCAL_API="true"
-  #     - VITE_API_URL=http://localhost:3000
-  #   ports:
-  #     - "3005:3005"
-  #   depends_on:
-  #     - api-todo
+  client-todo:
+    container_name: client
+    build:
+      context: ./client-todo
+    environment:
+      - VITE_USE_LOCAL_API="true"
+      - VITE_API_URL=http://localhost:3000
+    ports:
+      - "3005:3005"
+    depends_on:
+      - api
+    # networks:
+    #   - web
 
   mongodb:
+    container_name: mongodb
     image: mongo:5.0
     restart: always
     environment:
@@ -38,22 +49,34 @@ services:
       - "27017:27017"
     volumes:
       - ./mongodata:/data/db
-    networks:
-      - api-db-network
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    # networks:
+    #   - api
 
-  # test-api-todo:
-  #   build:
-  #     context: ./api-todo-test
-  #   environment:
-  #     - API_TODO_ENDPOINT=http://localhost:3000
-  #   volumes:
-  #     - ./api-todo-test:/app
-  #   depends_on:
-  #     - api-todo
-  #     - mongodb
+  test-api-todo:
+    container_name: test-api
+    build:
+      context: ./api-todo-test
+    environment:
+      - API_TODO_ENDPOINT=http://localhost:3000
+    volumes:
+      - ./api-todo-test:/app
+    depends_on:
+      - api
+      - mongodb
+    # networks:
+    #   - api
 
 volumes:
   mongodata:
 
-networks:
-  api-db-network:
+# networks:
+#   web:
+#     name: web
+#   api:
+#     name: api
+#     driver: bridge
