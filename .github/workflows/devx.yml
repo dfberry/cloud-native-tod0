@@ -34,7 +34,7 @@ jobs:
             docker network ls
 
         - name: Print service status
-          run: docker ps | grep <service_name>
+          run: docker ps | grep api
 
         - name: Print network configuration
           run: docker network inspect api
