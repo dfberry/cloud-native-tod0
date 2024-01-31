@@ -2,6 +2,7 @@ version: "3"
 
 services:
   api:
+    container_name: api
     build:
       context: ./api-todo
     volumes:
@@ -24,6 +25,7 @@ services:
       retries: 3
 
   client-todo:
+    container_name: client
     build:
       context: ./client-todo
     environment:
@@ -37,6 +39,7 @@ services:
     #   - web
 
   mongodb:
+    container_name: mongodb
     image: mongo:5.0
     restart: always
     environment:
@@ -55,6 +58,7 @@ services:
     #   - api
 
   test-api-todo:
+    container_name: test-api
     build:
       context: ./api-todo-test
     environment:
