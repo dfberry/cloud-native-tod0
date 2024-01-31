@@ -45,15 +45,23 @@ jobs:
         - name: DEVX-Logs
           run: docker logs api
 
+        - name: Get Docker IP
+          id: get_ip
+          run: |
+            docker_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name)
+            echo "Docker IP: $docker_ip"
+            echo "::set-output name=docker_ip::$docker_ip"
+
+
         # verify result is in 200 range
         - name: DEVX-cURL to Root
           run: |
-            curl http://localhost:3000/ --verbose
+            curl http://${{ steps.get_ip.outputs.docker_ip }}:3000/ --verbose
 
           # verify result is in 200 range
         - name: DEVX-cURL to API
           run: |
-            curl http://localhost:3000/todos --verbose
+            curl http://${{ steps.get_ip.outputs.docker_ip }}:3000/todos --verbose
   
         # Stop environment
         - name: DEVX-Stop containers
