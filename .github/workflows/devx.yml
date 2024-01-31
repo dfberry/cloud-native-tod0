@@ -27,32 +27,16 @@ jobs:
   
         - name: DEVX-Start database and api
           run: |
-            docker compose -f "docker-compose.yml" up -d --build api mongodb
+            docker compose -f "docker-compose.yml" up -d --build mongodb api
   
         - name: DEVX-Network
           run: |
             docker network ls
 
-        # Wait for MongoDB service to be ready
-        - name: Wait for MongoDB service
-          run: |
-            until docker exec -it mongodb mongo --eval "db.adminCommand('ping')"; do
-              echo 'Waiting for MongoDB service...'
-              sleep 5
-            done
-
-        # Wait for API service to be ready
-        - name: Wait for API service
-          run: |
-            until curl -sf http://localhost:3000; do
-              echo 'Waiting for API service...'
-              sleep 5
-            done
-
         # verify result is in 200 range
         - name: DEVX-cURL to Root
           run: |
-            curl http://localhost:3000/ --verbose
+            curl http://api:3000/ --verbose
 
           # verify result is in 200 range
         - name: DEVX-cURL to API

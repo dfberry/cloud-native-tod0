@@ -16,6 +16,11 @@ services:
       - NODE_ENV=development
     networks:
       - api-db-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   client-todo:
     build:
@@ -38,6 +43,11 @@ services:
       - "27017:27017"
     volumes:
       - ./mongodata:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - api-db-network
 
