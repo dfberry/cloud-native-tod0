@@ -48,7 +48,7 @@ jobs:
         - name: Get Docker IP
           id: get_ip
           run: |
-            docker_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name)
+            docker_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' api)
             echo "Docker IP: $docker_ip"
             echo "::set-output name=docker_ip::$docker_ip"
 
