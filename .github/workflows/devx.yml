@@ -36,8 +36,8 @@ jobs:
         - name: Print service status
           run: docker ps | grep api
 
-        - name: Print network configuration
-          run: docker network inspect api
+        # - name: Print network configuration
+        #   run: docker network inspect api
 
         - name: DEVX-List containers
           run: docker ps -a 

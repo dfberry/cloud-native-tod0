@@ -14,9 +14,9 @@ services:
       - DATABASE_URI=mongodb://mongo:MongoPass@mongodb:27017/
       - DATABASE_USE_MONGODB=true
       - NODE_ENV=development
-    networks:
-      - api
-      - web
+    # networks:
+    #   - api
+    #   - web
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/"]
       interval: 30s
@@ -33,8 +33,8 @@ services:
       - "3005:3005"
     depends_on:
       - api
-    networks:
-      - web
+    # networks:
+    #   - web
 
   mongodb:
     image: mongo:5.0
@@ -51,8 +51,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      - api
+    # networks:
+    #   - api
 
   test-api-todo:
     build:
@@ -64,15 +64,15 @@ services:
     depends_on:
       - api
       - mongodb
-    networks:
-      - api
+    # networks:
+    #   - api
 
 volumes:
   mongodata:
 
-networks:
-  web:
-    name: web
-  api:
-    name: api
-    driver: bridge
+# networks:
+#   web:
+#     name: web
+#   api:
+#     name: api
+#     driver: bridge
