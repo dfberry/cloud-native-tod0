@@ -26,8 +26,13 @@ jobs:
         - uses: actions/checkout@v2
   
         - name: DEVX-Start database and api
-          run: docker-compose -f "docker-compose.yml" up --build -d mongodb api
+          run: docker-compose "docker-compose.yml" up --build
   
+        # verify result is in 200 range
+        - name: DEVX-cURL to Root
+          run: |
+            curl http://localhost:3000/ --verbose
+
           # verify result is in 200 range
         - name: DEVX-cURL to API
           run: |
