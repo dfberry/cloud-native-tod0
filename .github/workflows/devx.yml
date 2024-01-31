@@ -53,15 +53,10 @@ jobs:
             echo "::set-output name=docker_ip::$docker_ip"
 
 
-        # verify result is in 200 range
+        # verify result is in 200 range - doesn't require database
         - name: DEVX-cURL to Root
           run: |
-            curl http://${{ steps.get_ip.outputs.docker_ip }}:3000/ --verbose
-
-          # verify result is in 200 range
-        - name: DEVX-cURL to API
-          run: |
-            curl http://${{ steps.get_ip.outputs.docker_ip }}:3000/todos --verbose
+            curl http://localhost:3000/ 
   
         # Stop environment
         - name: DEVX-Stop containers
