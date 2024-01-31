@@ -1,0 +1,40 @@
+name: devx
+
+# Verify local developer experience works
+# Docker compose is used to start the various services
+
+on:
+    workflow_dispatch:
+    push:
+      branches: 
+        - '*'
+    pull_request:
+      branches: 
+        - '*'
+  
+  jobs:
+    devx-api:
+  
+      runs-on: ubuntu-latest
+  
+      strategy:
+        matrix:
+          node-version: [18.x]
+  
+      steps:
+  
+        # Start environment
+        - uses: actions/checkout@v2
+  
+        - name: DEVX-Start database and api
+          run: docker-compose -f "docker-compose.yml" up --build -d mongodb api
+  
+          # verify result is in 200 range
+        - name: DEVX-cURL to API
+          run: |
+            curl http://localhost:3000/todos --verbose
+  
+        # Stop environment
+        - name: DEVX-Stop containers
+          if: always()
+          run: docker-compose -f "docker-compose.yml" down

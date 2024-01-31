@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  api-todo:
+  api:
     build:
       context: ./api-todo
     volumes:
@@ -17,16 +17,16 @@ services:
     networks:
       - api-db-network
 
-  # client-todo:
-  #   build:
-  #     context: ./client-todo
-  #   environment:
-  #     - VITE_USE_LOCAL_API="true"
-  #     - VITE_API_URL=http://localhost:3000
-  #   ports:
-  #     - "3005:3005"
-  #   depends_on:
-  #     - api-todo
+  client-todo:
+    build:
+      context: ./client-todo
+    environment:
+      - VITE_USE_LOCAL_API="true"
+      - VITE_API_URL=http://localhost:3000
+    ports:
+      - "3005:3005"
+    depends_on:
+      - api-todo
 
   mongodb:
     image: mongo:5.0
@@ -41,16 +41,16 @@ services:
     networks:
       - api-db-network
 
-  # test-api-todo:
-  #   build:
-  #     context: ./api-todo-test
-  #   environment:
-  #     - API_TODO_ENDPOINT=http://localhost:3000
-  #   volumes:
-  #     - ./api-todo-test:/app
-  #   depends_on:
-  #     - api-todo
-  #     - mongodb
+  test-api-todo:
+    build:
+      context: ./api-todo-test
+    environment:
+      - API_TODO_ENDPOINT=http://localhost:3000
+    volumes:
+      - ./api-todo-test:/app
+    depends_on:
+      - api-todo
+      - mongodb
 
 volumes:
   mongodata:
