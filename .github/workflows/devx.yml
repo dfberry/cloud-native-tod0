@@ -45,12 +45,19 @@ jobs:
         - name: DEVX-Logs
           run: docker logs api
 
-        - name: Get Docker IP
+        - name: Get Docker IP - api
           id: get_ip
           run: |
             docker_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' api)
             echo "Docker IP: $docker_ip"
             echo "::set-output name=docker_ip::$docker_ip"
+
+        - name: Get Docker IP - mongod
+          id: get_ip_db
+          run: |
+            docker_ip_db=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mongodb)
+            echo "Docker IP: $docker_ip_db"
+            echo "::set-output name=docker_ip_db::$docker_ip_db"
 
 
         # verify result is in 200 range - doesn't require database
@@ -59,11 +66,6 @@ jobs:
           run: |
             curl http://localhost:3000/ 
   
-        # Stop environment
-        - name: DEVX-Stop containers
-          if: always()
-          run: docker-compose -f "docker-compose.yml" down
-
         # Collect and print container logs
         - name: DEVX-Collect logs
           if: always()
@@ -77,3 +79,8 @@ jobs:
           with:
             name: api_logs
             path: api_logs.txt
+
+        # Stop environment
+        - name: DEVX-Stop containers
+          if: always()
+          run: docker-compose -f "docker-compose.yml" down
