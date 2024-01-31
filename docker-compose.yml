@@ -26,7 +26,7 @@ services:
     ports:
       - "3005:3005"
     depends_on:
-      - api-todo
+      - api
 
   mongodb:
     image: mongo:5.0
@@ -49,7 +49,7 @@ services:
     volumes:
       - ./api-todo-test:/app
     depends_on:
-      - api-todo
+      - api
       - mongodb
 
 volumes:
