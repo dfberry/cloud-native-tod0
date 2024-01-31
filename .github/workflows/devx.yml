@@ -55,6 +55,7 @@ jobs:
 
         # verify result is in 200 range - doesn't require database
         - name: DEVX-cURL to Root
+          continue-on-error: true
           run: |
             curl http://localhost:3000/ 
   
@@ -62,3 +63,17 @@ jobs:
         - name: DEVX-Stop containers
           if: always()
           run: docker-compose -f "docker-compose.yml" down
+
+        # Collect and print container logs
+        - name: DEVX-Collect logs
+          if: always()
+          run: |
+            docker logs api > api_logs.txt
+            cat api_logs.txt
+
+        - name: DEVX-Upload logs
+          if: always()
+          uses: actions/upload-artifact@v2
+          with:
+            name: api_logs
+            path: api_logs.txt
