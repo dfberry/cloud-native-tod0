@@ -11,8 +11,7 @@ on:
     pull_request:
       branches: 
         - '*'
-  
-  jobs:
+jobs:
     devx-api:
   
       runs-on: ubuntu-latest
