@@ -1,9 +1,9 @@
 import { getSecretFromKeyVault } from './azure/keyvault';
 // api-todo/.env
-//const DATABASE_URI = process.env.DATABASE_URI;
+const DATABASE_URI = process.env.DATABASE_URI;
 
 // ./docker-compose.yml
-const DEFAULT_MONGO_DB = 'mongodb://mongo:MongoPass@localhost:27017/';
+const DEFAULT_MONGO_DB = DATABASE_URI || 'mongodb://mongo:MongoPass@localhost:27017/';
 
 function getEnvVarAsString(name: string, defaultValue: string): string {
   return process.env[name] || defaultValue;
