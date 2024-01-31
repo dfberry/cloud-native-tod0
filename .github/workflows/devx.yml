@@ -33,6 +33,15 @@ jobs:
           run: |
             docker network ls
 
+        - name: Print service status
+          run: docker ps | grep <service_name>
+
+        - name: Print network configuration
+          run: docker network inspect api
+
+        - name: DEVX-List containers
+          run: docker ps -a 
+
         # verify result is in 200 range
         - name: DEVX-cURL to Root
           run: |
