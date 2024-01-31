@@ -36,7 +36,7 @@ jobs:
         # verify result is in 200 range
         - name: DEVX-cURL to Root
           run: |
-            curl http://api:3000/ --verbose
+            curl http://localhost:3000/ --verbose
 
           # verify result is in 200 range
         - name: DEVX-cURL to API
