@@ -42,6 +42,9 @@ jobs:
         - name: DEVX-List containers
           run: docker ps -a 
 
+        - name: DEVX-Logs
+          run: docker logs api
+
         # verify result is in 200 range
         - name: DEVX-cURL to Root
           run: |
