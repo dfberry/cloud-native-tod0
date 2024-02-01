@@ -10,7 +10,7 @@ declare global {
 
 const WINDOW_ENV_URL = window.ENV_CONFIG?.VITE_API_URL;
 const IMPORT_META_ENV_URL: string = import.meta.env.VITE_API_URL;
-const FALLBACK_URL:string = 'http://localhost:5173';
+const FALLBACK_URL:string = 'http://localhost:3000';
 
 console.log('SRC/config: WINDOW_ENV_URL is defined as', WINDOW_ENV_URL);
 console.log('SRC/config: IMPORT_META_ENV_URL is defined as', IMPORT_META_ENV_URL);
