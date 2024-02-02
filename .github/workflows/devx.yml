@@ -1,0 +1,64 @@
+name: DevX
+
+# Test that the Docker-compose file, used for local development, works as expected. 
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+        - "*"
+  pull_request:
+    branches:
+        - "*"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Start services
+        run: |
+          docker-compose -f docker-compose.yml up -d
+
+      - name: Wait for API service
+        run: |
+          until $(curl --output /dev/null --silent --head --fail http://localhost:3000); do
+            echo 'Waiting for API service...'
+            sleep 5
+          done
+
+      - name: Test API
+        run: |
+          curl http://localhost:3000/ --verbose
+
+      - name: Collect logs
+        if: always()
+        run: |
+            docker logs mongodb > mongodb_logs.txt
+            cat mongodb_logs.txt
+
+      - name: Stop services
+        if: always()
+        run: |
+          docker-compose -f docker-compose.yml down
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: mongodb_logs
+          path: mongodb_logs.txt
