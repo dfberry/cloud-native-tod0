@@ -31,3 +31,6 @@ Todo:
 
 * When pulling remote into local main, do not rebuild container as requested by IDE.
 
+##
+
+* denied: installation not allowed to Create organization package
