@@ -23,3 +23,11 @@ Resources:
 * [Dev container prebuilds](https://containers.dev/guide/prebuild)
 * [K8 repo which uses prebuilds](https://github.com/craiglpeters/kubernetes-devcontainer)
 
+Todo:
+
+* Package fails to build: change `.devcontainer.json` => `devcontainer.json`
+
+##
+
+* When pulling remote into local main, do not rebuild container as requested by IDE.
+
