@@ -39,3 +39,5 @@ Todo:
 ## 06 Tag image
 
 `imageTag`
+
+## 07 Tag image - need latest
