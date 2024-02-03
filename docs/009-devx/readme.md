@@ -34,3 +34,4 @@ Todo:
 ##
 
 * denied: installation not allowed to Create organization package
+* https://stackoverflow.com/questions/76607955/error-denied-installation-not-allowed-to-create-organization-package
