@@ -41,3 +41,10 @@ Todo:
 `imageTag`
 
 ## 07 Tag image - need latest
+
+https://github.com/devcontainers/ci/issues/276
+
+## 08 - Move default dev container to use package
+
+add welcome message
+determine what should be in dev container image (package) and what should stay local to just me as developer
