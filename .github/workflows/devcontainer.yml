@@ -2,7 +2,10 @@ name: devcontainer
 
 on:
   workflow_dispatch:
-
+  pull_request:
+    paths:
+        - '.github/workflows/devcontainer.yml'
+    
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
