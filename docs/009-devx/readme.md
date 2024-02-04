@@ -1,6 +1,101 @@
- # DevEx updates
+# DevEx updates
  
- ## 01 - fix dev container and add test in GitHub
+* Fix local docker-compose and add CI Tests
+* Add prebuild dev container
+
+    * Before
+
+    ```
+    -- .devcontainer
+       
+       devcontainer.json
+
+            "image": "mcr.microsoft.com/devcontainers/typescript-node:1-18-bullseye",
+            "features": {
+                    "ghcr.io/devcontainers/features/node:1": {},
+                    "ghcr.io/devcontainers/features/azure-cli:1": {},
+                    "ghcr.io/azure/azure-dev/azd:0": {},
+                    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+                    "ghcr.io/devcontainers/features/powershell:1": {},
+                    "ghcr.io/devcontainers/features/github-cli:1": {},
+                    "ghcr.io/devcontainers-contrib/features/devcontainers-cli:1": {}
+                },
+
+       on-create-command.sh
+       post-attach-command.sh
+
+            echo 'AZD version ' $(azd version)
+
+    ```
+
+    * After
+
+    ```
+    -- .devcontainer
+       
+       devcontainer.json
+
+            "image": "ghcr.io/dfberry/cloud-native-todo:latest",
+            "features": {}
+
+       on-create-command.sh
+       post-attach-command.sh
+
+            echo 'AZD version ' $(azd version)
+
+    -- .github
+
+        workflows
+
+            devcontainer.yml
+
+                jobs:
+                build-and-push:
+                    runs-on: ubuntu-latest
+                    permissions:
+                        contents: read
+                        packages: write    
+                    steps:
+                    - 
+                    name: Checkout
+                    id: checkout
+                    uses: actions/checkout@v1
+                    -
+                        name: Login to GitHub Container Registry
+                        uses: docker/login-action@v2
+                        with:
+                        registry: ghcr.io
+                        username: ${{ github.actor }}
+                        password: ${{ secrets.GITHUB_TOKEN }}
+                    - 
+                        name: Pre-build dev container image
+                        uses: devcontainers/ci@v0.3
+                        with:
+                        subFolder: .github/workflows/
+                        imageTag: latest
+                        imageName: ghcr.io/${{ github.repository }}
+                        cacheFrom: ghcr.io/${{ github.repository }}
+                        push: always
+
+            .devcontainer
+
+                devcontainer.json
+
+                    "image": "mcr.microsoft.com/devcontainers/typescript-node:1-18-bullseye",
+                    "features": {
+                            "ghcr.io/devcontainers/features/node:1": {},
+                            "ghcr.io/devcontainers/features/azure-cli:1": {},
+                            "ghcr.io/azure/azure-dev/azd:0": {},
+                            "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+                            "ghcr.io/devcontainers/features/powershell:1": {},
+                            "ghcr.io/devcontainers/features/github-cli:1": {},
+                            "ghcr.io/devcontainers-contrib/features/devcontainers-cli:1": {}
+                        },
+
+                setup.sh
+    ```
+
+## 01 - fix dev container and add test in GitHub
 
 Issue: The dev container's docker-compose file isn't working as expected to start up the full stack.
 
