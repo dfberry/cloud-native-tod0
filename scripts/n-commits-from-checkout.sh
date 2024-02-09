@@ -1,0 +1,1 @@
+git rev-list --count main..HEAD
