@@ -1,0 +1,11 @@
+👋 Welcome to Cloud-native-todo in a dev container! 
+     Works in GitHub Codespaces, VS Code, or in docker using the devcontainer cli
+
+
+This debian dev container image includes:
+ - Docker
+ - Node.js
+
+The configuration for the dev container is in the .github/.devcontainer folder. 
+🎵 By default in Codespaces this environment uses a 4-core machine. Some tests may require a larger machine. In Codespaces you can change the machine type. 
+   See https://docs.github.com/en/codespaces/customizing-your-codespace/changing-the-machine-type-for-your-codespace

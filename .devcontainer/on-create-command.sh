@@ -1,4 +1,6 @@
 #! /bin/bash
 chmod -R +x ./scripts
-curl -fsSL https://aka.ms/install-azd.sh | bash
+
+cp .devcontainer/welcome-message.txt /usr/local/etc/vscode-dev-containers/first-run-notice.txt
+
 
