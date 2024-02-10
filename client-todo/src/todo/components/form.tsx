@@ -11,16 +11,15 @@ export default function TodoForm({ onSubmit, requestError }: Props) {
     const formRef = useRef<HTMLFormElement>(null);
     const [newTodo, setNewTodo] = useState<NewTodo>({ title: '' });
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async(event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const title = formData.get('title')?.toString() || null;
 
         if (title !== null) {
 
-            onSubmit({
-                title
-            });
+            await onSubmit(newTodo)
+
             if (formRef.current) {
                 formRef.current.reset();
             }
