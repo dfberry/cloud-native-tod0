@@ -4,10 +4,6 @@ import { initialData, INITIAL_PARTIAL_DATA } from '../todo.validation';
 import { Todo } from '../todo.types';
 const createdAt = new Date().toISOString();
 
-// set updatedAt to 2 minutes after createdAt
-const updatedAt = new Date(
-  new Date(createdAt).getTime() + 2 * 60000
-).toISOString();
 const ID = '5';
 
 const NEW_TODO: Todo = {
@@ -17,12 +13,19 @@ const NEW_TODO: Todo = {
   createdAt,
   updatedAt: null,
 };
-const UPDATED_TODO: Todo = {
+const UPDATED_TODO_1: Todo = {
   id: ID,
   title: 'mock updated title',
   description: 'mock updated description',
   createdAt,
-  updatedAt,
+  updatedAt: null,
+};
+const UPDATED_TODO_2: Todo = {
+  id: ID,
+  title: 'mock updated title',
+  description: 'mock updated description',
+  createdAt,
+  updatedAt: new Date(new Date(createdAt).getTime() + 2 * 60000).toISOString(),
 };
 const mockTodoMongoService = mock<TodoService>();
 
@@ -42,7 +45,7 @@ mockTodoMongoService.getAll.mockResolvedValue({
 });
 
 mockTodoMongoService.update.mockResolvedValue({
-  data: UPDATED_TODO,
+  data: UPDATED_TODO_2,
   error: null,
 });
 
@@ -62,9 +65,9 @@ mockTodoMongoService.seed.mockResolvedValue({
 export {
   mockTodoMongoService,
   NEW_TODO,
-  UPDATED_TODO,
+  UPDATED_TODO_1,
+  UPDATED_TODO_2,
   ID,
   createdAt,
-  updatedAt,
   INITIAL_PARTIAL_DATA,
 };

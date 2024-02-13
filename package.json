@@ -11,7 +11,8 @@
     "docker:run": "docker compose up",
     "docker:stop": "docker compose down",
     "docker:dbonly": "docker compose up mongodb",
-    "docker:backend": "docker compose up mongodb api",
+    "docker:backend": "docker compose up mongodb api --build",
+    "docker:fullstack": "docker compose up mongodb api client --build",
     "docker:status": "docker compose ps",
     "docker:deleteallimages": "docker rmi -f $(docker images -a -q)",
     "docker:seerunningcontainers": "docker ps -a"

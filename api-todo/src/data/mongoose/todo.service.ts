@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { TodoSchema } from './todo.schema';
 import { CrudServiceResponse, IDataClass } from '../types';
 import { Todo } from '../todo.types';
-import { isValidPartial } from '../todo.validation';
+import { isValidPartial, isValidAll } from '../todo.validation';
 import CrudService from './crud.service';
 
 export class TodoService implements IDataClass<Todo> {
@@ -32,23 +32,26 @@ export class TodoService implements IDataClass<Todo> {
 
   async update(
     id: string,
-    todo: Partial<Todo>
+    todo: Todo
   ): Promise<CrudServiceResponse<Todo>> {
-    if (!id) {
-      return { data: null, error: new Error('id is required') };
-    }
+      if (!id) {
+        return {
+          data: null,
+          error: new Error('TodoService::update - id is required'),
+        };
+      }
 
-    const { valid, error } = isValidPartial(todo);
-    if (!valid) {
-      return { data: null, error: error };
-    }
+      const { valid, error } = isValidAll(todo);
+      if (!valid) {
+        return { data: null, error: error };
+      }
 
-    const updateResponse = await this.#service.update(id, {
-      title: todo.title as string,
-      description: todo.description as string,
-      updatedAt: new Date().toISOString(),
-    } as Todo);
-    return updateResponse;
+      const updateResponse = await this.#service.update(id, {
+        title: todo.title as string,
+        description: todo.description as string,
+        updatedAt: new Date().toISOString(),
+      } as Todo);
+      return updateResponse;
   }
 
   async delete(id: string): Promise<CrudServiceResponse<Todo>> {

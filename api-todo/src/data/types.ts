@@ -15,7 +15,7 @@ export interface IDataClass<T> {
   add: (todo: Partial<T>) => Promise<CrudServiceResponse<T>>;
   get: (id: string) => Promise<CrudServiceResponse<T>>;
   getAll: () => Promise<CrudServiceResponse<T[]>>;
-  update: (id: string, todo: Partial<T>) => Promise<CrudServiceResponse<T>>;
+  update: (id: string, todo: T) => Promise<CrudServiceResponse<T>>;
   delete: (id: string) => Promise<CrudServiceResponse<T>>;
   deleteAll: () => Promise<CrudServiceResponse<unknown>>;
   seed: (todos: T[]) => Promise<CrudServiceResponse<T[]>>;

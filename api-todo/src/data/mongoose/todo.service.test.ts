@@ -2,10 +2,9 @@
 import {
   mockTodoMongoService,
   NEW_TODO,
-  UPDATED_TODO,
+  UPDATED_TODO_1,
+  UPDATED_TODO_2,
   ID,
-  createdAt,
-  updatedAt,
   INITIAL_PARTIAL_DATA,
 } from './data.mocks';
 import { Todo } from '../todo.types';
@@ -53,16 +52,36 @@ describe(`Mongo happy path`, () => {
     expect(returnedTodo.updatedAt).toBeNull();
   });
 
-  it('should update a todo', async () => {
-    const { data, error } = await todoService.update(testtodo.id, UPDATED_TODO);
+  it('should initial update a todo (without updatedAt value)', async () => {
+    const { data, error } = await todoService.update(
+      testtodo.id,
+      UPDATED_TODO_1
+    );
+    const returnedTodo: Todo = data as Todo;
+
+    testtodo = returnedTodo;
+
+    expect(error).toEqual(null);
+    expect(Object.keys(returnedTodo).length).toEqual(5);
+    expect(returnedTodo.id).toEqual(UPDATED_TODO_1.id);
+    expect(returnedTodo.title).toEqual(UPDATED_TODO_1.title);
+    expect(returnedTodo.description).toEqual(UPDATED_TODO_1.description);
+    expect(returnedTodo.createdAt).toEqual(UPDATED_TODO_1.createdAt);
+    expect(returnedTodo.updatedAt).not.toBeNull();
+  });
+  it('should subsequent update a todo (with updatedAt)', async () => {
+    const { data, error } = await todoService.update(
+      testtodo.id,
+      UPDATED_TODO_2
+    );
     const returnedTodo: Todo = data as Todo;
 
     expect(error).toEqual(null);
     expect(Object.keys(returnedTodo).length).toEqual(5);
-    expect(returnedTodo.id).toEqual(UPDATED_TODO.id);
-    expect(returnedTodo.title).toEqual(UPDATED_TODO.title);
-    expect(returnedTodo.description).toEqual(UPDATED_TODO.description);
-    expect(returnedTodo.createdAt).toEqual(UPDATED_TODO.createdAt);
+    expect(returnedTodo.id).toEqual(UPDATED_TODO_2.id);
+    expect(returnedTodo.title).toEqual(UPDATED_TODO_2.title);
+    expect(returnedTodo.description).toEqual(UPDATED_TODO_2.description);
+    expect(returnedTodo.createdAt).toEqual(UPDATED_TODO_2.createdAt);
     expect(returnedTodo.updatedAt).not.toBeNull();
   });
 
