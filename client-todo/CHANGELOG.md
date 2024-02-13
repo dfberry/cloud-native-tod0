@@ -1,5 +1,12 @@
 ## Todo Client
 
+# 1.2.0
+
+* Todo object has description, createdAt, and updatedAt properties
+* Todo object id property change from id to MongoDB id
+* App added new fields for display and data entry
+* Form added ability to add or edit a Todo 
+
 # 1.1.0
 
 * Update API routes to /todos and /todo
