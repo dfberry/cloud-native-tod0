@@ -25,7 +25,7 @@ export default function List({ todos, onDelete, setCurrentTodo }: Props) {
             <th>Delete</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody data-testid={`table-body-items-${todos.length}`}>
           {todos.map((todo) => (
             <Item
               key={todo.id}

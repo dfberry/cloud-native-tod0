@@ -10,23 +10,25 @@ export const API_DELETE_TODO = `${API_BASE_URL}/todo`;
 
 export const useTodos = () => {
 
-    const fetcher = async (...args: [input: RequestInfo, init?: RequestInit]) => {
-        const response = await fetch(...args)
-        const { data, error } = await response.json();
-
-        console.log('fetcher', data, error);
-
-        if (error) {
-            throw new Error(error.message);
-        }
-        return data;
-    }
     const getAllTodosOptions = {
         //revalidateOnFocus: false, // stop page flicker 
         //revalidateOnReconnect: false,
         //revalidateOnMount: false,
     };
-    const { data, error, mutate, isLoading, isValidating } = useSWR(API_GET_ALL_TODOS, fetcher,getAllTodosOptions)
+
+    const getTodos = async (...args: [input: RequestInfo, init?: RequestInit]) => {
+        const result = await fetch(...args);
+        const { data, error } = await result.json();
+        if (!result.ok) {
+            throw new Error(`result: ${result.status} ${result.statusText}`);
+        }
+        if (error) {
+            throw new Error(error.message);
+        }
+
+        return data;
+    }
+    const { data, error, mutate, isLoading, isValidating } = useSWR(API_GET_ALL_TODOS, getTodos, getAllTodosOptions);
 
 
     const addTodo = async (newTodo: NewTodo) => {
@@ -57,18 +59,18 @@ export const useTodos = () => {
             method: "PUT", 
             headers: { "Content-Type": "application/json"},
             body: JSON.stringify({ todo: updatedTodo }) };
-        const response = await fetch(`${API_UPDATE_TODO}/${updatedTodo.id}`, options);
-        const returnedUpdatedTodo = await response.json()
-        if (!returnedUpdatedTodo.ok) {
-            return returnedUpdatedTodo;
+        const result = await fetch(`${API_UPDATE_TODO}/${updatedTodo.id}`, options);
+
+        if (!result.ok) {
+            return result;
         }     
+        const { data: returnedTodo } = await result.json()
+
         mutate(
-            data.map(
-                (thisTodo: Todo) => (thisTodo.id === returnedUpdatedTodo.data?.id ? returnedUpdatedTodo.data : thisTodo),
-                false
-            )
-        );
-        return returnedUpdatedTodo;
+            ...data.map((thisTodo: Todo) => thisTodo.id === returnedTodo?.id ? returnedTodo : thisTodo),
+            false
+          );
+        return returnedTodo;
     };
 
     const removeTodo = async (id: number) => {

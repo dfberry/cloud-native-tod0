@@ -5,13 +5,15 @@
   "type": "module",
   "scripts": {
     "start": "cross-env NODE_ENV=production vite",
-    "dev": "vite",
+    "dev": "vite --config vite.config.dev.ts --host",
+    "dev:build": "vite build --config vite.config.dev.ts",
     "start:workflow": "vite --host",
     "build": "tsc && vite build",
     "build:env": "bash ./generate-dotenv.sh",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "preview": "vite preview",
     "test": "vitest --run",
+    "test:withoutput": "vitest --disable-console-intercept",
     "test:dev": "vitest",
     "help": "npm run build outputs to dist",
     "clean": "bash clean.sh"
