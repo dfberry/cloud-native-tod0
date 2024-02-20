@@ -1,0 +1,23 @@
+{
+  "name": "api-todo-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "build": "echo \"Error: no build specified\" && exit 0",
+    "docker:build": "docker build -t playwright-api-test .",
+    "docker:runconnect": "docker run -it -v ${PWD}:/app playwright-api-test /bin/bash",
+    "docker:runremove": "docker run -v ${PWD}:/app playwright-api-test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.40.1",
+    "@types/node": "^20.10.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
