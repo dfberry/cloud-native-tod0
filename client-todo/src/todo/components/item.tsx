@@ -32,7 +32,7 @@ export default function Item({ todo, onDelete, setCurrentTodo }: ItemProps) {
         }} >&#9998;</button>
       </td>
       <td data-testid={`item-delete-${todo.id}`}>
-        <button onClick={() => onDelete(todo.id)} >X</button>
+        <button data-testid={`item-delete-${todo.id}`} onClick={() => onDelete(todo.id)} >X</button>
       </td>
     </tr>
   );
