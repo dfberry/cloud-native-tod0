@@ -27,3 +27,7 @@ test-output/
 .old*/
 .env*
 mongodata/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
