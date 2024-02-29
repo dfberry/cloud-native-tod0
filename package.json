@@ -23,7 +23,7 @@
   "workspaces": [
     "api-todo",
     "api-todo-test",
-    "client-todo"
+    "client"
   ],
   "dependencies": {
     "applicationinsights": "^2.9.2"

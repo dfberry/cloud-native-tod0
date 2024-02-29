@@ -19,7 +19,7 @@ services:
         host: containerapp
         language: js
     client:
-        project: client-todo
+        project: client
         language: js
         host: containerapp
         docker: 

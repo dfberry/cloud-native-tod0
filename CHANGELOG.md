@@ -1,5 +1,9 @@
 # Todo Monorepo
 
+## 4.0.0
+
+* ./client-todo -> ./client
+
 ## 3.0.0
 
 * Add MongoDB via Azure Cosmos DB for Mongo API

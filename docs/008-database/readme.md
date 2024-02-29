@@ -27,9 +27,9 @@ services:
     depends_on:
       - mongodb
 
-  client-todo:
+  client:
     build:
-      context: ./client-todo
+      context: ./client
     environment:
       VITE_USE_LOCAL_API: "true"
       VITE_API_URL: http://localhost:3000
