@@ -1,62 +1,85 @@
-import { FormEvent, KeyboardEvent, ChangeEvent, useRef, useState } from 'react';
-import { NewTodo } from '../models';
-
+import { useState, useEffect } from 'react';
+import { NewTodo, Todo } from '../models';
+import { UI_RULES } from '../../config';
 export type { NewTodo };
 
 interface Props {
-    onSubmit: (newTodoItem: NewTodo) => void;
+    newSubmit: (newTodoItem: NewTodo) => Promise<RequestResult>;
+    updateSubmit: (todoItem: Todo) => Promise<RequestResult>;
+    todoToEdit?: Todo | undefined;
+    setCurrentTodo: (todo: Todo | undefined) => void;
     requestError?: string;
 }
-export default function TodoForm({ onSubmit, requestError }: Props) {
-    const formRef = useRef<HTMLFormElement>(null);
-    const [newTodo, setNewTodo] = useState<NewTodo>({ title: '' });
+interface RequestResult {
+    error: string | null;
+    data: Todo | null;
+}
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const title = formData.get('title')?.toString() || null;
+export default function TodoForm({ newSubmit, updateSubmit, todoToEdit, setCurrentTodo, requestError }: Props) {
+    const [formTodo, setFormTodo] = useState<Todo | NewTodo>(todoToEdit || { id: 0, title: '', description: '' });
+    const isEditing = !!todoToEdit;
 
-        if (title !== null) {
-
-            onSubmit({
-                title
-            });
-            if (formRef.current) {
-                formRef.current.reset();
-            }
-            // Reset the newTodo state
-            setNewTodo({ title: '' });
+    useEffect(() => {
+        const isEditing = !!todoToEdit;
+        if (isEditing) {
+            setFormTodo(todoToEdit);
+        } else {
+            setFormTodo({ id: 0, title: '', description: '' });
         }
+    }, [todoToEdit]);
+
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const isEditing = !!todoToEdit;
+
+
+        if (isEditing) {
+            const response = await updateSubmit(formTodo as Todo);
+
+            if (!response?.error) {
+                setCurrentTodo(undefined);
+            }
+
+        } else {
+            const response = await newSubmit({
+                title: formTodo.title,
+                description: formTodo.description,
+            } as NewTodo
+            );
+            if (!response?.error) {
+                setCurrentTodo(undefined);
+            }
+        }
+        setFormTodo({ title: '', description: '' });
     }
-
-    const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            if (formRef.current) {
-                formRef.current.dispatchEvent(new Event('submit', { cancelable: true }));
-            }
-        }
-    };
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setNewTodo({
-            title: event.target.value,
-        });
-    };
     return (
-        <div >
+        <div className="todoFormContainer">
             <div>
-                <h1 >What do you have to do?</h1>
+                <h1 >What exciting tasks are on your agenda today?</h1>
             </div>
-            <form ref={formRef} onSubmit={handleSubmit} data-testid="todo-form">
-                <div>
+            <form onSubmit={handleSubmit} data-testid="todo-form" className="todoForm">
+                <div className="todoFormInputElements">
                     <input
                         id="todoTitle"
+                        className="todoFormInputTitle"
                         name="title"
                         type="text"
-                        value={newTodo.title}
+                        maxLength={UI_RULES.MAX_TODO_TITLE_LENGTH}
+                        value={formTodo.title}
                         placeholder="Title"
-                        onChange={handleInputChange}
-                        onKeyDown={handleKeyDown}
+                        onChange={(e) => setFormTodo({ ...formTodo, title: e.target.value })}
                         data-testid="todo-form-input-title"
+                    />
+                    <textarea
+                        id="todoDescription"
+                        className="todoFormInputDescription"
+                        name="description"
+                        maxLength={UI_RULES.MAX_TODO_DESCRIPTION_LENGTH}
+                        value={formTodo.description || ''}
+                        placeholder="Description"
+                        onChange={(e) => setFormTodo({ ...formTodo, description: e.target.value })}
+                        data-testid="todo-form-input-description"
                     />
                 </div>
                 {requestError && (
@@ -64,7 +87,9 @@ export default function TodoForm({ onSubmit, requestError }: Props) {
                         {requestError}
                     </div>
                 )}
-                <button type="submit" disabled={!newTodo.title} data-testid="todo-button">Add Todo</button>
+                <button type="submit" disabled={!formTodo.title} data-testid="todo-button">
+                    {(isEditing) ? 'Update Todo' : 'Add Todo'}
+                </button>
             </form>
         </div>
     );

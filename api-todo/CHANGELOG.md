@@ -1,3 +1,9 @@
+# 2.0.1
+
+Bugs fixed:
+* The first update sent in a null for updatedAt which failed the validation process. 
+* The validation error wasn't passed back to the client
+
 # 2.0.0
 
 Breaking change is route change from single route to 2 routes: `todos` and `todo`

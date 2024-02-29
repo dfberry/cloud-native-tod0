@@ -2,15 +2,15 @@
 
 # Use an official Node.js runtime as the base image
 FROM node:18
-
 # Set the working directory in the container to /app
 WORKDIR /app
 
 # Bundle the application source inside the Docker image
-COPY . .
+COPY ./package.json ./
 
 # Install the application dependencies
-RUN npm install
+RUN npm install > /dev/null 2>&1
+COPY ./ .
 RUN npm run build
 
 # If you are building your code for production

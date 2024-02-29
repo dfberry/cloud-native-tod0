@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "API run",
+      "name": "API run w/Mongo",
       "request": "launch",
       "cwd": "${workspaceFolder}/api-todo",
       "runtimeExecutable": "npm",
@@ -14,7 +14,12 @@
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "type": "node"
+      "type": "node",
+      "env": {
+        "NODE_ENV": "development",
+        "DATABASE_USE_MONGODB":"true",
+        "DATABASE_URI":"mongodb://localhost:27017/"
+      }
     },
 
 
@@ -29,7 +34,12 @@
       
       "cwd": "${workspaceRoot}/api-todo",
       "internalConsoleOptions": "openOnSessionStart",
-      "skipFiles": ["<node_internals>/**", "node_modules/**"]
+      "skipFiles": ["<node_internals>/**", "node_modules/**"],
+      "env": {
+        "NODE_ENV": "development",
+        "DATABASE_USE_MONGODB":"true",
+        "DATABASE_URI":"mongodb://localhost:27017/"
+      }
     },
 
     {

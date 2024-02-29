@@ -32,7 +32,9 @@ const testAdd = (addResponse) => {
 
 const testUpdate = (updateResponse) => {
   // operational error
+  console.log(JSON.stringify(updateResponse, null, 2));
   expect(updateResponse.error).toEqual(false);
+
 
   const { status, body } = updateResponse;
   expect(status).toEqual(202);
@@ -114,8 +116,11 @@ describe('Todo API against running MongoDB', () => {
       .put('/todo/' + addOneResponse.body.data.id)
       .send({
         todo: {
+          id: addOneResponse.body.data.id,
           title: 'Su1 - ' + Date.now(),
           description: 'su2 ' + Date.now(),
+          createdAt: addOneResponse.body.data.createdAt,
+          updatedAt: addOneResponse.body.data.updatedAt
         },
       });
     testUpdate(updateOneResponse);

@@ -6,5 +6,5 @@ export interface Todo extends NewTodo {
 
 export interface NewTodo {
   title: string;
-  description?: string;
+  description?: string | null;
 }

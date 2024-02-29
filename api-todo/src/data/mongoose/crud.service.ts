@@ -1,5 +1,4 @@
 import { Model } from 'mongoose';
-import { toError } from '../../utils/error';
 import { CrudServiceResponse } from '../types';
 
 export default class CrudService<T> {
@@ -21,7 +20,7 @@ export default class CrudService<T> {
 
       return { data: data?.toJSON(), error: data?.errors };
     } catch (error) {
-      return { data: null, error: toError(error) };
+      return { data: null, error: new Error(`Crud service:add - ${error}`) };
     }
   }
 
@@ -32,14 +31,14 @@ export default class CrudService<T> {
 
       return { data: data?.toJSON(), error: data?.errors };
     } catch (error) {
-      return { data: null, error: toError(error) };
+      return { data: null, error: new Error(`Crud service:get - ${error}`) };
     }
   }
 
   // Update
   async update(
     id: string,
-    update: Partial<T>
+    update: T
   ): Promise<CrudServiceResponse<T>> {
     try {
       const improvedDoc = { ...update, updatedAt: new Date().toISOString() };
@@ -50,7 +49,7 @@ export default class CrudService<T> {
 
       return { data: data?.toJSON(), error: data?.errors };
     } catch (error) {
-      return { data: null, error: toError(error) };
+      return { data: null, error: new Error(`Crud service:update - ${error}`) };
     }
   }
 
@@ -61,7 +60,7 @@ export default class CrudService<T> {
 
       return { data: data?.toJSON(), error: data?.errors };
     } catch (error) {
-      return { data: null, error: toError(error) };
+      return { data: null, error: new Error(`Crud service:delete - ${error}`) };
     }
   }
 
@@ -71,7 +70,7 @@ export default class CrudService<T> {
       const data = await this.#model.find();
       return data ? { data, error: null } : { data: null, error: null };
     } catch (error) {
-      return { data: null, error: toError(error) };
+      return { data: null, error: new Error(`Crud service:getAll - ${error}`) };
     }
   }
 
@@ -81,7 +80,10 @@ export default class CrudService<T> {
       const deleteAllResponse = await this.#model.deleteMany({});
       return { data: deleteAllResponse, error: null };
     } catch (error) {
-      return { data: null, error: toError(error) };
+      return {
+        data: null,
+        error: new Error(`Crud service:deleteAll - ${error}`),
+      };
     }
   }
 
@@ -91,7 +93,7 @@ export default class CrudService<T> {
       const result = await this.#model.insertMany(docs);
       return { data: result, error: null };
     } catch (error) {
-      return { data: null, error: toError(error) };
+      return { data: null, error: new Error(`Crud service:seed - ${error}`)};
     }
   }
 }

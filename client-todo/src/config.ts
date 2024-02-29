@@ -18,3 +18,12 @@ console.log('SRC/config: FALLBACK_URL is defined as', FALLBACK_URL);
 
 export const ENV_URL = WINDOW_ENV_URL || IMPORT_META_ENV_URL || FALLBACK_URL;
 console.log('SRC/config: ENV_URL is defined as', ENV_URL);
+
+export const UI_RULES = {
+    MAX_TODO_TITLE_LENGTH: 40,
+    MAX_TODO_DESCRIPTION_LENGTH: 1000
+};
+
+if (process.env.NODE_ENV !== 'development') {
+    console.log = function() {};
+  }

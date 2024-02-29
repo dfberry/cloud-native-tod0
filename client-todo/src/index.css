@@ -1,3 +1,7 @@
+/* * {
+  border: 1px solid red !important;
+} */
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -26,13 +30,49 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+
+}
+
+.todoFormContainer {
+  gap: 1em;
+  margin: 1em 0;
+  padding: 1em;
+  border-radius: 8px;
+  align-items: center;
+}
+
+.todoForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.todoFormInputElements {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 95%;
+
+}
+.todoFormInputTitle{
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1.2em;
+}
+.todoFormInputDescription{
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1.2em;
 }
 
 button {

@@ -1,7 +1,6 @@
-import { toError } from '../../utils/error';
 import { Todo } from '../todo.types';
 import { IDataClass, DbIntializeParams, CrudServiceResponse } from '../types';
-import { isValidPartial, TodoValidation } from '../todo.validation';
+import { isValidPartial, isValidAll, TodoValidation } from '../todo.validation';
 // create class with crud methods
 class TodoInMemoryService implements IDataClass<Todo> {
   #todos: Todo[] = [];
@@ -56,13 +55,16 @@ class TodoInMemoryService implements IDataClass<Todo> {
 
   async update(
     id: string,
-    todo: Partial<Todo>
+    todo: Todo
   ): Promise<CrudServiceResponse<Todo>> {
     if (!id) {
-      return Promise.resolve({ data: null, error: toError('id is required') });
+      return Promise.resolve({
+        data: null,
+        error: new Error('Todo Service::update - id is required'),
+      });
     }
 
-    const { valid, error } = isValidPartial(todo);
+    const { valid, error } = isValidAll(todo);
     if (!valid) {
       return Promise.resolve({ data: null, error: error });
     }
@@ -90,7 +92,10 @@ class TodoInMemoryService implements IDataClass<Todo> {
 
   async delete(id: string): Promise<CrudServiceResponse<Todo>> {
     if (!id) {
-      return Promise.resolve({ data: null, error: toError('id is required') });
+      return Promise.resolve({
+        data: null,
+        error: new Error("Todo Service::delete - 'id is required"),
+      });
     }
 
     const index: number = this.#todos.findIndex((todo) => todo.id === id);
@@ -100,7 +105,10 @@ class TodoInMemoryService implements IDataClass<Todo> {
       this.#todos.splice(index, 1);
       return Promise.resolve({ data: item, error: null });
     } else {
-      return Promise.resolve({ data: null, error: toError('id not found') });
+      return Promise.resolve({
+        data: null,
+        error: new Error('Todo Service::delete - id not found'),
+      });
     }
   }
   async deleteAll(): Promise<CrudServiceResponse<Todo[]>> {

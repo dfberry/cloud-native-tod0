@@ -12,10 +12,10 @@ test('renders List with todos', () => {
     ];
   
     // Render the List component with the mock todos data
-    const { getAllByTestId } = render(<List todos={todos} onDelete={() => {}} />);
+    const { getAllByTestId } = render(<List todos={todos} onDelete={() => {}} setCurrentTodo={() => {}}/>);
   
     // Get all elements with the 'item-row' test id
-    const items = getAllByTestId('item-row');
+    const items = getAllByTestId(/item-row.*/);
   
     // Check if the number of rendered items matches the number of todos
     expect(items).toHaveLength(todos.length);
@@ -31,7 +31,7 @@ test('renders List with todos', () => {
     const todos:Todo[] = [];
   
     // Render the List component with the empty todos data
-    const { queryByTestId } = render(<List todos={todos} onDelete={() => {}} />);
+    const { queryByTestId } = render(<List todos={todos} onDelete={() => {}} setCurrentTodo={() => {}}/>);
   
     // Try to get an element with the 'list' test id
     const list = queryByTestId('list');

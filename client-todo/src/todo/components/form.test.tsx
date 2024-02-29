@@ -6,9 +6,13 @@ test('renders form without error', async () => {
 
     // mock add function
     const mockAdd = vi.fn();
+    const mockUpdate = vi.fn();
+    const mockSetCurrentTodo = vi.fn();
+    const todoToEdit = undefined;
+    const requestError = undefined;
 
     // render the component
-    const { queryByTestId } = render(<TodoForm onSubmit={mockAdd} />);
+    const { queryByTestId } = render(<TodoForm newSubmit={mockAdd} updateSubmit={mockUpdate} setCurrentTodo={mockSetCurrentTodo} todoToEdit={todoToEdit} requestError={requestError}/>);
 
     // Check form doens't render error div
     const errorDiv = queryByTestId('todo-error');
@@ -20,34 +24,48 @@ test('renders form without error', async () => {
 test('renders form with error', async () => {
 
     // set incoming request error
-    const requestError = 'test error';
-
-    // mock add function
     const mockAdd = vi.fn();
+    const mockUpdate = vi.fn();
+    const mockSetCurrentTodo = vi.fn();
+    const todoToEdit = undefined;
+    const requestError = "test error";
 
     // render the component
-    const { getByTestId } = render(<TodoForm onSubmit={mockAdd} requestError={requestError} />);
+    const { queryByTestId } = render(<TodoForm newSubmit={mockAdd} updateSubmit={mockUpdate} setCurrentTodo={mockSetCurrentTodo} todoToEdit={todoToEdit} requestError={requestError}/>);
+
+    // Check form doens't render error div
+    const errorDiv = queryByTestId('todo-error');
 
     // Check request error is rendered
-    expect(getByTestId('todo-error').textContent).toBe(requestError);
+    expect(errorDiv?.textContent).toBe(requestError);
 })
 
 test('renders button disabled', async () => {
 
     // mock add function
     const mockAdd = vi.fn();
+    const mockUpdate = vi.fn();
+    const mockSetCurrentTodo = vi.fn();
+    const todoToEdit = undefined;
+    const requestError = undefined;
 
     // render the component
-    const { getByTestId } = render(<TodoForm onSubmit={mockAdd}/>);
+    const { queryByTestId } = render(<TodoForm newSubmit={mockAdd} updateSubmit={mockUpdate} setCurrentTodo={mockSetCurrentTodo} todoToEdit={todoToEdit} requestError={requestError}/>);
 
-    const buttonEmpty = getByTestId('todo-button');
+    const buttonEmpty = queryByTestId('todo-button');
     expect(buttonEmpty).toBeDefined();
     expect(buttonEmpty).toBeDisabled();
 })  
-test('renders button enabled', async () => {
+test('renders button enabled when in edit mode', async () => {
+
+    const mockAdd = vi.fn();
+    const mockUpdate = vi.fn();
+    const mockSetCurrentTodo = vi.fn();
+    const todoToEdit = { id: 1, title: 'test', description: 'test', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()};
+    const requestError = undefined;
 
     // render the component
-    const { user, getByTestId } = render(<TodoForm onSubmit={vi.fn()}/>);
+    const { user, getByTestId } = render(<TodoForm newSubmit={mockAdd} updateSubmit={mockUpdate} setCurrentTodo={mockSetCurrentTodo} todoToEdit={todoToEdit} requestError={requestError}/>);
 
     // get the button and input
     const button = getByTestId('todo-button');
@@ -61,16 +79,21 @@ test('renders button enabled', async () => {
 
 })
 
-test('accepts input text', async () => {
+test('accepts input text for new todo', async () => {
 
     // new title
     const title = 'Test Todo';
 
     // mock add function
     const mockAdd = vi.fn();
+    const mockUpdate = vi.fn();
+    const mockSetCurrentTodo = vi.fn();
+    const todoToEdit = undefined;
+    const requestError = undefined;
+
 
     // render the component
-    const { user, getByTestId } = render(<TodoForm onSubmit={mockAdd}/>);
+    const { user, getByTestId } = render(<TodoForm newSubmit={mockAdd} updateSubmit={mockUpdate} setCurrentTodo={mockSetCurrentTodo} todoToEdit={todoToEdit} requestError={requestError}/>);
 
     // Fill in the input
     const input = getByTestId('todo-form-input-title');
@@ -82,16 +105,20 @@ test('accepts input text', async () => {
 }) 
 
 
-test('submit form by button', async () => {
+test('submit form by button for new todo', async () => {
 
     // new title
     const title = 'Test Todo';
 
     // mock add function
     const mockAdd = vi.fn();
+    const mockUpdate = vi.fn();
+    const mockSetCurrentTodo = vi.fn();
+    const todoToEdit = undefined;
+    const requestError = undefined;
 
     // render the component
-    const { user, getByTestId } = render(<TodoForm onSubmit={mockAdd}/>);
+    const { user, getByTestId } = render(<TodoForm newSubmit={mockAdd} updateSubmit={mockUpdate} setCurrentTodo={mockSetCurrentTodo} todoToEdit={todoToEdit} requestError={requestError}/>);
 
     // Fill in the input
     const input = getByTestId('todo-form-input-title');
@@ -103,19 +130,23 @@ test('submit form by button', async () => {
 
     // todo submitted to parent via onSubmit
     expect(mockAdd).toHaveBeenCalledTimes(1);
-    expect(mockAdd).toHaveBeenCalledWith({ title });
+    expect(mockAdd).toHaveBeenCalledWith({ title, description: ''});
 }) 
 
-test('submit form by keypress enter', async () => {
+test('submit form by keypress enter for new todo', async () => {
 
     // new title
     const title = 'Test Todo';
 
     // mock add function
     const mockAdd = vi.fn();
+    const mockUpdate = vi.fn();
+    const mockSetCurrentTodo = vi.fn();
+    const todoToEdit = undefined;
+    const requestError = undefined;
 
     // render the component
-    const { user, getByTestId } = render(<TodoForm onSubmit={mockAdd}/>);
+    const { user, getByTestId } = render(<TodoForm newSubmit={mockAdd} updateSubmit={mockUpdate} setCurrentTodo={mockSetCurrentTodo} todoToEdit={todoToEdit} requestError={requestError}/>);
 
     // Fill in the input
     const input = getByTestId('todo-form-input-title');
@@ -126,5 +157,5 @@ test('submit form by keypress enter', async () => {
 
     // todo submitted to parent via onSubmit
     expect(mockAdd).toHaveBeenCalledTimes(1);
-    expect(mockAdd).toHaveBeenCalledWith({ title });
+    expect(mockAdd).toHaveBeenCalledWith({ title, description: '' });
 }) 

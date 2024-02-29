@@ -1,0 +1,54 @@
+[
+    {
+        "name": "first add",
+        "action": "add",
+        "edit": "initial",
+        "timeout": 1000,
+        "rowNumberInTable": 1,
+        "incomingData": {
+            "title": "Hello",
+            "description": "This is an add test."
+        }
+    },
+    {
+        "name": "second add",
+        "action": "add",
+        "edit": "initial",
+        "timeout": 1000,
+        "rowNumberInTable": 2,
+        "incomingData": {
+            "title": "Item 2",
+            "description": "This is the second add test."
+        }
+    },
+    {
+        "name": "third add",
+        "action": "add",
+        "edit": "initial",
+        "timeout": 1000,
+        "rowNumberInTable": 3,
+        "incomingData": {
+            "title": "Item 3",
+            "description": "This is the third add test."
+        }
+    },
+    {
+        "name": "first edit",
+        "action": "edit",
+        "edit": "updated",
+        "timeout": 1000,
+        "rowNumberInTable": 2,
+        "incomingData": {
+            "title": "Item 2 Updated",
+            "description": "This is the second add test. Updated."
+        }
+    },
+    {
+        "name": "delete third rowNumberInTable",
+        "action": "delete",
+        "edit": null,
+        "timeout": 1000,
+        "rowNumberInTable": 3,
+        "incomingData": null
+    }
+]
