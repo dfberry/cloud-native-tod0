@@ -32,8 +32,9 @@ const testAdd = (addResponse) => {
 
 const testUpdate = (updateResponse) => {
   // operational error
-  expect(updateResponse.error).toEqual(false);
   console.log(JSON.stringify(updateResponse, null, 2));
+  expect(updateResponse.error).toEqual(false);
+
 
   const { status, body } = updateResponse;
   expect(status).toEqual(202);
