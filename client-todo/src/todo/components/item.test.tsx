@@ -16,8 +16,9 @@ test('item component deletes item', () => {
   const { getByTestId, getByRole } = render(<Item setCurrentTodo={mockSetCurrent} todo={todo} onDelete={mockDelete} />)
 
   // test that the item is rendered
-  expect(getByTestId('item-id').textContent).toBe(todo.id.toString());
-  expect(getByTestId('item-title').textContent).toBe(todo.title);
+  expect(getByTestId(/item-id.*/).textContent).toBe(todo.id.toString());
+  expect(getByTestId(/item-title.*/).textContent).toBe(todo.title);
+  expect(getByTestId(/item-description.*/).textContent).toBe(todo.description);
 
   // get button by role
   const button = getByRole('button', { name: /X/i });
