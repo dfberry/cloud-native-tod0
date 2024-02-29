@@ -1,6 +1,6 @@
 import { Todo } from '../todo.types';
 import { IDataClass, DbIntializeParams, CrudServiceResponse } from '../types';
-import { isValidPartial, TodoValidation } from '../todo.validation';
+import { isValidPartial, isValidAll, TodoValidation } from '../todo.validation';
 // create class with crud methods
 class TodoInMemoryService implements IDataClass<Todo> {
   #todos: Todo[] = [];
@@ -55,7 +55,7 @@ class TodoInMemoryService implements IDataClass<Todo> {
 
   async update(
     id: string,
-    todo: Partial<Todo>
+    todo: Todo
   ): Promise<CrudServiceResponse<Todo>> {
     if (!id) {
       return Promise.resolve({
@@ -64,7 +64,7 @@ class TodoInMemoryService implements IDataClass<Todo> {
       });
     }
 
-    const { valid, error } = isValidPartial(todo);
+    const { valid, error } = isValidAll(todo);
     if (!valid) {
       return Promise.resolve({ data: null, error: error });
     }

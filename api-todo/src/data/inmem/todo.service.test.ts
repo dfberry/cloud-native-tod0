@@ -51,8 +51,11 @@ describe(`In memory happy path`, () => {
 
   it('should update a todo', async () => {
     const update = {
+      id: testtodo.id,
       title: 'todo service test up - ' + testtodo.title,
       description: 'todo service test up - ' + testtodo.description,
+      updatedAt: testtodo.updatedAt,
+      createdAt: testtodo.createdAt,
     };
 
     const { data, error } = await todoService.update(testtodo.id, update);
