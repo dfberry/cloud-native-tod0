@@ -15,7 +15,7 @@ test('renders List with todos', () => {
     const { getAllByTestId } = render(<List todos={todos} onDelete={() => {}} setCurrentTodo={() => {}}/>);
   
     // Get all elements with the 'item-row' test id
-    const items = getAllByTestId('item-row');
+    const items = getAllByTestId(/item-row.*/);
   
     // Check if the number of rendered items matches the number of todos
     expect(items).toHaveLength(todos.length);
