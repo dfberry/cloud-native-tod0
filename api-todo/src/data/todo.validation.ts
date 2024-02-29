@@ -11,7 +11,7 @@ export const MAX_LENGTH_DESCRIPTION = 500;
 
 // Title is only required field
 export const updateTodoSchema = Joi.object({
-  id: Joi.alternatives().try(Joi.number().greater(0), Joi.string()).required(),
+  id: Joi.alternatives().try(Joi.number().greater(0), Joi.string()),
   title: Joi.string().min(1).max(MAX_LENGTH_TITLE).required(),
   description: Joi.string().min(1).max(MAX_LENGTH_DESCRIPTION),
   createdAt: Joi.date().iso().required(),

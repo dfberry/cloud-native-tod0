@@ -116,7 +116,6 @@ describe('Todo API against running MongoDB', () => {
       .put('/todo/' + addOneResponse.body.data.id)
       .send({
         todo: {
-          id: addOneResponse.body.data.id,
           title: 'Su1 - ' + Date.now(),
           description: 'su2 ' + Date.now(),
         },
