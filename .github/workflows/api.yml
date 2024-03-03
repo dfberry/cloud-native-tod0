@@ -11,7 +11,7 @@ on:
     branches:
       - "main"
     paths:
-      - "api-todo/**"
+      - "api/**"
 
 jobs:
   test-with-inmem:
@@ -33,13 +33,13 @@ jobs:
         run: |
           sudo apt-get install jq
 
-      - name: API-todo version
+      - name: API version
         run: |
-          cat api-todo/package.json | jq .version
+          cat api/package.json | jq .version
 
       - name: API-Start API
         run: |
-          cd api-todo
+          cd api
           npm ci
           npm run lint:fix
           npm run build
@@ -73,13 +73,13 @@ jobs:
         run: |
           sudo apt-get install jq
 
-      - name: API-todo version
+      - name: API version
         run: |
-          cat api-todo/package.json | jq .version
+          cat api/package.json | jq .version
 
       - name: API-Start API
         run: |
-          cd api-todo
+          cd api
           npm ci
           npm run lint:fix
           npm run build

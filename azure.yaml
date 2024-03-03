@@ -15,7 +15,7 @@ hooks:
     run: echo 'Deploy complete!'
 services:
     api:
-        project: api-todo
+        project: api
         host: containerapp
         language: js
     client:
