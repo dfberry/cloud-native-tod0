@@ -8,7 +8,7 @@
     "location": {
       "value": "${AZURE_LOCATION}"
     },
-    "apiTodoExists": {
+    "apiExists": {
       "value": "${SERVICE_API_TODO_RESOURCE_EXISTS=false}"
     },
     "webAppExists": {
