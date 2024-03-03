@@ -22,7 +22,7 @@
   "license": "ISC",
   "workspaces": [
     "api",
-    "api-todo-test",
+    "api-test",
     "client"
   ],
   "dependencies": {

@@ -2861,21 +2861,21 @@ GitHub Copilot: Debugging Azure Developer CLI (azd) and Bicep for Container Apps
 
 Remember to replace any placeholders in the commands with the actual values for your deployment.
 
-dfberry: in the postprovision.sh, add code to get the AZURE_TODO_URL to the ./api-todo-test in a .env file then call the npm string in that directory called test
+dfberry: in the postprovision.sh, add code to get the AZURE_TODO_URL to the ./api-todo in a .env file then call the npm string in that directory called test
 
-GitHub Copilot: To achieve this, you can modify your `postprovision.sh` script to write the `AZURE_TODO_URL` to a `.env` file in the `./api-todo-test` directory, and then run the `npm test` command in that directory. Here's how you can do it:
+GitHub Copilot: To achieve this, you can modify your `postprovision.sh` script to write the `AZURE_TODO_URL` to a `.env` file in the `./api-test` directory, and then run the `npm test` command in that directory. Here's how you can do it:
 
 ```bash
 #!/bin/bash
 
 # Define the location of the .env file
-ENV_FILE='./api-todo-test/.env'
+ENV_FILE='./api-test/.env'
 
 # Write the AZURE_TODO_URL to the .env file
 echo "AZURE_TODO_URL=$AZURE_TODO_URL" > "$ENV_FILE"
 
-# Change to the api-todo-test directory
-cd ./api-todo-test
+# Change to the api-test directory
+cd ./api-test
 
 # Run the npm test command
 npm test
@@ -2988,8 +2988,8 @@ ENV_FILE='.env'
 # Write the AZURE_TODO_URL to the .env file
 echo "AZURE_TODO_URL=$AZURE_TODO_URL" > "$ENV_FILE"
 
-# Change to the api-todo-test directory
-cd ./api-todo-test
+# Change to the api-test directory
+cd ./api-test
 
 # Run the npm test command
 npm test

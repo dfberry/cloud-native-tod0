@@ -52,7 +52,7 @@ jobs:
 
       - name: E2E Playwright API test version
         run: |
-          cat api-todo-test/package.json | jq .version
+          cat api-test/package.json | jq .version
 
       # Start apps
       - name: E2E Start API uses MongoDB
@@ -95,7 +95,7 @@ jobs:
       # Run end to end tests
       - name: E2E Run Playwright tests
         run: |
-          cd api-todo-test
+          cd api-test
           npm install
           npm run test
         env: # Add your environment variables here

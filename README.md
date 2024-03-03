@@ -80,12 +80,12 @@ Additional env:
 ***** Root postdeploy
 postdeploy.sh
 Getting param 1
-ENV_PATH: ./api-todo-test/.env
+ENV_PATH: ./api-test/.env
 Remove old .env file
 Getting values from azd
-Run test at ./api-todo-test
+Run test at ./api-test
 
-> api-todo-test@1.0.0 test
+> api-test@1.0.0 test
 > npx playwright test
 
 baseURL https://ca-api-123.redfield-123.eastus2.azurecontainerapps.io

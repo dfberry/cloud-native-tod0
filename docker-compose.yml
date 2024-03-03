@@ -60,11 +60,11 @@ services:
   test-api-todo:
     container_name: test-api
     build:
-      context: ./api-todo-test
+      context: ./api-test
     environment:
       - API_TODO_ENDPOINT=http://localhost:3000
     volumes:
-      - ./api-todo-test:/app
+      - ./api-test:/app
     depends_on:
       - api
       - mongodb
