@@ -13,7 +13,7 @@
 
 1. Modify or add environment variables to configure the running application. Environment variables can be configured by updating the `settings` node(s) for each service in [main.parameters.json](./infra/main.parameters.json).
 2. For services using a database, environment variables have been pre-configured under the `env` node in the following files to allow connection to the database. Modify the name of these variables as needed to match your application.
-    - [app/api.bicep](./infra/app/api.bicep)
+    - [app/api-todo.bicep](./infra/app/api-todo.bicep)
 3. For services using Redis, environment variables will not show up under `env` explicitly, but are available as: `REDIS_ENDPOINT`, `REDIS_HOST`, `REDIS_PASSWORD`, and `REDIS_PORT`.
 
 ### Provision infrastructure and deploy application code
@@ -46,7 +46,7 @@ To describe the infrastructure and application, `azure.yaml` along with Infrastr
 
 Each bicep file declares resources to be provisioned. The resources are provisioned when running `azd up` or `azd provision`.
 
-- [app/api.bicep](./infra/app/api.bicep) - Azure Container Apps resources to host the 'api' service.
+- [app/api-todo.bicep](./infra/app/api-todo.bicep) - Azure Container Apps resources to host the 'api-todo' service.
 - [shared/keyvault.bicep](./infra/shared/keyvault.bicep) - Azure KeyVault to store secrets.
 - [shared/monitoring.bicep](./infra/shared/monitoring.bicep) - Azure Log Analytics workspace and Application Insights to log and store instrumentation logs.
 - [shared/registry.bicep](./infra/shared/registry.bicep) - Azure Container Registry to store docker images.

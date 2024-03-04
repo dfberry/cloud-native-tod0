@@ -4,7 +4,7 @@ services:
   api:
     container_name: api
     build:
-      context: ./api
+      context: ./api-todo
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
@@ -24,10 +24,10 @@ services:
       timeout: 10s
       retries: 3
 
-  client:
+  client-todo:
     container_name: client
     build:
-      context: ./client
+      context: ./client-todo
     environment:
       - VITE_USE_LOCAL_API="true"
       - VITE_API_URL=http://localhost:3000
@@ -60,11 +60,11 @@ services:
   test-api-todo:
     container_name: test-api
     build:
-      context: ./api-test
+      context: ./api-todo-test
     environment:
       - API_TODO_ENDPOINT=http://localhost:3000
     volumes:
-      - ./api-test:/app
+      - ./api-todo-test:/app
     depends_on:
       - api
       - mongodb

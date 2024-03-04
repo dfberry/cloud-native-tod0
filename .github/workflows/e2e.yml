@@ -6,14 +6,14 @@ on:
     branches: 
       - '*'
     paths:
-      - 'api/**'
-      # - 'client/**'
+      - 'api-todo/**'
+      # - 'client-todo/**'
   pull_request:
     branches: 
       - 'main'
     paths:
-      - 'api/**'
-      # - 'client/**'
+      - 'api-todo/**'
+      # - 'client-todo/**'
 
 jobs:
   build:
@@ -44,20 +44,20 @@ jobs:
       # App versions
       - name: E2E API version
         run: |
-          cat api/package.json | jq .version
+          cat api-todo/package.json | jq .version
 
       - name: E2E Client version
         run: |
-          cat client/package.json | jq .version
+          cat client-todo/package.json | jq .version
 
       - name: E2E Playwright API test version
         run: |
-          cat api-test/package.json | jq .version
+          cat api-todo-test/package.json | jq .version
 
       # Start apps
       - name: E2E Start API uses MongoDB
         run: |
-          cd api
+          cd api-todo
           npm install
           npm run lint:fix
           npm run build
@@ -70,7 +70,7 @@ jobs:
       # https://github.com/vitejs/vite/issues/5801
       - name: E2E Start Client
         run: |
-          cd client
+          cd client-todo
           npm install
           npm run lint
           npm run build
@@ -95,7 +95,7 @@ jobs:
       # Run end to end tests
       - name: E2E Run Playwright tests
         run: |
-          cd api-test
+          cd api-todo-test
           npm install
           npm run test
         env: # Add your environment variables here

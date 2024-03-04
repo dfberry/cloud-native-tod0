@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "api-todo",
   "version": "2.0.1",
   "description": "Copilot: GitHub Copilot: Here's a step-by-step guide to building a simple Todo microservice using Node.js and TypeScript:",
   "main": "index.js",

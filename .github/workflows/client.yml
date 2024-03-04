@@ -6,12 +6,12 @@ on:
     branches: 
       - '*'
     paths:
-      - 'client/**'
+      - 'client-todo/**'
   pull_request:
     branches: 
       - 'main'
     paths:
-      - 'client/**'
+      - 'client-todo/**'
 
 jobs:
   build:
@@ -30,14 +30,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Client-Client version
+      - name: Client-Client-todo version
         run: |
           sudo apt-get install jq
-          cat client/package.json | jq .version
+          cat client-todo/package.json | jq .version
 
       - name: Client-Build and run tests
         run: |
-          npm ci --workspace=client
-          npm run lint --workspace=client
-          npm run build --workspace=client
-          npm run test --workspace=client
+          npm ci --workspace=client-todo
+          npm run lint --workspace=client-todo
+          npm run build --workspace=client-todo
+          npm run test --workspace=client-todo

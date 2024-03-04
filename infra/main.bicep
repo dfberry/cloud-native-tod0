@@ -20,7 +20,7 @@ param deploymentSpecificGuid string = newGuid()
 var apiStatusPassword = uniqueString(deploymentSpecificGuid)
 
 // CLIENT WEB APP
-param apiExists bool = false
+param apiTodoExists bool = false
 param webAppExists bool = false
 param webContainerAppName string = ''
 var apiContainerAppNameOrDefault = '${abbrs.appContainerApps}web-${resourceToken}'
@@ -136,7 +136,7 @@ module cosmos './app/db.bicep' = {
 //   }
 // ]
 
-module api './app/api.bicep' = {
+module apiTodo './app/api.bicep' = {
   name: 'api'
   params: {
     name: 'api-${abbrs.appContainerApps}${resourceToken}'
@@ -146,7 +146,7 @@ module api './app/api.bicep' = {
     applicationInsightsName: monitoring.outputs.applicationInsightsName
     containerAppsEnvironmentName: appsEnv.outputs.name
     containerRegistryName: registry.outputs.name
-    exists: apiExists
+    exists: apiTodoExists
     corsAcaUrl: corsAcaUrl
     keyVaultName: keyVault.outputs.name
     apiStatusPassword: apiStatusPassword
@@ -156,7 +156,7 @@ module api './app/api.bicep' = {
 }
 
 // Web frontend
-module client './app/client.bicep' = {
+module clientTodo './app/client.bicep' = {
   name: 'client'
   scope: rg
   params: {
@@ -168,7 +168,7 @@ module client './app/client.bicep' = {
     containerAppsEnvironmentName: appsEnv.outputs.name
     containerRegistryName: registry.outputs.name
     exists: webAppExists
-    apiBaseUrl: !empty(webApiBaseUrl) ? webApiBaseUrl : api.outputs.SERVICE_WEB_URI
+    apiBaseUrl: !empty(webApiBaseUrl) ? webApiBaseUrl : apiTodo.outputs.SERVICE_WEB_URI
     port: portClient
   }
 }
@@ -178,14 +178,14 @@ output RESOURCE_GROUP_NAME string = rg.name
 output INFRA_APP_VERSION string = infraAppVersion
 
 // CLIENT FRONTEND
-output CLIENT_TODO_NAME string = client.outputs.SERVICE_WEB_NAME
-output CLIENT_TODO_ENDPOINT string = client.outputs.SERVICE_WEB_URI
-output VITE_API_URL string = api.outputs.SERVICE_WEB_URI
-output CLIENT_IMAGE_NAME string = client.outputs.SERVICE_WEB_IMAGE_NAME
+output CLIENT_TODO_NAME string = clientTodo.outputs.SERVICE_WEB_NAME
+output CLIENT_TODO_ENDPOINT string = clientTodo.outputs.SERVICE_WEB_URI
+output VITE_API_URL string = apiTodo.outputs.SERVICE_WEB_URI
+output CLIENT_IMAGE_NAME string = clientTodo.outputs.SERVICE_WEB_IMAGE_NAME
 
 // API BACKEND
-output API_TODO_ENDPOINT string = api.outputs.SERVICE_WEB_URI
-output API_IMAGE_NAME string = api.outputs.SERVICE_WEB_IMAGE_NAME
+output API_TODO_ENDPOINT string = apiTodo.outputs.SERVICE_WEB_URI
+output API_IMAGE_NAME string = apiTodo.outputs.SERVICE_WEB_IMAGE_NAME
 
 // APPS ENVIRONMENT
 output APPS_DEFAULT_DOMAIN string = appsEnv.outputs.domain

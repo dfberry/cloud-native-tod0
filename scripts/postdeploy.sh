@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage: <script> <path-for-env-file>
-# Example: ./scripts/postdeploy.sh "./api-test" 
+# Example: ./scripts/postdeploy.sh "./api-todo-test" 
 echo "postdeploy.sh"
 
 set -x

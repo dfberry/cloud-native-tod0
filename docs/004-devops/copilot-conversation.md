@@ -2187,17 +2187,17 @@ You can add this command to the `postCreateCommand` field in your `devcontainer.
 
 In this `devcontainer.json` file, `"azd init"` initializes the Azure Developer CLI after the container is created.
 
-dfberry: How do I build the docker image from the DockerFile in api from inside the container to test it
+dfberry: How do I build the docker image from the DockerFile in api-todo from inside the container to test it
 
 GitHub Copilot: To build a Docker image from a Dockerfile in a specific directory from inside a container, you would typically use the `docker build` command. However, this requires Docker to be installed and accessible inside the container, which is not always the case.
 
 If Docker is installed and accessible inside your container, you can use the following command to build the Docker image:
 
 ```bash
-docker build -t api-image -f /path/to/api/Dockerfile /path/to/api
+docker build -t api-todo-image -f /path/to/api-todo/Dockerfile /path/to/api-todo
 ```
 
-Replace `/path/to/api` with the actual path to the `api` directory inside your container.
+Replace `/path/to/api-todo` with the actual path to the `api-todo` directory inside your container.
 
 If Docker is not accessible inside your container, you would need to install Docker inside the container (which is not recommended due to security reasons), use Docker-in-Docker (which also has security implications), or use a different approach to test your Dockerfile, such as building the Docker image on your host machine and then running the tests inside the Docker container.
 
@@ -2392,8 +2392,8 @@ name: cloud-native-todo
 metadata:
     template: azd-init@1.5.0
 services:
-    api:
-        project: api
+    api-todo:
+        project: api-todo
         host: containerapp
         language: ts
         docker:
@@ -2563,7 +2563,7 @@ dfberry: what is the correct syntax for the path to the DockerFile that the bash
 
 GitHub Copilot: The path to the Dockerfile in your bash script depends on where the script is located relative to the Dockerfile. 
 
-In the provided script, the path `../api/Dockerfile` suggests that the script is located in a directory at the same level as the `api` directory, and the Dockerfile is located inside the `api` directory.
+In the provided script, the path `../api-todo/Dockerfile` suggests that the script is located in a directory at the same level as the `api-todo` directory, and the Dockerfile is located inside the `api-todo` directory.
 
 Here's a visual representation of the directory structure:
 
@@ -2571,7 +2571,7 @@ Here's a visual representation of the directory structure:
 .
 ├── scripts
 │   └── preprovision.sh
-└── api
+└── api-todo
     └── Dockerfile
 ```
 
@@ -2587,7 +2587,7 @@ GitHub Copilot: Sure, you can refactor the script to store the location of the D
 #!/bin/bash
 
 # Define the location of the Dockerfile
-DOCKERFILE_PATH='../api/Dockerfile'
+DOCKERFILE_PATH='../api-todo/Dockerfile'
 
 # Extract the version label from the Dockerfile
 VERSION=$(grep 'LABEL version=' "$DOCKERFILE_PATH" | cut -d'"' -f2)
@@ -2608,7 +2608,7 @@ GitHub Copilot: Sure, you can add a check to the script to ensure that the Docke
 #!/bin/bash
 
 # Define the location of the Dockerfile
-DOCKERFILE_PATH='../api/Dockerfile'
+DOCKERFILE_PATH='../api-todo/Dockerfile'
 
 # Check if the Dockerfile exists
 if [ ! -f "$DOCKERFILE_PATH" ]; then
@@ -2627,9 +2627,9 @@ export DOCKER_IMAGE_VERSION=$VERSION
 
 In this script, the `if [ ! -f "$DOCKERFILE_PATH" ]; then` line checks if the Dockerfile exists. If it doesn't, the script prints an error message and exits with a non-zero status code, indicating that an error occurred.
 
-dfberry: refactor the path how do I fix the azure.yaml file so it finds the preprovision script and the Dockerfile in the correct context of the root or the api folder
+dfberry: refactor the path how do I fix the azure.yaml file so it finds the preprovision script and the Dockerfile in the correct context of the root or the api-todo folder
 
-GitHub Copilot: The paths in your `azure.yaml` file should be relative to the location of the `azure.yaml` file itself. If your `azure.yaml` file is in the root of your project, and the `scripts` directory and `api` directory are also in the root, you can adjust the paths like this:
+GitHub Copilot: The paths in your `azure.yaml` file should be relative to the location of the `azure.yaml` file itself. If your `azure.yaml` file is in the root of your project, and the `scripts` directory and `api-todo` directory are also in the root, you can adjust the paths like this:
 
 ```yaml
 metadata:
@@ -2641,25 +2641,25 @@ hooks:
         shell: sh
         run: |
             pwd
-            ./scripts/preprovision.sh "./" "./api/Dockerfile"
+            ./scripts/preprovision.sh "./" "./api-todo/Dockerfile"
 services:
-    api:
-        project: ./api
+    api-todo:
+        project: ./api-todo
         host: containerapp
         language: ts
         docker:
             path: Dockerfile
         hooks: 
             # Run with:
-            # azd hooks run preprovision --service "api" --debug
+            # azd hooks run preprovision --service "api-todo" --debug
             preprovision: 
                 shell: sh
                 run: |
                     pwd
-                    ./scripts/preprovision.sh "./api" "./api/Dockerfile"
+                    ./scripts/preprovision.sh "./api-todo" "./api-todo/Dockerfile"
 ```
 
-In this updated `azure.yaml` file, the paths to the `preprovision.sh` script and the Dockerfile have been adjusted to be relative to the location of the `azure.yaml` file. The `preprovision.sh` script is in the `scripts` directory in the root of your project, and the Dockerfile is in the `api` directory, also in the root of your project.
+In this updated `azure.yaml` file, the paths to the `preprovision.sh` script and the Dockerfile have been adjusted to be relative to the location of the `azure.yaml` file. The `preprovision.sh` script is in the `scripts` directory in the root of your project, and the Dockerfile is in the `api-todo` directory, also in the root of your project.
 
 dfberry: azd hooks run --help
 
@@ -2679,7 +2679,7 @@ Options:
 
 - `--help`: Show help information for the `azd hooks run` command.
 
-For example, the command `azd hooks run preprovision --service "api" --debug` will run the `preprovision` hook for the `api` service with debug output enabled.
+For example, the command `azd hooks run preprovision --service "api-todo" --debug` will run the `preprovision` hook for the `api-todo` service with debug output enabled.
 
 Please note that the actual options available might vary depending on the version of Azure Developer CLI you're using. You can always run `azd hooks run --help` to see the most up-to-date usage information.
 
@@ -2754,8 +2754,8 @@ To set an environment variable that's available to Azure Developer CLI, you can 
 
 ```yaml
 services:
-  api:
-    project: ./api
+  api-todo:
+    project: ./api-todo
     host: containerapp
     language: ts
     docker:
@@ -2769,7 +2769,7 @@ services:
           printenv | sort
 ```
 
-In this example, the `DOCKER_IMAGE_VERSION` environment variable is set to `'1.0.0'` for the `api` service. This environment variable will be available to the service and any hooks associated with the service.
+In this example, the `DOCKER_IMAGE_VERSION` environment variable is set to `'1.0.0'` for the `api-todo` service. This environment variable will be available to the service and any hooks associated with the service.
 
 Please replace `'1.0.0'` with the actual version you want to set.
 
@@ -2785,7 +2785,7 @@ Here's how you can do it:
 #!/bin/bash
 
 # Define the location of the Dockerfile
-DOCKERFILE_PATH='./api/Dockerfile'
+DOCKERFILE_PATH='./api-todo/Dockerfile'
 
 # Check if the Dockerfile exists
 if [ ! -f "$DOCKERFILE_PATH" ]; then
@@ -2804,8 +2804,8 @@ echo "DOCKER_IMAGE_VERSION=$VERSION" > .env
 
 ```yaml
 services:
-  api:
-    project: ./api
+  api-todo:
+    project: ./api-todo
     host: containerapp
     language: ts
     docker:
@@ -2817,7 +2817,7 @@ services:
         run: |
           pwd
           echo "Root provisioning"
-          ./scripts/preprovision.sh "./api/Dockerfile"  
+          ./scripts/preprovision.sh "./api-todo/Dockerfile"  
           printenv | sort
 ```
 
@@ -2861,21 +2861,21 @@ GitHub Copilot: Debugging Azure Developer CLI (azd) and Bicep for Container Apps
 
 Remember to replace any placeholders in the commands with the actual values for your deployment.
 
-dfberry: in the postprovision.sh, add code to get the AZURE_TODO_URL to the ./api-todo in a .env file then call the npm string in that directory called test
+dfberry: in the postprovision.sh, add code to get the AZURE_TODO_URL to the ./api-todo-test in a .env file then call the npm string in that directory called test
 
-GitHub Copilot: To achieve this, you can modify your `postprovision.sh` script to write the `AZURE_TODO_URL` to a `.env` file in the `./api-test` directory, and then run the `npm test` command in that directory. Here's how you can do it:
+GitHub Copilot: To achieve this, you can modify your `postprovision.sh` script to write the `AZURE_TODO_URL` to a `.env` file in the `./api-todo-test` directory, and then run the `npm test` command in that directory. Here's how you can do it:
 
 ```bash
 #!/bin/bash
 
 # Define the location of the .env file
-ENV_FILE='./api-test/.env'
+ENV_FILE='./api-todo-test/.env'
 
 # Write the AZURE_TODO_URL to the .env file
 echo "AZURE_TODO_URL=$AZURE_TODO_URL" > "$ENV_FILE"
 
-# Change to the api-test directory
-cd ./api-test
+# Change to the api-todo-test directory
+cd ./api-todo-test
 
 # Run the npm test command
 npm test
@@ -2907,9 +2907,9 @@ docker volume prune
 
 Remember to be careful when removing Docker images and volumes, as this can delete data that you might need. Always make sure to backup any important data before running these commands.
 
-dfberry: how does azd and bicep set the endpoint for the api service
+dfberry: how does azd and bicep set the endpoint for the api-todo service
 
-GitHub Copilot: Azure Developer CLI (azd) and Bicep work together to deploy your services to Azure Container Apps. The endpoint for your `api` service is determined by the configuration of your Container App and the routing rules you've set up.
+GitHub Copilot: Azure Developer CLI (azd) and Bicep work together to deploy your services to Azure Container Apps. The endpoint for your `api-todo` service is determined by the configuration of your Container App and the routing rules you've set up.
 
 Here's a high-level overview of how it works:
 
@@ -2919,23 +2919,23 @@ Here's a high-level overview of how it works:
 
 3. **Container App:** The Container App service in Azure runs your Docker containers. Each service you define in your `azure.yaml` file corresponds to a container in your Container App.
 
-4. **Endpoint:** The endpoint for your `api` service is determined by the DNS name of your Container App and the routing rules you've set up. By default, the DNS name is `<app-name>.<region>.azurecontainer.io`, and each service is available at a path corresponding to its name (e.g., `api`).
+4. **Endpoint:** The endpoint for your `api-todo` service is determined by the DNS name of your Container App and the routing rules you've set up. By default, the DNS name is `<app-name>.<region>.azurecontainer.io`, and each service is available at a path corresponding to its name (e.g., `api-todo`).
 
 You can customize the endpoint by changing the DNS name of your Container App or by setting up custom routing rules. You can do this in the Azure portal or by modifying your Bicep file.
 
 Remember to replace any placeholders in the commands with the actual values for your deployment.
 
-dfberry: can I print out any other values from the api like the endpoint is output
+dfberry: can I print out any other values from the api-todo like the endpoint is output
 
-GitHub Copilot: Yes, you can output additional values from the `api` resource in your Bicep file. The exact values you can output depend on the properties of the resource.
+GitHub Copilot: Yes, you can output additional values from the `api-todo` resource in your Bicep file. The exact values you can output depend on the properties of the resource.
 
-For example, if the `api` resource has a property named `endpoint`, you can output it like this:
+For example, if the `api-todo` resource has a property named `endpoint`, you can output it like this:
 
 ```bicep
-output API_TODO_ENDPOINT string = api.outputs.endpoint
+output API_TODO_ENDPOINT string = apiTodo.outputs.endpoint
 ```
 
-This will output the `endpoint` property of the `api` resource as `API_TODO_ENDPOINT`.
+This will output the `endpoint` property of the `api-todo` resource as `API_TODO_ENDPOINT`.
 
 Please replace `endpoint` with the actual property name you want to output. The property name is case-sensitive and must match the name used in the resource definition.
 
@@ -2945,13 +2945,13 @@ dfberry: can I display any more values in stdout like the endpoint
 
 GitHub Copilot: Yes, you can display more values in the standard output (stdout) by adding more `output` statements in your Bicep file. The `output` keyword in Bicep is used to define values that will be returned after the deployment.
 
-For example, if you want to display the name of the `api` service, you can add the following line to your Bicep file:
+For example, if you want to display the name of the `api-todo` service, you can add the following line to your Bicep file:
 
 ```bicep
-output API_TODO_NAME string = api.outputs.name
+output API_TODO_NAME string = apiTodo.outputs.name
 ```
 
-This will output the `name` property of the `api` resource as `API_TODO_NAME`.
+This will output the `name` property of the `api-todo` resource as `API_TODO_NAME`.
 
 Please replace `name` with the actual property name you want to output. The property name is case-sensitive and must match the name used in the resource definition.
 
@@ -2963,7 +2963,7 @@ GitHub Copilot: The Azure Developer CLI (azd) uses the configuration provided in
 
 In the `azure.yaml` file, under each service's `hooks` section, there are `preprovision`, `postprovision`, and other lifecycle hooks. These hooks can contain shell scripts that are executed at different stages of the service's lifecycle. The output of these scripts is displayed in the stdout.
 
-For example, in your `azure.yaml` excerpt, the `preprovision` hook for the `api` service contains several `echo` commands and other commands like `pwd`, `ls -la ../`, and `cat ../.env`. The output of these commands is displayed in the stdout when the `preprovision` hook is executed.
+For example, in your `azure.yaml` excerpt, the `preprovision` hook for the `api-todo` service contains several `echo` commands and other commands like `pwd`, `ls -la ../`, and `cat ../.env`. The output of these commands is displayed in the stdout when the `preprovision` hook is executed.
 
 In addition, azd also displays its own logs and messages in the stdout, including information about the deployment process and any errors that occur.
 
@@ -2988,8 +2988,8 @@ ENV_FILE='.env'
 # Write the AZURE_TODO_URL to the .env file
 echo "AZURE_TODO_URL=$AZURE_TODO_URL" > "$ENV_FILE"
 
-# Change to the api-test directory
-cd ./api-test
+# Change to the api-todo-test directory
+cd ./api-todo-test
 
 # Run the npm test command
 npm test
@@ -3082,7 +3082,7 @@ dotenv.config();
 const API_URL = process.env.API_TODO_URL || 'http://localhost:3000';
 console.log('API_URL', API_URL);
 
-const { version } = require('../api/package.json');
+const { version } = require('../api-todo/package.json');
 
 test.use({
   ignoreHTTPSErrors: true, // in case your certificate isn't properly signed
