@@ -2,6 +2,8 @@ param name string
 param location string = resourceGroup().location
 param tags object = {}
 
+param port int = 80
+
 param identityName string
 param containerAppsEnvironmentName string
 param containerRegistryName string
@@ -25,7 +27,7 @@ module app '../shared/host/container-app-upsert.bicep' = {
     exists: exists
     containerAppsEnvironmentName: containerAppsEnvironmentName
     containerRegistryName: containerRegistryName
-    targetPort: 80
+    targetPort: port
   }
 }
 

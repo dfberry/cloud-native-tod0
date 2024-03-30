@@ -1,24 +1,22 @@
-FROM node:18-alpine AS build
+FROM node:18 AS build
 
 # make the 'app' folder the current working directory
 WORKDIR /app
 # Fix up entrypoint line endings and make exec
-RUN apk update
+#RUN apk update
 
 # .env file, generated from hook in azure.yml, is copied over to the container
 COPY . .
 
+# DEBUG: Make sure the .env is in the directory listing
+#RUN ls -la
+
 # install project dependencies
 RUN npm install
-
-# DEBUG: Make sure the .env is in the directory listing
-#RUN ls -la > ls-first-layer-1.txt
-
-# .env file is copied over to the container
 RUN npm run build
 
 # DEBUG: Make sure the .env is in the directory listing
-#RUN ls -Rla > ls-first-layer-2.txt
+#RUN ls -la
 
 FROM nginx:alpine
 

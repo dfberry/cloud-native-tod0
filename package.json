@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm run test -ws --if-present",
     "build": "npm run build -ws --if-present",
-    "start": "npm run start -ws --if-present"
+    "start": "npm run start -ws --if-present",
+    "clean": "rm .env.docker && npm run clean -ws --if-present"
   },
   "keywords": [],
   "author": "",

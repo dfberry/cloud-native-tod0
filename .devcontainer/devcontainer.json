@@ -13,6 +13,8 @@
 		"ghcr.io/devcontainers/features/powershell:1": {}
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// 3000: api
+	// 80: client
 	"forwardPorts": [
 		3000,
 		80

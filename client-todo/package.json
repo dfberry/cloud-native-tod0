@@ -8,8 +8,10 @@
     "start": "vite",
     "dev": "vite",
 
-    "build": "tsc && vite build",
-    "build:env": "bash ./generate-dotenv.sh",
+    "build": "npm run build:env && npm run build:ts && npm run build:vite",
+    "build:ts": "tsc",
+    "build:vite": "vite build",
+    "build:env": "ls -la",
 
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
@@ -19,7 +21,13 @@
     
     "help": "npm run build outputs to dist",
 
-    "clean": "bash clean.sh"
+    "clean": "npm run clean:env && npm run clean:dist",
+    "clean:env": "rm .env",
+    "clean:dist": "rm -rf dist",
+
+    "docker:build": "docker build --tag client .",
+    "docker:run": "docker run --rm --env-file .env client"
+
   },
   "dependencies": {
     "dotenv": "^16.3.1",

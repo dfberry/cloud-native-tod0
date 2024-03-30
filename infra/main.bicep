@@ -128,6 +128,9 @@ module clientTodo './app/client-todo.bicep' = {
   }
 }
 
+// Meta
+output RESOURCE_TOKEN string = resourceToken
+
 // CLIENT FRONTEND
 output CLIENT_TODO_NAME string = clientTodo.outputs.CLIENT_WEB_NAME
 output CLIENT_TODO_ENDPOINT string = clientTodo.outputs.CLIENT_WEB_URI
