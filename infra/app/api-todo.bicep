@@ -8,7 +8,7 @@ param containerAppsEnvironmentName string
 param applicationInsightsName string
 param exists bool
 param corsAcaUrl string
-
+param port int = 3000
 // var appSettingsArray = filter(array(appDefinition.settings), i => i.name != '')
 // var secrets = map(filter(appSettingsArray, i => i.?secret != null), i => {
 //   name: i.name
@@ -73,7 +73,7 @@ resource app 'Microsoft.App/containerApps@2023-04-01-preview' = {
     configuration: {
       ingress:  {
         external: true
-        targetPort: 3000
+        targetPort: port
         transport: 'auto'
       }
       registries: [
@@ -101,7 +101,7 @@ resource app 'Microsoft.App/containerApps@2023-04-01-preview' = {
             }
             {
               name: 'PORT'
-              value: '3000'
+              value: string(port)
             }
             {
               name: 'API_ALLOW_ORIGINS'

@@ -1,14 +1,29 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
 
+# This name is used as part of the container repostiory name
 name: cloud-native-todo
 metadata:
     template: azd-init@1.5.0
  
+hooks:
+  postprovision:
+    shell: "sh"
+    continueOnError: false
+    interactive: true
+
+    # TODO: provide a cross platform way to run this script
+    run: azd env get-values --no-prompt > .env.docker
+
+
 services:
+    # this name is used as part of the container repository name, the tag is used to identify the image
     api-todo:
         project: api-todo
         host: containerapp
         language: js
+        docker: 
+            tag: 'cloud-native-todo:${RESOURCE_TOKEN}'
+    # this name is used as part of the container repository name, the tag is used to identify the image
     client-todo:
         project: client-todo
         language: js
@@ -19,7 +34,7 @@ services:
             ### If the tag is not static, calling package from a hook would produce a new unique image, which would be ignored by deploy.
             # For static-web-applications, package must happen after provision.  
             # Reference: engineering PR https://github.com/Azure-Samples/todo-nodejs-mongo-aca/compare/staging...pr/3171#diff-7d76d7533653c23b753fc7ce638cf64bdb5e419927d276af836d3a03fdf1745a      
-            tag: 'cloud-native-todo/${AZURE_ENV_NAME}:azd-deploy'
+            tag: 'cloud-native-todo:${RESOURCE_TOKEN}-client'
         hooks:
             predeploy:
                 # windows is provided but untested - use at your own risk
