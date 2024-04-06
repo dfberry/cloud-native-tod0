@@ -12,12 +12,16 @@
     "start": "cross-env NODE_ENV=production node dist/start.js",
     "start:debug": "cross-env NODE_ENV=dev node -r ts-node/register src/start.ts",
     "postbuild": "ncp ./src/openapi.yaml ./dist/openapi.yaml",
-    "build": "tsc",
+    "build": "test -f .env || (echo '.env file not found' && exit 1); tsc",
     "lint": "eslint ",
     "lint:fix": "npm run lint:src && npm run lint:scripts",
     "lint:src": "eslint ./src --fix",
     "lint:scripts": "eslint ./scripts --fix",
     "clean": "rm -rf dist && rm -rf coverage && rm -rf logs",
+
+    "docker:build:mongodb": "bash scripts/build-image.sh",
+    "docker:run": "bash scripts/run-image.sh",
+    
     "mongoose:test": "node ./scripts/test-mongo-connection.js"
   },
   "keywords": [],

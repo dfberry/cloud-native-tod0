@@ -20,6 +20,9 @@ function getEnvVarAsBoolean(name: string, defaultValue: boolean): boolean {
 }
 
 export const getConfig = async (logger) => {
+
+  console.debug(`CONFIG: ${JSON.stringify(process.env)}`);
+
   const isMongoDB =
     getEnvVarAsString('DATABASE_USE_MONGODB', 'false') === 'true' ||
     getEnvVarAsString('DATABASE_USE_MONGODB', 'false') === '1';
@@ -51,12 +54,15 @@ const getConnectionString = async (logger): Promise<string> => {
   logger.debug(`CONFIG: getConnectionString:`);
 
   const isCloudDb: boolean = getEnvVarAsBoolean('DATABASE_IN_CLOUD', false);
+  logger.debug(`CONFIG: isCloudDb: ${isCloudDb}`);
 
   const keyVaultSecretName = getEnvVarAsString(
     'AZURE_KEY_VAULT_COSMOSDB_CONNECTION_STRING_KEY_NAME',
     ''
   );
+  logger.debug(`CONFIG: keyVaultSecretName: ${keyVaultSecretName}`);
   const keyVaultEndpoint = getEnvVarAsString('AZURE_KEY_VAULT_ENDPOINT', '');
+  logger.debug(`CONFIG: keyVaultEndpoint: ${keyVaultEndpoint}`);
 
   const connectionString =
     isCloudDb && keyVaultEndpoint && keyVaultSecretName

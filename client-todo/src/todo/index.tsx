@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import TodoForm from './components/form';
 import List from './components/list';
-import { NewTodo, Todo } from './models';
+import { NewTodo, Todo as TodoModel } from './models';
 import { addTodo, deleteTodo, API_ADD_TODO, API_DELETE_TODO, API_GET_ALL_TODOS } from './service';
 import { fetcher } from './api';
 
@@ -37,7 +37,7 @@ export default function Todo() {
 
             if (returnedError) throw new Error(returnedError);
 
-            mutate(API_DELETE_TODO, data.filter((todo: Todo) => todo.id !== deletedTodo.id), false);
+            mutate(API_DELETE_TODO, data.filter((todo: TodoModel) => todo.id !== deletedTodo.id), false);
         } catch (error: unknown) {
             setRequestError(String(error));
         }

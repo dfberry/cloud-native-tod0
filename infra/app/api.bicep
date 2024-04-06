@@ -4,7 +4,7 @@ param tags object = {}
 
 @secure()
 param apiStatusPassword string
-param port string
+param port int = 3000
 
 param identityName string
 param applicationInsightsName string
@@ -47,7 +47,7 @@ module app '../shared/host/container-app-upsert.bicep' = {
       }
       {
         name: 'PORT'
-        value: port
+        value: string(port)
       }
       {
         name: 'API_ALLOW_ORIGINS'
@@ -78,7 +78,7 @@ module app '../shared/host/container-app-upsert.bicep' = {
         value: apiStatusPassword
       }
     ]
-    targetPort: int(port)
+    targetPort: port
   }
 }
 

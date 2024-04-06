@@ -1,6 +1,6 @@
 # Client Dockerfile
 
-FROM node:18-alpine AS build
+FROM node:18 AS build
 
 # make the 'app' folder the current working directory
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 RUN echo "Building client alpine image - begin"
 
 # Fix up entrypoint line endings and make exec
-RUN apk update
+#RUN apk update
 
 # .env file, generated from hook in azure.yml, is copied over to the container
 COPY . .

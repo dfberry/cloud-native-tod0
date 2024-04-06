@@ -11,3 +11,21 @@ DATABASE_RESET="true"
 DATABASE_USE_MONGODB=false
 DATABASE_IN_CLOUD=false
 ```
+
+## Build and run locally
+
+Root level:
+
+```
+npm run clean 
+azd provision
+bash scripts/create-env-docker.sh
+```
+
+Api level:
+
+```
+npm run build
+npm run docker:build:mongodb
+npm run docker:run
+```

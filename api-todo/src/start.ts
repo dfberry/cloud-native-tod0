@@ -24,7 +24,7 @@ configureApp()
   .then(({ app, CONFIG }) => {
     app.listen(port, () => {
       console.log(`CONFIG: ${JSON.stringify(CONFIG)}`);
-      console.log(`Server is running on port ${port}`);
+      console.log(`Todo Server is running on port ${port}`);
     });
   })
   .catch((error) => {

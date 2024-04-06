@@ -168,3 +168,21 @@ SUCCESS: Your GitHub pipeline has been configured!
 Link to view your new repo: https://github.com/dfberry/cloud-native-todo
 Link to view your pipeline status: https://github.com/dfberry/cloud-native-todo/actions
 ```
+
+## Infra
+
+```bash
+bash scripts/clean.sh
+azd provision
+bash scripts/local-service-principal.sh
+bash scripts/create-env-docker.sh
+azd deploy
+```
+
+1. Sign into Azure Cloud: `az login --use-device-code`
+1. Sign into Azure Developer CLI: `azd auth login --use-device-code`
+1. Clean out old file first: `bash scripts/clean.sh`
+1. Provision the infrastructure so you have the `.env` file in `.azure` folder
+1. Create service principal for use with local development
+1. Create the `.env.docker` file with other required settings and propagate to packages.
+1. Deploy via `azure.yml`. The Dockerfile in each package pulls in the `.env` file for each package and then builds to an image.
