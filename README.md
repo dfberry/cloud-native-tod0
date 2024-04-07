@@ -2,6 +2,18 @@
 
 This repo documents my journey to solidify my cloud native understand. I'll use ChatGPT conversations to learn. This includes building a roadmap, and accomplishing each goal on the roadmap.
 
+## Branches 
+
+* 001-Cloud-native
+* 002-Developer-environment-setup
+* 003-Api-test 
+* 004-Infra-as-code-and-api-test
+* 005-Deploy-from-GitHub
+* 006-Client-todo
+* 007-Add-client-info 
+* 008-MongoDB
+* 009-DevX - Prebuild dev container
+
 ## Which AI to use? 
 
 Generally, I'll use GitHub Copilot from inside Visual Studio Code for answers which are context-aware. If the answers don't align with my current understanding, I'll experiment with the conversation and the code until I think my solution is as cloud native (or cloud-agnostic) as I can get it. 
@@ -168,3 +180,21 @@ SUCCESS: Your GitHub pipeline has been configured!
 Link to view your new repo: https://github.com/dfberry/cloud-native-todo
 Link to view your pipeline status: https://github.com/dfberry/cloud-native-todo/actions
 ```
+
+# Infra
+
+```bash
+bash scripts/clean.sh
+azd provision
+bash scripts/local-service-principal.sh
+bash scripts/create-env-docker.sh
+azd deploy
+```
+
+1. Sign into Azure Cloud: `az login --use-device-code`
+1. Sign into Azure Developer CLI: `azd auth login --use-device-code`
+1. Clean out old file first: `bash scripts/clean.sh`
+1. Provision the infrastructure so you have the `.env` file in `.azure` folder
+1. Create service principal for use with local development
+1. Create the `.env.docker` file with other required settings and propagate to packages.
+1. Deploy via `azure.yml`. The Dockerfile in each package pulls in the `.env` file for each package and then builds to an image.
