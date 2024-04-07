@@ -1,8 +1,8 @@
 targetScope = 'subscription'
 
 param infraAppVersion string = '3.0.0' // Infrastructure app version
-param portClient string = '3005'
-param portApi string = '3000'
+param portClient int = 3005
+param portApi int = 3000
 
 @minLength(1)
 @maxLength(64)
@@ -32,6 +32,7 @@ param cosmosDatabaseName string = ''
 
 @description('Id of the user or app to assign application roles')
 param principalId string
+var tenantId = subscription().tenantId
 
 param deploymentDateTimeUtc string = utcNow()
 param deploymentName string = deployment().name
@@ -172,6 +173,13 @@ module clientTodo './app/client.bicep' = {
     port: portClient
   }
 }
+
+// Meta
+output RESOURCE_TOKEN string = resourceToken
+
+// Identity for DefaultAzureCredential
+output IDENTITY_TENANT string = tenantId
+output IDENTITY_PRINCIPAL string = principalId
 
 // RESOURCE GROUP
 output RESOURCE_GROUP_NAME string = rg.name

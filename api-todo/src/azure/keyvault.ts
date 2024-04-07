@@ -12,11 +12,21 @@ export const getSecretFromKeyVault = async (
     );
   }
 
-  const credential = new DefaultAzureCredential({});
-  const secretClient = new SecretClient(keyVaultEndpoint, credential);
-  const secret = await secretClient.getSecret(keyVaultSecretName);
+  try {
+    console.debug(`CONFIG: getConnectionStringFromKeyVault`);
+    const credential = new DefaultAzureCredential({});
 
-  logger.debug(`CONFIG: getConnectionStringFromKeyVault: ${secret.value}`);
+    console.debug(`CONFIG: getConnectionStringFromKeyVault: secretClient`);
+    const secretClient = new SecretClient(keyVaultEndpoint, credential);
 
-  return secret.value;
+    console.debug(`CONFIG: getConnectionStringFromKeyVault: getSecret`);
+    const secret = await secretClient.getSecret(keyVaultSecretName);
+
+    logger.debug(`CONFIG: getConnectionStringFromKeyVault: ${secret.value}`);
+
+    return secret.value;
+  } catch (error) {
+    logger.error(`Error: getConnectionStringFromKeyVault: ${error}`);
+    throw error;
+  }
 };

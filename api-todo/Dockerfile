@@ -9,12 +9,17 @@ WORKDIR /app
 # Bundle the application source inside the Docker image
 COPY . .
 
+# Stop the build if the .env isn't in the root of the project
+RUN test -f .env
+
 # Install the application dependencies
 RUN npm install
-RUN npm run build
 
 # If you are building your code for production
-# RUN npm ci --only=production
+RUN npm run build
+
+RUN ls -la
+RUN ls -la dist
 
 # Install PM2 globally
 RUN npm install pm2 -g

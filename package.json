@@ -4,6 +4,7 @@
   "description": "This repo documents my journey to solidify my cloud native understand. I'll use ChatGPT conversations to learn. This includes building a roadmap, and accomplishing each goal on the roadmap.",
   "main": "index.js",
   "scripts": {
+    "azd:env": "bash scripts/azd-env.sh",
     "test": "npm run test -ws --if-present",
     "build": "npm run build -ws --if-present",
     "start": "npm run start -ws --if-present",
@@ -11,7 +12,8 @@
     "docker:run": "docker compose up",
     "docker:stop": "docker compose down",
     "docker:dbonly": "docker compose up mongodb",
-    "docker:status": "docker compose ps"
+    "docker:status": "docker compose ps",
+    "clean": "bash scripts/clean.sh && npm run clean -ws --if-present"
   },
   "keywords": [],
   "author": "",

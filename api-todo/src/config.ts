@@ -3,7 +3,8 @@ import { getSecretFromKeyVault } from './azure/keyvault';
 const DATABASE_URI = process.env.DATABASE_URI;
 
 // ./docker-compose.yml
-const DEFAULT_MONGO_DB = DATABASE_URI || 'mongodb://mongo:MongoPass@localhost:27017/';
+const DEFAULT_MONGO_DB =
+  DATABASE_URI || 'mongodb://mongo:MongoPass@localhost:27017/';
 
 function getEnvVarAsString(name: string, defaultValue: string): string {
   return process.env[name] || defaultValue;
@@ -51,12 +52,15 @@ const getConnectionString = async (logger): Promise<string> => {
   logger.debug(`CONFIG: getConnectionString:`);
 
   const isCloudDb: boolean = getEnvVarAsBoolean('DATABASE_IN_CLOUD', false);
+  logger.debug(`CONFIG: isCloudDb: ${isCloudDb}`);
 
   const keyVaultSecretName = getEnvVarAsString(
     'AZURE_KEY_VAULT_COSMOSDB_CONNECTION_STRING_KEY_NAME',
     ''
   );
+  logger.debug(`CONFIG: keyVaultSecretName: ${keyVaultSecretName}`);
   const keyVaultEndpoint = getEnvVarAsString('AZURE_KEY_VAULT_ENDPOINT', '');
+  logger.debug(`CONFIG: keyVaultEndpoint: ${keyVaultEndpoint}`);
 
   const connectionString =
     isCloudDb && keyVaultEndpoint && keyVaultSecretName

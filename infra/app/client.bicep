@@ -2,7 +2,7 @@ param name string
 param location string = resourceGroup().location
 param tags object = {}
 
-param port string
+param port int = 80
 param apiBaseUrl string
 
 param identityName string
@@ -35,10 +35,10 @@ module app '../shared/host/container-app-upsert.bicep' = {
       }
       {
         name: 'PORT'
-        value: port
+        value: string(port)
       }
     ]
-    targetPort: int(port)
+    targetPort: port
   }
 }
 

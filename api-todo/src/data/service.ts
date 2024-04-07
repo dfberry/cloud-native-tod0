@@ -49,6 +49,7 @@ const DatabaseService = async (
   logger
 ): Promise<DatabaseServiceType> => {
   const isMongoDB = CONFIG.database.isMongoDB;
+  console.log('CONFIG: Using ${isMongoDB ? MongoDB : in-memory} database');
 
   const databaseCollections: DatabaseCollections = isMongoDB
     ? await setupMongoDB(CONFIG, logger)
