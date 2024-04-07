@@ -190,7 +190,8 @@ bash scripts/local-service-principal.sh
 bash scripts/create-env-docker.sh
 azd deploy
 ```
-
+1. azd auth login --use-device-code
+1. azd env new todo-a # or todo-b
 1. Sign into Azure Cloud: `az login --use-device-code`
 1. Sign into Azure Developer CLI: `azd auth login --use-device-code`
 1. Clean out old file first: `bash scripts/clean.sh`
