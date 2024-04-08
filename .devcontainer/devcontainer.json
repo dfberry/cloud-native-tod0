@@ -9,7 +9,7 @@
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// 3000: api
-	// 80: client
+	// 3005: client
 	// 27017: mongo
 	"forwardPorts": [
 		3000,
