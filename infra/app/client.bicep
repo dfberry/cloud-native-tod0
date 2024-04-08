@@ -2,7 +2,7 @@ param name string
 param location string = resourceGroup().location
 param tags object = {}
 
-param port int = 80
+param port int = 3005
 param apiBaseUrl string
 
 param identityName string
