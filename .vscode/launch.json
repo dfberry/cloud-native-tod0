@@ -7,7 +7,7 @@
     {
       "name": "API run w/Mongo",
       "request": "launch",
-      "cwd": "${workspaceFolder}/api-todo",
+      "cwd": "${workspaceFolder}/api",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "start"
@@ -32,7 +32,7 @@
 
       "args": ["src/start.ts", "--example", "hello"],
       
-      "cwd": "${workspaceRoot}/api-todo",
+      "cwd": "${workspaceRoot}/api",
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": ["<node_internals>/**", "node_modules/**"],
       "env": {
@@ -63,7 +63,7 @@
     {
       "name": "API test",
       "request": "launch",
-      "cwd": "${workspaceFolder}/api-todo",
+      "cwd": "${workspaceFolder}/api",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "test"

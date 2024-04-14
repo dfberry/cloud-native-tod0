@@ -92,20 +92,20 @@ Additional env:
 ***** Root postdeploy
 postdeploy.sh
 Getting param 1
-ENV_PATH: ./api-todo-test/.env
+ENV_PATH: ./api-test/.env
 Remove old .env file
 Getting values from azd
-Run test at ./api-todo-test
+Run test at ./api-test
 
-> api-todo-test@1.0.0 test
+> api-test@1.0.0 test
 > npx playwright test
 
-baseURL https://ca-api-todo-123.redfield-123.eastus2.azurecontainerapps.io
+baseURL https://ca-api-123.redfield-123.eastus2.azurecontainerapps.io
 
 Running 1 test using 1 worker
-baseURL https://ca-api-todo-123.redfield-123.eastus2.azurecontainerapps.io
+baseURL https://ca-api-123.redfield-123.eastus2.azurecontainerapps.io
 api.spec.ts:11:5 › should get all todos
-baseURL https://ca-api-todo-123.redfield-123.eastus2.azurecontainerapps.io
+baseURL https://ca-api-123.redfield-123.eastus2.azurecontainerapps.io
   1 passed (1.7s)
 
 To open last HTML report run:
@@ -115,15 +115,15 @@ To open last HTML report run:
 Test completed
 -------------------------------------stderr-------------------------------------------
   (✓) Done: Running postdeploy command hook for project
-  Running postdeploy service hook for api-todo
+  Running postdeploy service hook for api
 
-  ──────────── api-todo: postdeploy hook output ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ──────────── api: postdeploy hook output ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 
-  ***** api-todo postdeploy
+  ***** api postdeploy
 2023/12/19 02:42:19 hooks_runner.go:162: Executing script '/tmp/azd-postdeploy-2881386505.sh'
   ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-  (✓) Done: Running postdeploy service hook for api-todo
+  (✓) Done: Running postdeploy service hook for api
 Additional env:
 SUCCESS: Your hooks have been run successfully
 ```

@@ -19,24 +19,24 @@ All the local services are managed by Docker compose for local development where
 version: "3"
 
 services:
-  api-todo:
+  api:
     build:
-      context: ./api-todo
+      context: ./api
     ports:
       - "3000:3000"
     depends_on:
       - mongodb
 
-  client-todo:
+  client:
     build:
-      context: ./client-todo
+      context: ./client
     environment:
       VITE_USE_LOCAL_API: "true"
       VITE_API_URL: http://localhost:3000
     ports:
       - "3005:3005"
     depends_on:
-      - api-todo
+      - api
 
   mongodb:
     image: mongo:5.0

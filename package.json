@@ -21,9 +21,9 @@
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "api-todo",
-    "api-todo-test",
-    "client-todo"
+    "api",
+    "api-test",
+    "client"
   ],
   "dependencies": {
     "applicationinsights": "^2.9.2"
